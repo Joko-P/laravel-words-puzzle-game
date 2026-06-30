@@ -11,8 +11,15 @@ class MainService
     public function availableGameSessions()
     {
         $gameSessions = session('gameSessions', []);
-        $availableGameSessions = collect($gameSessions)->where('endTime', null)->keys()->toArray();
+        $availableGameSessions = collect($gameSessions)->keys()->toArray();
 
         return $availableGameSessions;
+    }
+
+    public function returnAllLettersAsArray()
+    {
+        return [
+            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'
+        ];
     }
 }

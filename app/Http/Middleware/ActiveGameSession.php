@@ -16,11 +16,15 @@ class ActiveGameSession
     public function handle(Request $request, Closure $next): Response
     {
         $currentGame = session('current_game');
-        $gameSession = session('gameSessions')[$currentGame] ?? [];
+
+        if (empty($currentGame)) {
+            return redirect()->route('main-menu')->withErrors(['error' => 'Sesi game tidak ditemukan atau sudah berakhir.']);
+        }
+
+        $gameSession = session('gameSessions')[$currentGame['name']] ?? [];
         $urlEncodedNamaSesi = $gameSession['urlEncodedNamaSesi'] ?? null;
         $urlParam = $request->route()->parameter('urlEncodedNamaSesi');
-
-        if (empty($gameSession) || !$currentGame || $urlEncodedNamaSesi !== $urlParam) {
+        if (empty($gameSession) || empty($currentGame) || $urlEncodedNamaSesi !== $urlParam) {
             session()->forget('current_game');
             return redirect()->route('main-menu')->withErrors(['error' => 'Sesi game tidak ditemukan atau sudah berakhir.']);
         }

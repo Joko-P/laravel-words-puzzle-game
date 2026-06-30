@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Emoji;
 use App\Services\MainService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -48,20 +50,21 @@ class MainController extends Controller
             'gameSessions.' . $validated['namaSesi'] => [
                 'namaSesi' => $validated['namaSesi'],
                 'urlEncodedNamaSesi' => urlencode($validated['namaSesi']),
-                'sessionCreatedAt' => now(),
+                'sessionCreatedAt' => now('Asia/Jakarta')->toDateTimeString(),
                 'startTime' => null,
                 'endTime' => null,
                 'playersList' => [],
-                'playerTurnIndex' => 0,
                 'loadedWordsList' => [],
                 'roundsData' => [],
-                'currentRound' => 0,
-                'roundWinndersList' => [],
-                'shopItemsList' => [],
+                'roundsAmount' => 1,
+                'currentRound' => 1,
             ]
         ]);        
 
-        session()->put('current_game', $validated['namaSesi']);
+        session()->put('current_game', [
+            'name' => $validated['namaSesi'],
+            'url' => urlencode($validated['namaSesi']),
+        ]);
 
         return redirect()->route('game.lobby', ['urlEncodedNamaSesi' => session('gameSessions')[$validated['namaSesi']]['urlEncodedNamaSesi']]);
     }
@@ -87,8 +90,52 @@ class MainController extends Controller
             ]
         ]);
 
-        session()->put('current_game', $validated['namaSesi']);
+        session()->put('current_game', [
+            'name' => $validated['namaSesi'],
+            'url' => urlencode($validated['namaSesi']),
+        ]);
 
         return redirect()->route('game.lobby', ['urlEncodedNamaSesi' => session('gameSessions')[$validated['namaSesi']]['urlEncodedNamaSesi']]);
+    }
+
+    public function current_session_details(Request $request)
+    {
+        $currentGameSession = session('gameSessions.' . session('current_game')['name']);
+
+        if (!$currentGameSession) {
+            return response()->json(['error' => 'No active game session found.'], 404);
+        }
+
+        $currentGameSession['sessionCreatedAt'] = $currentGameSession['sessionCreatedAt'] ? Carbon::parse($currentGameSession['sessionCreatedAt'], 'Asia/Jakarta')->format('Y-m-d H:i:s') : null;
+        
+
+        return response()->json($currentGameSession);
+    }
+
+    public function delete_game_session(Request $request)
+    {
+        $currentGameSessionName = session('current_game');
+
+        if (!$currentGameSessionName) {
+            return response()->json(['error' => 'No active game session found.'], 404);
+        }
+
+        // Remove the current game session from the session data
+        $gameSessions = session('gameSessions', []);
+        unset($gameSessions[$currentGameSessionName['name']]);
+        session()->put('gameSessions', $gameSessions);
+
+        // Clear the current game session
+        session()->forget('current_game');
+
+        return response()->json(['success' => 'Game session deleted successfully.']);
+    }
+
+    public function get_random_picture(Request $request)
+    {
+        $new_picture = Emoji::get_random_profile_pic();
+        $new_picture['path'] = asset($new_picture['path']);
+
+        return $new_picture;
     }
 }

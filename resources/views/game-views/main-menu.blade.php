@@ -64,7 +64,7 @@
                 </div>
                 <div class="modal-body d-flex flex-column align-items-center justify-content-center">
                     <div class="input-group my-3 w-50">
-                        <span class="input-group-text border-dark-subtle" id="basic-addon1">Nama Sesi Game</span>
+                        <span class="input-group-text border-dark-subtle">Nama Sesi Game</span>
                         <input type="text" class="form-control border-dark-subtle" id="namaSesiInput" name="namaSesi" placeholder="Nama Sesi" required>
                     </div>
                 </div>
@@ -172,6 +172,10 @@
 
         startNewButton.on('click', function() {
             startNewGameModal.modal('show');
+        });
+        
+        startNewGameModal.on('shown.bs.modal', function () {
+            $(this).find('input#namaSesiInput').first().focus();
         });
         
         resumeButton.on('click', function() {
