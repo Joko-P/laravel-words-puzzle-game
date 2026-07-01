@@ -113,6 +113,122 @@ class Emoji
             'id' => 'villain-male',
             'path' => 'profile-pics-openmoji/villain-male.svg',
         ],
+        [
+            'id' => 'bratty-cat',
+            'path' => 'profile-pics-openmoji/bratty-cat.svg',
+        ],
+        [
+            'id' => 'cactus',
+            'path' => 'profile-pics-openmoji/cactus.svg',
+        ],
+        [
+            'id' => 'cow',
+            'path' => 'profile-pics-openmoji/cow.svg',
+        ],
+        [
+            'id' => 'crab',
+            'path' => 'profile-pics-openmoji/crab.svg',
+        ],
+        [
+            'id' => 'dark-moon',
+            'path' => 'profile-pics-openmoji/dark-moon.svg',
+        ],
+        [
+            'id' => 'disco-ball',
+            'path' => 'profile-pics-openmoji/disco-ball.svg',
+        ],
+        [
+            'id' => 'discord',
+            'path' => 'profile-pics-openmoji/discord.svg',
+        ],
+        [
+            'id' => 'fairy-male',
+            'path' => 'profile-pics-openmoji/fairy-male.svg',
+        ],
+        [
+            'id' => 'fairy-female',
+            'path' => 'profile-pics-openmoji/fairy-female.svg',
+        ],
+        [
+            'id' => 'fox',
+            'path' => 'profile-pics-openmoji/fox.svg',
+        ],
+        [
+            'id' => 'full-moon',
+            'path' => 'profile-pics-openmoji/full-moon.svg',
+        ],
+        [
+            'id' => 'gihtub',
+            'path' => 'profile-pics-openmoji/gihtub.svg',
+        ],
+        [
+            'id' => 'hacker-cat',
+            'path' => 'profile-pics-openmoji/hacker-cat.svg',
+        ],
+        [
+            'id' => 'jack-o-lantern',
+            'path' => 'profile-pics-openmoji/jack-o-lantern.svg',
+        ],
+        [
+            'id' => 'hamster',
+            'path' => 'profile-pics-openmoji/hamster.svg',
+        ],
+        [
+            'id' => 'joker',
+            'path' => 'profile-pics-openmoji/joker.svg',
+        ],
+        [
+            'id' => 'lotus',
+            'path' => 'profile-pics-openmoji/lotus.svg',
+        ],
+        [
+            'id' => 'monkey',
+            'path' => 'profile-pics-openmoji/monkey.svg',
+        ],
+        [
+            'id' => 'mushroom',
+            'path' => 'profile-pics-openmoji/mushroom.svg',
+        ],
+        [
+            'id' => 'pig',
+            'path' => 'profile-pics-openmoji/pig.svg',
+        ],
+        [
+            'id' => 'pinata',
+            'path' => 'profile-pics-openmoji/pinata.svg',
+        ],
+        [
+            'id' => 'snowman',
+            'path' => 'profile-pics-openmoji/snowman.svg',
+        ],
+        [
+            'id' => 'suit-club',
+            'path' => 'profile-pics-openmoji/suit-club.svg',
+        ],
+        [
+            'id' => 'suit-heart',
+            'path' => 'profile-pics-openmoji/suit-heart.svg',
+        ],
+        [
+            'id' => 'suit-diamond',
+            'path' => 'profile-pics-openmoji/suit-diamond.svg',
+        ],
+        [
+            'id' => 'suit-spade',
+            'path' => 'profile-pics-openmoji/suit-spade.svg',
+        ],
+        [
+            'id' => 'teddy-bear',
+            'path' => 'profile-pics-openmoji/teddy-bear.svg',
+        ],
+        [
+            'id' => 'tiger',
+            'path' => 'profile-pics-openmoji/tiger.svg',
+        ],
+        [
+            'id' => 'vendetta',
+            'path' => 'profile-pics-openmoji/vendetta.svg',
+        ],
     ];
 
     public static function all(): array
