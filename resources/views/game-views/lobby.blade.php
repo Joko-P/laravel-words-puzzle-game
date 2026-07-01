@@ -31,7 +31,7 @@
                         <div class="p-2 border border-dark-subtle bg-white rounded-2 overflow-y-auto" id="wordsListArea" style="max-height: 8rem;">
                             @foreach ($words_list as $words)
                             <div class="form-check">
-                                <input class="form-check-input" name="wordsList[]" type="checkbox" value="{{ $words['id'] }}" id="wordsListId{{ $words['id'] }}">
+                                <input class="form-check-input border-dark-subtle" name="wordsList[]" type="checkbox" value="{{ $words['id'] }}" id="wordsListId{{ $words['id'] }}">
                                 <label class="form-check-label" for="wordsListId{{ $words['id'] }}">
                                     {{ $words['name'] }}
                                 </label>

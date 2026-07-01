@@ -34,7 +34,7 @@ class WordsList
 
             $lists[] = [
                 'id' => $id,
-                'name' => $json['name'] ?? $id,
+                'name' => ($json['name'] ?? $id) . " (" . count($json['words']) . " Words)",
             ];
         }
 
