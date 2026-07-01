@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class WordsList
 {
-    protected static string $folder = 'app/private/words-list';
+    protected static string $folder = 'app/words-list';
 
     public static function all(): object
     {
