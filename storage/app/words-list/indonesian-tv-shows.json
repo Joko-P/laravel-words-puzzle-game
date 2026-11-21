@@ -1,27 +1,93 @@
 {
-    "name" : "Popular Indonesian TV Shows Pack",
-    "words" : [
-        "TUKANG BUBUR NAIK HAJI",
-        "PREMAN PENSIUN",
-        "IKATAN CINTA",
-        "DUNIA TERBALIK",
-        "SI DOEL ANAK SEKOLAHAN",
-        "PARA PENCARI TUHAN",
-        "BAJAJ BAJURI",
-        "SUAMI SUAMI TAKUT ISTRI",
-        "OPERA VAN JAVA",
-        "INDONESIAN IDOL",
-        "MASTERCHEF INDONESIA",
-        "JEJAK PETUALANG",
-        "KICK ANDY",
-        "MATA NAJWA",
-        "ON THE SPOT",
-        "LAPTOP SI UNYIL",
-        "EMPAT MATA",
-        "JEJAK SI GUNDUL",
-        "MANCING MANIA",
-        "TUKANG OJEK PENGKOLAN",
-        "TETANGGA MASA GITU",
-        "MY TRIP MY ADVENTURE"
-    ]
+    "name": "Popular Indonesian TV Shows Pack",
+    "words": {
+        "483ec4b5-03dc-4662-bada-78cd4553a6bb": {
+            "word": "TUKANG BUBUR NAIK HAJI",
+            "hints": []
+        },
+        "a81e03c5-95fe-40b6-900a-0347657a22fe": {
+            "word": "PREMAN PENSIUN",
+            "hints": []
+        },
+        "3df56903-d803-4d90-9d17-20b7711691c8": {
+            "word": "IKATAN CINTA",
+            "hints": []
+        },
+        "7a24a9a0-b969-480a-8f53-d42f1e0957c2": {
+            "word": "DUNIA TERBALIK",
+            "hints": []
+        },
+        "c7d1cc13-4da1-4fb5-8d64-220bc354b37f": {
+            "word": "SI DOEL ANAK SEKOLAHAN",
+            "hints": []
+        },
+        "48c490db-109b-4437-a083-4fd2bbfe248f": {
+            "word": "PARA PENCARI TUHAN",
+            "hints": []
+        },
+        "637e6bc1-2b92-4c67-88f3-78688c2fb16f": {
+            "word": "BAJAJ BAJURI",
+            "hints": []
+        },
+        "2f1e36b0-9843-4584-95d4-7dbcbc2b8429": {
+            "word": "SUAMI SUAMI TAKUT ISTRI",
+            "hints": []
+        },
+        "bf8568e6-935e-47c9-abff-092fe99682f6": {
+            "word": "OPERA VAN JAVA",
+            "hints": []
+        },
+        "05670e01-d3de-42e7-ae8e-6631c81cca1b": {
+            "word": "INDONESIAN IDOL",
+            "hints": []
+        },
+        "0021bd0b-0d46-418e-9f3a-a958cb2e1d58": {
+            "word": "MASTERCHEF INDONESIA",
+            "hints": []
+        },
+        "81fc4b60-22be-403e-acc7-92372c25cb8f": {
+            "word": "JEJAK PETUALANG",
+            "hints": []
+        },
+        "f847761f-4ebb-49ee-8088-7a515dc8b553": {
+            "word": "KICK ANDY",
+            "hints": []
+        },
+        "32d13581-ea2a-40d6-95ab-683119223386": {
+            "word": "MATA NAJWA",
+            "hints": []
+        },
+        "7f6329a6-2c57-4498-aff7-51051f4369ac": {
+            "word": "ON THE SPOT",
+            "hints": []
+        },
+        "ec2ee936-ac7a-42e1-9736-34e1fac09f56": {
+            "word": "LAPTOP SI UNYIL",
+            "hints": []
+        },
+        "7a91712e-c95c-47e0-b651-e35223a9e479": {
+            "word": "EMPAT MATA",
+            "hints": []
+        },
+        "ef2ce658-3943-47e3-9696-7389c84d0680": {
+            "word": "JEJAK SI GUNDUL",
+            "hints": []
+        },
+        "8fde451a-0b44-4634-8f04-7b8b62bef457": {
+            "word": "MANCING MANIA",
+            "hints": []
+        },
+        "345229ef-8dfe-4b36-9d3d-3b007908a90f": {
+            "word": "TUKANG OJEK PENGKOLAN",
+            "hints": []
+        },
+        "eee5295c-246d-42df-984c-c5b51ec35be6": {
+            "word": "TETANGGA MASA GITU",
+            "hints": []
+        },
+        "a188de8b-d630-4a79-b92d-5bf13ca6a74c": {
+            "word": "MY TRIP MY ADVENTURE",
+            "hints": []
+        }
+    }
 }
