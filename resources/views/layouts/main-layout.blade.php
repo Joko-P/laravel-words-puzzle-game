@@ -175,7 +175,7 @@
                             </li>
                             <li>
                                 <b>Jika membuka hint</b>, 1 hint akan ditampilkan (urut dari hint pertama).<br>
-                                Hint baru bisa dibuka <b>setelah giliran ke-{{ $mainService->hintUnlocksAfterTurn() }}</b> di setiap ronde.<br>
+                                Hint baru bisa dibuka <b>setelah giliran ke-{{ $mainService->hintUnlocksAfterTurn() }}</b> di setiap ronde, <b>maksimal 1 hint per giliran</b>.<br>
                                 Pemain yang sedang giliran <b>dikurangi {{ $mainService->hintPenalty() }} poin</b>, tapi gilirannya tidak hilang.
                             </li>
                         </ul>

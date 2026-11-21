@@ -328,6 +328,8 @@
             if (hintsState.total && hintsState.locked) {
                 // Server juga menolak hint sebelum giliran ini, tombol ini hanya penanda
                 hintCounterText = `(terbuka setelah giliran ke-${hintsState.unlocks_after_turn})`;
+            } else if (hintsState.total && hintsState.used_this_turn && hintsState.revealed.length < hintsState.total) {
+                hintCounterText = `(${hintsState.revealed.length}/${hintsState.total}, maks. 1 hint per giliran)`;
             } else if (hintsState.total) {
                 hintCounterText = `(${hintsState.revealed.length}/${hintsState.total}, -${hintsState.penalty} poin)`;
             }

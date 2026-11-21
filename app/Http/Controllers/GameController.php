@@ -241,6 +241,7 @@ class GameController extends Controller
             'currentWord' => $entry['word'],
             'hints' => $entry['hints'],
             'hintsRevealed' => 0,
+            'hintLog' => [], // [['turn' => N, 'playerId' => ..., 'penalty' => ...], ...]
             'availableLetters' => $this->mainService->returnAllLettersAsArray(),
             'guessedLetters' => [],
             'currentPlayerTurn' => $playerTurn,
@@ -311,6 +312,7 @@ class GameController extends Controller
         $revealed = min((int) ($latestRound['hintsRevealed'] ?? 0), count($hints));
         $unlocksAfterTurn = $this->mainService->hintUnlocksAfterTurn();
         $locked = $this->hintsLocked($latestRound);
+        $usedThisTurn = $this->hintUsedThisTurn($latestRound);
 
         return [
             'revealed' => array_slice($hints, 0, $revealed),
@@ -318,7 +320,8 @@ class GameController extends Controller
             'penalty' => $this->mainService->hintPenalty(),
             'unlocks_after_turn' => $unlocksAfterTurn,
             'locked' => $locked,
-            'can_reveal' => !$latestRound['isAnswered'] && !$locked && $revealed < count($hints),
+            'used_this_turn' => $usedThisTurn,
+            'can_reveal' => !$latestRound['isAnswered'] && !$locked && !$usedThisTurn && $revealed < count($hints),
         ];
     }
 
@@ -326,6 +329,15 @@ class GameController extends Controller
     private function hintsLocked(array $round): bool
     {
         return (int) ($round['turnCount'] ?? 1) <= $this->mainService->hintUnlocksAfterTurn();
+    }
+
+    // Maksimal 1 hint per giliran: cek apakah hint terakhir dibuka di giliran yang sedang berjalan
+    private function hintUsedThisTurn(array $round): bool
+    {
+        $hintLog = $round['hintLog'] ?? []; // ronde lama (sebelum ada hintLog) dianggap belum pernah buka hint
+        $lastHint = end($hintLog);
+
+        return $lastHint !== false && (int) $lastHint['turn'] === (int) ($round['turnCount'] ?? 1);
     }
 
     public function show_hint(Request $request)
@@ -348,6 +360,10 @@ class GameController extends Controller
             ], 422);
         }
 
+        if ($this->hintUsedThisTurn($currentRound)) {
+            return response()->json(['error' => 'Hint sudah dibuka di giliran ini. Maksimal 1 hint per giliran.'], 422);
+        }
+
         $hints = $currentRound['hints'] ?? [];
         $revealed = (int) ($currentRound['hintsRevealed'] ?? 0);
         if ($revealed >= count($hints)) {
@@ -362,8 +378,15 @@ class GameController extends Controller
 
         // Hint tidak menghabiskan giliran, hanya mengurangi skor pemain yang sedang giliran
         $penalty = $this->mainService->hintPenalty();
+        $hintLog = $currentRound['hintLog'] ?? [];
+        $hintLog[] = [
+            'turn' => (int) ($currentRound['turnCount'] ?? 1),
+            'playerId' => $currentPlayer['id'],
+            'penalty' => $penalty,
+        ];
         session([
             $roundsKey . '.' . $currentRoundNum . '.hintsRevealed' => $revealed + 1,
+            $roundsKey . '.' . $currentRoundNum . '.hintLog' => $hintLog,
             $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayer['score'] - $penalty,
         ]);
 
