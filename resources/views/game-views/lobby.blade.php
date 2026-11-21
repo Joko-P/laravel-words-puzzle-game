@@ -7,14 +7,14 @@
 </style>
 @endpush
 @section('content')
-    <div class="row m-0 mb-4 p-0 d-flex flex-row justify-content-center align-items-center" style="width: 90vw; max-width: 90vw;">
-        <div class="col-2">
+    <div class="row m-0 mb-4 p-0 gy-3 gy-md-0 d-flex flex-row justify-content-center align-items-center" style="width: 90vw; max-width: 90vw;">
+        <div class="col-4 col-md-2">
             <div class="image-profile-element-container">
                 <img class="profile-pic-container" id="profilePicSelectionImage" src="{{ asset($default_pic['path']) }}">
             </div>
             <button type="button" class="btn btn-sm btn-outline-dark w-100 text-center mt-2" id="randomizePicButton"><i class="bi bi-dice-3-fill pe-1"></i>Randomize</button>
         </div>
-        <div class="col-4">
+        <div class="col-8 col-md-4">
             <input type="text" class="d-none" id="profilePicIdSelectionInput" name="profilePicIdSelection" hidden required readonly value="{{ $default_pic['id'] }}">
             <div class="input-group mb-3">
                 <span class="input-group-text border-dark-subtle">Nama Player</span>
@@ -22,7 +22,7 @@
             </div>
             <button type="button" class="btn btn-success w-100 fw-bold fs-5" id="addNewPlayerButton"><i class="bi bi-plus-square-fill pe-2"></i>Tambah Player</button>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-md-4">
             <form method="POST" action="{{ route('game.start-game', ['urlEncodedNamaSesi' => session('current_game')['url']]) }}">
                 @csrf
                 <div class="row m-0 p-0 gx-1 d-flex flex-row justify-content-center align-items-center w-100">
@@ -53,11 +53,11 @@
         </div>
     </div>
     <div class="row m-0 my-2 p-0 d-flex flex-row justify-content-center align-items-center" style="width: 90vw; max-width: 90vw;">
-        <div class="col-2"></div>
-        <div class="col-8">
-            <h2 class="m-0 text-center fw-bold">Players List</h2>
+        <div class="col-3 col-md-2"></div>
+        <div class="col-6 col-md-8">
+            <h2 class="m-0 text-center fw-bold text-nowrap">Players List</h2>
         </div>
-        <div class="col-2 d-flex flex-row justify-content-end align-items-center">
+        <div class="col-3 col-md-2 d-flex flex-row justify-content-end align-items-center">
             <button type="button" class="btn btn-sm btn-outline-dark" id="refreshPlayersListButton"><i class="bi bi-arrow-clockwise pe-2"></i>Refresh</button>
         </div>
         <div class="col-12">

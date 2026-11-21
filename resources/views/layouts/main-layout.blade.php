@@ -41,16 +41,49 @@
         .profile-pic-container {
             scale: 0.75;
         }
+
+        /* Layout dasar: tampilan pas 1 layar seperti biasa, tapi kalau di-zoom dan kontennya
+           tidak muat, halaman bisa di-scroll (bukan terpotong / saling tumpuk) */
+        .app-shell {
+            min-height: 100vh;
+        }
+        .main-header-area,
+        .main-footer-area {
+            min-height: 7.5vh;
+            flex-shrink: 0;
+        }
+        .main-header-area p,
+        .main-header-area h2 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .main-header-area h2 {
+            font-size: clamp(1rem, 2.5vw, 2rem);
+        }
+        .main-header-logo {
+            max-height: 5vh;
+            min-height: 1.5rem;
+        }
+        /* margin auto (bukan justify-content center) supaya konten yang lebih tinggi dari layar
+           tidak terpotong di bagian atas */
+        .main-content-inner {
+            margin-block: auto;
+        }
+        .content-divider {
+            align-self: stretch;
+            margin-inline: 2rem;
+        }
     </style>
     @stack('css')
 </head>
 <body>
-    <div class="d-flex flex-column bg-dark vw-100 vh-100 p-2 align-items-center justify-content-center" style="max-height: 100vh; max-width: 100vw;">
-        <div class="w-100 bg-secondary-subtle main-header-area h-100 py-1 px-2 rounded-top-4" style="max-height: 7.5vh;">
-            <div class="row m-0 gx-2 d-flex flex-row justify-content-between align-items-center w-100 h-100">
+    <div class="app-shell d-flex flex-column bg-dark w-100 p-2 align-items-center">
+        <div class="w-100 bg-secondary-subtle main-header-area d-flex align-items-center py-1 px-2 rounded-top-4">
+            <div class="row m-0 gx-2 d-flex flex-row justify-content-between align-items-center w-100">
                 <div class="col-1">
                     <a href="/">
-                        <img src="{{ asset('images/game-icon.png') }}" alt="Game Icon" class="img-fluid" style="max-height: 5vh;">
+                        <img src="{{ asset('images/game-icon.png') }}" alt="Game Icon" class="img-fluid main-header-logo">
                     </a>
                 </div>
                 <div class="col-2">
@@ -70,10 +103,12 @@
                 </div>
             </div>
         </div>
-        <div class="w-100 bg-light main-content-area flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-            @yield('content')
+        <div class="w-100 bg-light main-content-area flex-grow-1 d-flex flex-column py-2">
+            <div class="main-content-inner w-100 d-flex flex-column align-items-center">
+                @yield('content')
+            </div>
         </div>
-        <div class="w-100 bg-secondary-subtle main-footer-area h-100 py-1 px-2 rounded-bottom-4" style="max-height: 7.5vh;">
+        <div class="w-100 bg-secondary-subtle main-footer-area py-1 px-2 rounded-bottom-4">
             @yield('footer-area')
         </div>
     </div>
