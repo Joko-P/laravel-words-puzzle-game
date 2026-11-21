@@ -331,7 +331,8 @@
                                             <p class="m-0 my-2 fw-bold fs-4">${result.sentence}</p>
                                         </div>
                                     `
-                                });
+                                }).then(() => grabGameSessionData()); // Tunggu popup ditutup dulu, supaya popup ronde terakhir tidak langsung hilang karena redirect ke game over
+                                return;
                             }
                         }
                         grabGameSessionData();
@@ -376,7 +377,8 @@
                                             <p class="m-0 my-2 fw-bold fs-4">${result.sentence}</p>
                                         </div>
                                     `
-                                });
+                                }).then(() => grabGameSessionData()); // Tunggu popup ditutup dulu, supaya popup ronde terakhir tidak langsung hilang karena redirect ke game over
+                                return;
                             }
                         }
                         grabGameSessionData();

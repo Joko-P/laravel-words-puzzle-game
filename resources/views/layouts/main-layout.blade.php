@@ -281,12 +281,22 @@
                     },
                     error: function(err) {
                         console.log(err);
+                        if (err.status == 404) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Belum ada sesi game yang dipilih',
+                                theme: 'bootstrap-5',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary',
+                                },
+                            });
+                        }
                     }
                 });
             });
 
             sessionDeleteButton.click(function() {
-                const sessionName = sessionDetailsModal.find("#namaSesiInput").val();
+                const sessionName = sessionDetailsModal.find("#namaSesiInput").text();
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: `Anda akan menghapus sesi game "${sessionName}"!`,

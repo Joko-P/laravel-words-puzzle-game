@@ -18,16 +18,42 @@ class GameController extends Controller
         $this->mainService = $mainService;
     }
 
+    private function currentSessionKey(): string
+    {
+        return 'gameSessions.' . (string) session('current_game.name');
+    }
+
+    private function currentSession(): array
+    {
+        return session($this->currentSessionKey(), []);
+    }
+
+    private function gameAlreadyStarted(): bool
+    {
+        return !empty($this->currentSession()['startTime']);
+    }
+
+    private function playersLockedResponse()
+    {
+        // Format sama dengan error validasi supaya bisa langsung ditampilkan oleh JS lobby
+        return response()->json(['error' => ['Game sudah dimulai, daftar pemain tidak bisa diubah.']], 422);
+    }
+
+    private function gameNotReadyResponse()
+    {
+        return response()->json(['error' => 'Game belum dimulai atau data ronde tidak ditemukan.'], 409);
+    }
+
     public function lobby_index(Request $request)
     {
-        $currentGameSessionData = session('gameSessions.' . session('current_game.name'));
+        $currentGameSessionData = $this->currentSession();
 
         if ($currentGameSessionData['endTime']) {
             // Kalau game sudah finish / selesai
-            return redirect()->route('game.game-over-screen', ['urlEncodedNamaSesi' => session('current_game.name')]);
+            return redirect()->route('game.game-over-screen', ['urlEncodedNamaSesi' => session('current_game.url')]);
         } else if ($currentGameSessionData['startTime']) {
             // Game yang lagi jalan
-            return redirect()->route('game.game-screen', ['urlEncodedNamaSesi' => session('current_game.name')]);
+            return redirect()->route('game.game-screen', ['urlEncodedNamaSesi' => session('current_game.url')]);
         }
 
         $default_profile_pic = Emoji::get_random_profile_pic();
@@ -47,6 +73,10 @@ class GameController extends Controller
 
     public function add_new_player(Request $request, $urlEncodedNamaSesi)
     {
+        if ($this->gameAlreadyStarted()) {
+            return $this->playersLockedResponse();
+        }
+
         $validator = Validator::make($request->all(), [
             'profilePicID' => [
                 'required',
@@ -69,7 +99,7 @@ class GameController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $current_session_name = 'gameSessions.' . session('current_game')['name'];
+        $current_session_name = $this->currentSessionKey();
         
         $uniqueTrue = false;
         while (!$uniqueTrue) {
@@ -105,7 +135,7 @@ class GameController extends Controller
 
     public function fetch_players_list()
     {
-        $current_session_name = 'gameSessions.' . session('current_game')['name'];
+        $current_session_name = $this->currentSessionKey();
         $players = session($current_session_name . '.playersList', []);
 
         return response()->json($players, 200);
@@ -113,10 +143,15 @@ class GameController extends Controller
 
     public function delete_player(Request $request)
     {
-        $player_id = $request->player_id;
-        $current_session_name = 'gameSessions.' . session('current_game')['name'];
-        $playersList = session($current_session_name)['playersList'];
-        if (!empty($playersList) && $playersList[$player_id]) {
+        if ($this->gameAlreadyStarted()) {
+            return $this->playersLockedResponse();
+        }
+
+        $player_id = (string) $request->input('player_id');
+        $current_session_name = $this->currentSessionKey();
+        $playersList = session($current_session_name . '.playersList', []);
+        // Player yang sudah terhapus (misal tombol × diklik dua kali) cukup diabaikan
+        if ($player_id !== '' && isset($playersList[$player_id])) {
             session()->forget($current_session_name . '.playersList.' . $player_id);
         }
         return response()->json(['success' => true], 200);
@@ -124,6 +159,12 @@ class GameController extends Controller
 
     public function start_game(Request $request)
     {
+        if ($this->gameAlreadyStarted()) {
+            // Misal form lobby di-submit ulang dari halaman cache (tombol Back browser)
+            return redirect()->route('game.game-screen', ['urlEncodedNamaSesi' => session('current_game.url')])
+                ->withErrors('Game sudah dimulai!');
+        }
+
         $validated = $request->validate([
             'wordsList' => [
                 'required',
@@ -148,22 +189,23 @@ class GameController extends Controller
             ],
         ]);
 
-        $currentGameSession = session('gameSessions.' . session('current_game.name'));
+        $currentGameSession = session($this->currentSessionKey());
         $players_count = count($currentGameSession['playersList']);
         if ($players_count < 2) { return redirect()->back()->withErrors('Minimal jumlah pemain adalah 2!'); }
 
         $shuffled_words = $this->words_shuffler($validated['wordsList']); // Shuffle words list
+        if (empty($shuffled_words)) { return redirect()->back()->withErrors('Words List yang dipilih tidak berisi kalimat apapun!'); }
         if (count($shuffled_words) < $validated['jumlahRonde']) { $validated['jumlahRonde'] = count($shuffled_words); } // Prevent more rounds than words list
         $shuffled_players_list = $this->shuffle_player_order(); // Shuffle players order
          
         session([
-            'gameSessions.' . session('current_game.name') . '.roundsAmount' => (int)$validated['jumlahRonde'],
-            'gameSessions.' . session('current_game.name') . '.loadedWordsList' => $shuffled_words,
-            'gameSessions.' . session('current_game.name') . '.playersList' => $shuffled_players_list,
-            'gameSessions.' . session('current_game.name') . '.startTime' => now('Asia/Jakarta')->toDateTimeString(),
+            $this->currentSessionKey() . '.roundsAmount' => (int)$validated['jumlahRonde'],
+            $this->currentSessionKey() . '.loadedWordsList' => $shuffled_words,
+            $this->currentSessionKey() . '.playersList' => $shuffled_players_list,
+            $this->currentSessionKey() . '.startTime' => now('Asia/Jakarta')->toDateTimeString(),
         ]);
 
-        return redirect()->route('game.game-screen', ['urlEncodedNamaSesi' => session('current_game.name')]);
+        return redirect()->route('game.game-screen', ['urlEncodedNamaSesi' => session('current_game.url')]);
     }
 
     private function words_shuffler(array $filenames): array
@@ -185,7 +227,7 @@ class GameController extends Controller
 
     private function shuffle_player_order(): array
     {
-        $playersList = session('gameSessions.' . session('current_game.name') . '.playersList');
+        $playersList = session($this->currentSessionKey() . '.playersList');
         
         $playersIds = array_keys($playersList);
         shuffle($playersIds);
@@ -199,13 +241,21 @@ class GameController extends Controller
 
     public function game_screen(Request $request)
     {
+        if (!$this->gameAlreadyStarted()) {
+            return redirect()->route('game.lobby', ['urlEncodedNamaSesi' => session('current_game.url')]);
+        }
+
         return view('game-views.game-screen');
     }
 
     public function game_screen_data(Request $request)
     {
+        if (!$this->gameAlreadyStarted()) {
+            return $this->gameNotReadyResponse();
+        }
+
         $this->make_new_rounds();
-        $current_session = session('gameSessions.' . session('current_game.name'));
+        $current_session = session($this->currentSessionKey());
 
         $gameOver = $current_session['endTime'];
         $currentTurn = $this->getCurrentTurnNumber($current_session);
@@ -252,7 +302,8 @@ class GameController extends Controller
         $playersData = array_values(collect(collect($current_session['playersList'])->values())->sortBy('order')->toArray());
         foreach ($playersData as $index => $player) {
             $playersData[$index]['currentlyPlay'] = false;
-            if ($player['order'] == $currentPlayerTurn) {
+            // Strict, karena null == 0 bernilai true di PHP
+            if ($player['order'] !== null && (int) $player['order'] === (int) $currentPlayerTurn) {
                 $playersData[$index]['currentlyPlay'] = true;
             }
         }
@@ -284,11 +335,14 @@ class GameController extends Controller
             // Round has started
             $currentRound = end($sessionData['roundsData']);
             $currentRoundNumber = (int)($currentRound['roundNumber']);
-            if ($currentRoundNumber == $roundsAmount && $currentRound['isAnswered']) {
-                // Final round is answered, game ended
-                session([
-                    'gameSessions.' . $gameSessionName . '.endTime' => now('Asia/Jakarta')->toDateTimeString(),
-                ]);
+            $noWordsLeft = !isset($sessionData['loadedWordsList'][$currentRoundNumber]);
+            if (($currentRoundNumber >= $roundsAmount || $noWordsLeft) && $currentRound['isAnswered']) {
+                // Final round is answered, game ended (endTime cukup diisi sekali)
+                if (empty($sessionData['endTime'])) {
+                    session([
+                        'gameSessions.' . $gameSessionName . '.endTime' => now('Asia/Jakarta')->toDateTimeString(),
+                    ]);
+                }
             } else if ($currentRound['isAnswered']) {
                 // Current round already answered, make new one next.
                 $currentPlayerTurn = (int)($currentRound['currentPlayerTurn']);
@@ -318,17 +372,23 @@ class GameController extends Controller
         $sentence = trim(strtoupper(str_replace(' ','',$sentence)));
 
         if ($sentence) {
-            $currentSessionRounds = session('gameSessions.' . session('current_game.name') . '.roundsData');
+            $currentSessionRounds = session($this->currentSessionKey() . '.roundsData', []);
+            if (!$this->gameAlreadyStarted() || empty($currentSessionRounds)) {
+                return $this->gameNotReadyResponse();
+            }
             $currentRound = end($currentSessionRounds);
             $currentRoundNum = $currentRound['roundNumber'];
             
             $guessedLetters = $currentRound['guessedLetters'];
             $currentPlayerTurn = $currentRound['currentPlayerTurn'];
             $isAnswered = $currentRound['isAnswered'];
-            $playersList = collect(array_values(session('gameSessions.' . session('current_game.name') . '.playersList')));
+            $playersList = collect(array_values(session($this->currentSessionKey() . '.playersList')));
             $playersCount = count($playersList);
             $nextPlayerTurn = ((($playersCount - 1) == $currentPlayerTurn) ? 0 : ($currentPlayerTurn + 1));
             $currentPlayer = $playersList->firstWhere('order', $currentPlayerTurn);
+            if (empty($currentPlayer)) {
+                return $this->gameNotReadyResponse();
+            }
             $currentPlayerScore = $currentPlayer['score'];
             $turnCount = $currentRound['turnCount'];
             $currentWord = trim(strtoupper(str_replace(' ','',$currentRound['currentWord'])));
@@ -347,13 +407,13 @@ class GameController extends Controller
                 }
 
                 session([
-                    'gameSessions.' . session('current_game.name') . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayerScore + $score,
+                    $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayerScore + $score,
                 ]);
 
                 if ($sentence === $currentWord) {
                     session([
-                        'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.isAnswered' => true,
-                        'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.roundWinner' => $currentPlayer['id'],
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.isAnswered' => true,
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.roundWinner' => $currentPlayer['id'],
                     ]);
 
                     $this->make_new_rounds();
@@ -364,8 +424,8 @@ class GameController extends Controller
                     ], 200);
                 } else {
                     session([
-                        'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.currentPlayerTurn' => $nextPlayerTurn,
-                        'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.turnCount' => $turnCount + 1,
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.currentPlayerTurn' => $nextPlayerTurn,
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.turnCount' => $turnCount + 1,
                     ]);
                 }
             }
@@ -382,7 +442,10 @@ class GameController extends Controller
         $letter = $request->input('letter', null);
         if ($letter) {
             $letter = trim(strtoupper($letter));
-            $currentSessionRounds = session('gameSessions.' . session('current_game.name') . '.roundsData');
+            $currentSessionRounds = session($this->currentSessionKey() . '.roundsData', []);
+            if (!$this->gameAlreadyStarted() || empty($currentSessionRounds)) {
+                return $this->gameNotReadyResponse();
+            }
             $currentRound = end($currentSessionRounds);
             $currentRoundNum = $currentRound['roundNumber'];
             
@@ -390,10 +453,13 @@ class GameController extends Controller
             $guessedLetters = $currentRound['guessedLetters'];
             $currentPlayerTurn = $currentRound['currentPlayerTurn'];
             $isAnswered = $currentRound['isAnswered'];
-            $playersList = collect(array_values(session('gameSessions.' . session('current_game.name') . '.playersList')));
+            $playersList = collect(array_values(session($this->currentSessionKey() . '.playersList')));
             $playersCount = count($playersList);
             $nextPlayerTurn = ((($playersCount - 1) == $currentPlayerTurn) ? 0 : ($currentPlayerTurn + 1));
             $currentPlayer = $playersList->firstWhere('order', $currentPlayerTurn);
+            if (empty($currentPlayer)) {
+                return $this->gameNotReadyResponse();
+            }
             $currentPlayerScore = $currentPlayer['score'];
             $turnCount = $currentRound['turnCount'];
             
@@ -422,15 +488,15 @@ class GameController extends Controller
                     $allRevealed = empty(array_diff($uniqueLetters, $guessedLetters));
 
                     session([
-                        'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.availableLetters' => $availableLetters,
-                        'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.guessedLetters' => $guessedLetters,
-                        'gameSessions.' . session('current_game.name') . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayerScore + $score,
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.availableLetters' => $availableLetters,
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.guessedLetters' => $guessedLetters,
+                        $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayerScore + $score,
                     ]);
 
                     if ($allRevealed) {
                         session([
-                            'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.isAnswered' => true,
-                            'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.roundWinner' => $currentPlayer['id'],
+                            $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.isAnswered' => true,
+                            $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.roundWinner' => $currentPlayer['id'],
                         ]);
 
                         $this->make_new_rounds();
@@ -441,8 +507,8 @@ class GameController extends Controller
                         ], 200);
                     } else {
                         session([
-                            'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.currentPlayerTurn' => $nextPlayerTurn,
-                            'gameSessions.' . session('current_game.name') . '.roundsData.' . $currentRoundNum . '.turnCount' => $turnCount + 1,
+                            $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.currentPlayerTurn' => $nextPlayerTurn,
+                            $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.turnCount' => $turnCount + 1,
                         ]);
                     }
                 }
@@ -457,7 +523,7 @@ class GameController extends Controller
 
     public function game_over_screen(Request $request)
     {
-        $current_session = session('gameSessions.' . session('current_game.name'));
+        $current_session = session($this->currentSessionKey());
         $scoreBoard = $this->getScoreLeaderboard($current_session);
 
         return view('game-views.game-over-screen', [

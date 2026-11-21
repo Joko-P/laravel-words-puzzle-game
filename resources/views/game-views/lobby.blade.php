@@ -122,27 +122,7 @@
                 },
                 error: function(err) {
                     console.log(err);
-                    var list_error = "";
-                    for (const [inputName, arrayMessage] of Object.entries(err.responseJSON)) {
-                        arrayMessage.forEach(message => {
-                            list_error += `<li>${message}</li>`;
-                        });
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Terjadi Kesalahan',
-                        theme: 'bootstrap-5',
-                        customClass: {
-                            confirmButton: 'btn btn-primary',
-                        },
-                        html: `
-                                <div class="d-flex w-100 justify-content-center m-0 p-0">
-                                    <ul>
-                                        ${list_error}
-                                    </ul>
-                                </div>
-                        `
-                    });
+                    showErrorList(err);
                 }
             });
         });
@@ -209,9 +189,38 @@
                 },
                 error: function(err) {
                     console.log(err);
+                    showErrorList(err);
+                    refreshPlayersListButton.trigger('click');
                 }
             });
         });
+
+        function showErrorList(err) {
+            var list_error = "";
+            for (const [inputName, arrayMessage] of Object.entries(err.responseJSON ?? {})) {
+                [].concat(arrayMessage).forEach(message => {
+                    list_error += `<li>${message}</li>`;
+                });
+            }
+            if (!list_error) {
+                list_error = `<li>Terjadi kesalahan (HTTP ${err.status}).</li>`;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                theme: 'bootstrap-5',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                },
+                html: `
+                        <div class="d-flex w-100 justify-content-center m-0 p-0">
+                            <ul>
+                                ${list_error}
+                            </ul>
+                        </div>
+                `
+            });
+        }
 
         refreshPlayersListButton.trigger('click');
     });

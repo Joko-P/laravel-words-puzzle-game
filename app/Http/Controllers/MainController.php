@@ -35,6 +35,9 @@ class MainController extends Controller
             'namaSesi' => [
                 'required',
                 'string',
+                // Nama sesi dipakai sebagai key session (dot notation) dan parameter URL,
+                // jadi titik dan karakter spesial akan merusak alur game.
+                'regex:/^[A-Za-z0-9_\-]+$/',
                 function ($attribute, $value, $fail) use ($request) {
                     $gameSessions = session('gameSessions', []);
                     $sessionAlreadyExists = isset($gameSessions[$value]);
@@ -44,6 +47,8 @@ class MainController extends Controller
                     }
                 },
             ]
+        ], [
+            'namaSesi.regex' => 'Nama sesi hanya boleh berisi huruf, angka, - dan _',
         ]);
 
         session([
@@ -81,7 +86,8 @@ class MainController extends Controller
                 'string',
                 function ($attribute, $value, $fail) use ($request) {
                     $gameSessions = session('gameSessions', []);
-                    $sessionExists = isset($gameSessions[$value]);
+                    // Cek juga urlEncodedNamaSesi supaya sesi lama yang rusak (nama mengandung titik) tidak bikin error 500
+                    $sessionExists = isset($gameSessions[$value]['urlEncodedNamaSesi']);
 
                     if (!$sessionExists) {
                         $fail("Sesi game dengan nama tersebut tidak ditemukan!");
@@ -100,7 +106,8 @@ class MainController extends Controller
 
     public function current_session_details(Request $request)
     {
-        $currentGameSession = session('gameSessions.' . session('current_game')['name']);
+        $currentGameName = session('current_game.name');
+        $currentGameSession = $currentGameName ? session('gameSessions.' . $currentGameName) : null;
 
         if (!$currentGameSession) {
             return response()->json(['error' => 'No active game session found.'], 404);
