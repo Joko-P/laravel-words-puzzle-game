@@ -48,8 +48,14 @@
 </style>
 @endpush
 @section('content')
-<div class="mb-4" id="words-display-area">
+<div class="mb-2" id="words-display-area">
 
+</div>
+<div class="mb-3 d-flex flex-column align-items-center" id="hint-area">
+    <button type="button" class="btn btn-sm btn-outline-dark fw-bold" id="showHintButton" disabled>
+        <i class="bi bi-lightbulb-fill pe-1"></i><span class="hint-label">Show Hint</span> <span id="hintCounter" class="fw-normal"></span>
+    </button>
+    <ol class="m-0 mt-2 d-none" id="revealedHintsList" style="max-width: 60vw;"></ol>
 </div>
 <div class="w-100 px-4 d-flex flex-row justify-content-center overflow-x-auto" style="max-width: 80vw;" id="player-turns-indicator-area">
 
@@ -124,8 +130,11 @@
         const wordsDisplayArea = $("div#words-display-area");
         const guessTheSentenceInput = $("input#guessTheSentenceInput");
         const guessTheSentenceButton = $("button#guessTheSentenceButton");
+        const showHintButton = $("button#showHintButton");
         const maxCols = 16;
         var gameSessionData = [];
+        var hintsState = { revealed: [], total: 0, penalty: 0, can_reveal: false };
+        var currentPlayerName = '';
 
         function wrapSentence(sentence) {
             const words = sentence.trim().split(/\s+/);
@@ -175,10 +184,13 @@
                             <i class="bi bi-arrow-clockwise ps-2" style="cursor: pointer;" id="reloadGameScreen"></i>
                         `);
 
+                        currentPlayerName = (playersTurn.find(player => player.currentlyPlay) || {}).name || '';
+
                         displayLeaderboard(leaderboard);
                         disableSomeLetterGuesses(roundData);
                         displayBaseWords(roundData);
                         displayPlayersTurn(playersTurn);
+                        displayHints(result.hints);
                     }
                 },
                 error: function(err) {
@@ -299,6 +311,78 @@
                 }
             }
         }
+
+        function displayHints(hints) {
+            hintsState = hints || { revealed: [], total: 0, penalty: 0, can_reveal: false };
+            const revealedHintsList = $("ol#revealedHintsList");
+            revealedHintsList.html('');
+
+            hintsState.revealed.forEach(hint => {
+                // .text() supaya isi hint dari file JSON tidak dibaca sebagai HTML
+                revealedHintsList.append($("<li>").addClass('fw-semibold').text(hint));
+            });
+            revealedHintsList.toggleClass('d-none', hintsState.revealed.length === 0);
+
+            showHintButton.find('.hint-label').text(hintsState.total ? 'Show Hint' : 'Tidak ada hint');
+            $("span#hintCounter").text(hintsState.total
+                ? `(${hintsState.revealed.length}/${hintsState.total}, -${hintsState.penalty} poin)`
+                : '');
+            showHintButton.prop('disabled', !hintsState.can_reveal);
+        }
+
+        showHintButton.on('click', function() {
+            if (!hintsState.can_reveal) { return; }
+
+            Swal.fire({
+                icon: 'question',
+                title: 'Buka hint?',
+                text: `Skor ${currentPlayerName || 'pemain yang sedang giliran'} akan dikurangi ${hintsState.penalty} poin.`,
+                theme: 'bootstrap-5',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, buka hint',
+                cancelButtonText: 'Batal',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-secondary',
+                },
+            }).then((confirmation) => {
+                if (!confirmation.isConfirmed) { return; }
+
+                showHintButton.prop('disabled', true);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('game.show-hint', ['urlEncodedNamaSesi' => session('current_game.url')]) }}",
+                    data: {
+                        "_token" : "{{ csrf_token() }}",
+                    },
+                    success: function(result) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: `Hint ${result.hint_number}/${result.hints_total}`,
+                            text: result.hint,
+                            theme: 'bootstrap-5',
+                            customClass: {
+                                confirmButton: 'btn btn-primary',
+                            },
+                        });
+                        grabGameSessionData();
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: (err.responseJSON && err.responseJSON.error) || `HTTP ${err.status}`,
+                            theme: 'bootstrap-5',
+                            customClass: {
+                                confirmButton: 'btn btn-primary',
+                            },
+                        });
+                        grabGameSessionData();
+                    }
+                });
+            });
+        });
 
         $("h2#header-screen-title").on('click', 'i#reloadGameScreen', function() {
             grabGameSessionData();

@@ -210,19 +210,44 @@ class GameController extends Controller
 
     private function words_shuffler(array $filenames): array
     {
-        $shuffled_words = [];
+        // Key pakai teks kalimat, supaya kalimat yang sama dari beberapa pack hanya muncul sekali
+        $merged_words = [];
 
         foreach ($filenames as $id) {
             $words = WordsList::find($id)['words'] ?? [];
-            foreach ($words as $word) {
-                if (!in_array($word, $shuffled_words)) {
-                    array_push($shuffled_words, $word);
+            foreach ($words as $entry) {
+                if (!isset($merged_words[$entry['word']])) {
+                    $merged_words[$entry['word']] = $entry;
                 }
             }
         }
 
+        $shuffled_words = array_values($merged_words);
         shuffle($shuffled_words);
         return $shuffled_words;
+    }
+
+    /**
+     * Data ronde baru dari satu entry di loadedWordsList.
+     * Entry bisa berupa string (session game lama) atau ['id', 'word', 'hints'].
+     */
+    private function new_round_data(int $roundNumber, $wordEntry, int $playerTurn): array
+    {
+        $entry = WordsList::normalizeEntry($wordEntry) ?? ['id' => null, 'word' => '', 'hints' => []];
+
+        return [
+            'roundNumber' => $roundNumber,
+            'wordId' => $entry['id'],
+            'currentWord' => $entry['word'],
+            'hints' => $entry['hints'],
+            'hintsRevealed' => 0,
+            'availableLetters' => $this->mainService->returnAllLettersAsArray(),
+            'guessedLetters' => [],
+            'currentPlayerTurn' => $playerTurn,
+            'turnCount' => 1,
+            'isAnswered' => false,
+            'roundWinner' => null,
+        ];
     }
 
     private function shuffle_player_order(): array
@@ -261,6 +286,13 @@ class GameController extends Controller
         $currentTurn = $this->getCurrentTurnNumber($current_session);
         $scoreBoard = $this->getScoreLeaderboard($current_session);
         $playersTurn = $this->getPlayerTurnsOrder($current_session);
+        $hintsData = $this->getHintsData($current_session);
+
+        // Hint yang belum dibuka (dan daftar kalimat berikutnya) tidak perlu dikirim ke browser
+        unset($current_session['loadedWordsList']);
+        foreach ($current_session['roundsData'] as $roundNumber => $round) {
+            unset($current_session['roundsData'][$roundNumber]['hints']);
+        }
 
         return response()->json([
             'game_over' => $gameOver ? true : false,
@@ -268,7 +300,65 @@ class GameController extends Controller
             'current_turn' => $currentTurn,
             'leaderboard' => $scoreBoard,
             'players_turn' => $playersTurn,
+            'hints' => $hintsData,
         ]);
+    }
+
+    private function getHintsData($current_session): array
+    {
+        $latestRound = end($current_session['roundsData']);
+        $hints = $latestRound['hints'] ?? [];
+        $revealed = min((int) ($latestRound['hintsRevealed'] ?? 0), count($hints));
+
+        return [
+            'revealed' => array_slice($hints, 0, $revealed),
+            'total' => count($hints),
+            'penalty' => (int) config('game.hint_penalty'),
+            'can_reveal' => !$latestRound['isAnswered'] && $revealed < count($hints),
+        ];
+    }
+
+    public function show_hint(Request $request)
+    {
+        $roundsKey = $this->currentSessionKey() . '.roundsData';
+        $currentSessionRounds = session($roundsKey, []);
+        if (!$this->gameAlreadyStarted() || empty($currentSessionRounds)) {
+            return $this->gameNotReadyResponse();
+        }
+
+        $currentRound = end($currentSessionRounds);
+        $currentRoundNum = $currentRound['roundNumber'];
+        if ($currentRound['isAnswered'] || !empty($this->currentSession()['endTime'])) {
+            return response()->json(['error' => 'Ronde ini sudah selesai.'], 409);
+        }
+
+        $hints = $currentRound['hints'] ?? [];
+        $revealed = (int) ($currentRound['hintsRevealed'] ?? 0);
+        if ($revealed >= count($hints)) {
+            return response()->json(['error' => 'Tidak ada hint lagi untuk kalimat ini.'], 422);
+        }
+
+        $playersList = collect(array_values(session($this->currentSessionKey() . '.playersList')));
+        $currentPlayer = $playersList->firstWhere('order', $currentRound['currentPlayerTurn']);
+        if (empty($currentPlayer)) {
+            return $this->gameNotReadyResponse();
+        }
+
+        // Hint tidak menghabiskan giliran, hanya mengurangi skor pemain yang sedang giliran
+        $penalty = (int) config('game.hint_penalty');
+        session([
+            $roundsKey . '.' . $currentRoundNum . '.hintsRevealed' => $revealed + 1,
+            $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayer['score'] - $penalty,
+        ]);
+
+        return response()->json([
+            'state' => 'hint_revealed',
+            'hint' => $hints[$revealed],
+            'hint_number' => $revealed + 1,
+            'hints_total' => count($hints),
+            'penalty' => $penalty,
+            'player_name' => $currentPlayer['name'],
+        ], 200);
     }
 
     private function getCurrentTurnNumber($current_session)
@@ -320,16 +410,7 @@ class GameController extends Controller
         if (empty($sessionData['roundsData'])) {
             // No rounds started, initialize first round and first turn
             session([
-                'gameSessions.' . $gameSessionName . '.roundsData.1' => [
-                    'roundNumber' => 1,
-                    'currentWord' => $sessionData['loadedWordsList'][0],
-                    'availableLetters' => $this->mainService->returnAllLettersAsArray(),
-                    'guessedLetters' => [],
-                    'currentPlayerTurn' => 0,
-                    'turnCount' => 1,
-                    'isAnswered' => false,
-                    'roundWinner' => null,
-                ]
+                'gameSessions.' . $gameSessionName . '.roundsData.1' => $this->new_round_data(1, $sessionData['loadedWordsList'][0], 0),
             ]);
         } else {
             // Round has started
@@ -350,16 +431,11 @@ class GameController extends Controller
                 $nextPlayerTurn = (((count($sessionData['playersList']) - 1) == $currentPlayerTurn) ? 0 : ($currentPlayerTurn + 1));
                 
                 session([
-                    'gameSessions.' . $gameSessionName . '.roundsData.' . ($currentRoundNumber + 1) => [
-                        'roundNumber' => ($currentRoundNumber + 1),
-                        'currentWord' => $sessionData['loadedWordsList'][$currentRoundNumber],
-                        'availableLetters' => $this->mainService->returnAllLettersAsArray(),
-                        'guessedLetters' => [],
-                        'currentPlayerTurn' => $nextPlayerTurn,
-                        'turnCount' => 1,
-                        'isAnswered' => false,
-                        'roundWinner' => null,
-                    ],
+                    'gameSessions.' . $gameSessionName . '.roundsData.' . ($currentRoundNumber + 1) => $this->new_round_data(
+                        $currentRoundNumber + 1,
+                        $sessionData['loadedWordsList'][$currentRoundNumber],
+                        $nextPlayerTurn
+                    ),
                     'gameSessions.' . $gameSessionName . '.currentRound' => ($currentRoundNumber + 1)
                 ]);
             }
