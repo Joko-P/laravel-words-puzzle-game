@@ -309,13 +309,23 @@ class GameController extends Controller
         $latestRound = end($current_session['roundsData']);
         $hints = $latestRound['hints'] ?? [];
         $revealed = min((int) ($latestRound['hintsRevealed'] ?? 0), count($hints));
+        $unlocksAfterTurn = $this->mainService->hintUnlocksAfterTurn();
+        $locked = $this->hintsLocked($latestRound);
 
         return [
             'revealed' => array_slice($hints, 0, $revealed),
             'total' => count($hints),
-            'penalty' => (int) config('game.hint_penalty'),
-            'can_reveal' => !$latestRound['isAnswered'] && $revealed < count($hints),
+            'penalty' => $this->mainService->hintPenalty(),
+            'unlocks_after_turn' => $unlocksAfterTurn,
+            'locked' => $locked,
+            'can_reveal' => !$latestRound['isAnswered'] && !$locked && $revealed < count($hints),
         ];
+    }
+
+    // Hint terkunci selama giliran 1 sampai N di ronde ini (turnCount = giliran yang sedang berjalan)
+    private function hintsLocked(array $round): bool
+    {
+        return (int) ($round['turnCount'] ?? 1) <= $this->mainService->hintUnlocksAfterTurn();
     }
 
     public function show_hint(Request $request)
@@ -332,6 +342,12 @@ class GameController extends Controller
             return response()->json(['error' => 'Ronde ini sudah selesai.'], 409);
         }
 
+        if ($this->hintsLocked($currentRound)) {
+            return response()->json([
+                'error' => 'Hint baru bisa dibuka setelah giliran ke-' . $this->mainService->hintUnlocksAfterTurn() . '.',
+            ], 422);
+        }
+
         $hints = $currentRound['hints'] ?? [];
         $revealed = (int) ($currentRound['hintsRevealed'] ?? 0);
         if ($revealed >= count($hints)) {
@@ -345,7 +361,7 @@ class GameController extends Controller
         }
 
         // Hint tidak menghabiskan giliran, hanya mengurangi skor pemain yang sedang giliran
-        $penalty = (int) config('game.hint_penalty');
+        $penalty = $this->mainService->hintPenalty();
         session([
             $roundsKey . '.' . $currentRoundNum . '.hintsRevealed' => $revealed + 1,
             $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayer['score'] - $penalty,

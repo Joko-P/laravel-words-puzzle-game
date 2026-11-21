@@ -324,9 +324,14 @@
             revealedHintsList.toggleClass('d-none', hintsState.revealed.length === 0);
 
             showHintButton.find('.hint-label').text(hintsState.total ? 'Show Hint' : 'Tidak ada hint');
-            $("span#hintCounter").text(hintsState.total
-                ? `(${hintsState.revealed.length}/${hintsState.total}, -${hintsState.penalty} poin)`
-                : '');
+            var hintCounterText = '';
+            if (hintsState.total && hintsState.locked) {
+                // Server juga menolak hint sebelum giliran ini, tombol ini hanya penanda
+                hintCounterText = `(terbuka setelah giliran ke-${hintsState.unlocks_after_turn})`;
+            } else if (hintsState.total) {
+                hintCounterText = `(${hintsState.revealed.length}/${hintsState.total}, -${hintsState.penalty} poin)`;
+            }
+            $("span#hintCounter").text(hintCounterText);
             showHintButton.prop('disabled', !hintsState.can_reveal);
         }
 
