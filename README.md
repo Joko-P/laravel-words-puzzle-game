@@ -54,6 +54,7 @@ Word packs live in `storage/app/words-list/*.json`. The file name (without `.jso
 ```
 
 - Each key in `words` is a unique id for that sentence (a UUID, or any unique string). JSON silently keeps only the last entry when a key is repeated, so make sure ids stay unique.
-- `hints` are revealed in order, one per click on **Show Hint**. Each reveal costs the current player `GAME_HINT_PENALTY` points (default 7, see `config/game.php`). Leave it as `[]` for no hints.
+- `hints` are revealed in order, one per click on **Show Hint**. Each reveal costs the current player `GAME_HINT_PENALTY` points (default 7). Hints stay locked until `GAME_HINT_UNLOCKS_AFTER_TURN` turns of the round have passed (default 5). Both live in `config/game.php`. Leave `hints` as `[]` for no hints.
+- If you use `php artisan config:cache`, run it again after changing `config/game.php` or these `.env` values.
 - The old format (`"words": ["KALIMAT", ...]`) still loads, with no hints.
 - Packs with invalid JSON or no valid sentences are skipped and logged in `storage/logs`.

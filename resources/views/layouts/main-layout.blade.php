@@ -1,3 +1,4 @@
+@inject('mainService', 'App\Services\MainService')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -174,7 +175,8 @@
                             </li>
                             <li>
                                 <b>Jika membuka hint</b>, 1 hint akan ditampilkan (urut dari hint pertama).<br>
-                                Pemain yang sedang giliran <b>dikurangi {{ config('game.hint_penalty') }} poin</b>, tapi gilirannya tidak hilang.
+                                Hint baru bisa dibuka <b>setelah giliran ke-{{ $mainService->hintUnlocksAfterTurn() }}</b> di setiap ronde.<br>
+                                Pemain yang sedang giliran <b>dikurangi {{ $mainService->hintPenalty() }} poin</b>, tapi gilirannya tidak hilang.
                             </li>
                         </ul>
                     </ol>
