@@ -11,9 +11,11 @@
         margin-top:0.25rem;
     }
 
+    /* Ukuran kotak huruf mengecil kalau layar sempit (misal di-zoom), maksimal tetap 3rem x 4rem
+       seperti desain aslinya. 17 = 16 kolom maksimal + ruang untuk margin. */
     .letter{
-        min-width: 3rem;
-        height:4rem;
+        width: clamp(1.5rem, calc((100vw - 5rem) / 17), 3rem);
+        aspect-ratio: 3 / 4;
         margin:0.125rem;
         display:flex;
         justify-content:center;
@@ -25,7 +27,7 @@
     }
 
     .letter p{
-        font-size:2rem;
+        font-size: clamp(0.9rem, calc((100vw - 5rem) / 30), 2rem);
         font-weight:bold;
         margin:0;
     }
@@ -38,12 +40,20 @@
         opacity:1;
     }
 
+    /* Tombol huruf boleh mengecil (maksimal tetap 3.5rem) supaya keyboard tidak keluar dari kolomnya */
     .guess-the-letter-btn{
-        min-width: 3.5rem;
+        flex: 0 1 3.5rem;
+        min-width: 0;
         max-width: 3.5rem;
         margin: 0.125rem;
-        font-size: 1.5rem;
+        padding-inline: 0;
+        font-size: clamp(0.9rem, 1.6vw, 1.5rem);
         text-align: center;
+    }
+
+    .leaderboard-area{
+        height: 16rem;
+        max-height: 16rem;
     }
 </style>
 @endpush
@@ -60,31 +70,34 @@
 <div class="w-100 px-4 d-flex flex-row justify-content-center overflow-x-auto" style="max-width: 80vw;" id="player-turns-indicator-area">
 
 </div>
-<hr style="width: calc(100vw - 6rem);">
-<div class="row m-0 p-0 g-0 w-100 d-flex flex-row justify-content-center align-items-center">
-    <div class="col-2 text-center">
-        <p class="fw-bold m-0 fs-5 mb-2">Leaderboard</p>
-    </div>
-    <div class="col-4 text-center">
-        <p class="fw-bold m-0 fs-5 mb-2">Tebak Kalimatnya</p>
-    </div>
-    <div class="col-1"></div>
-    <div class="col-5 text-center">
-        <p class="fw-bold m-0 fs-5 mb-2">Tebak Hurufnya</p>
-    </div>
-    <div class="col-2 d-flex flex-column align-items-start justify-content-start overflow-y-auto" id="leaderboardArea" style="max-height: 16rem; height: 16rem;">
+<hr class="content-divider">
+{{-- Setiap kolom berisi judul + isinya sendiri, supaya di layar sempit (zoom besar) bisa ditumpuk
+     ke bawah. Di layar normal (md ke atas) posisinya sama seperti sebelumnya: 2 / 4 / 1 / 5. --}}
+<div class="row m-0 p-0 g-0 gy-4 gy-md-0 w-100 d-flex flex-row justify-content-center">
+    <div class="col-12 col-md-2 order-last order-md-0 d-flex flex-column">
+        <p class="fw-bold m-0 fs-5 mb-2 text-center">Leaderboard</p>
+        <div class="d-flex flex-column align-items-start justify-content-start overflow-y-auto leaderboard-area" id="leaderboardArea">
 
-    </div>
-    <div class="col-4 d-flex flex-row align-items-center justify-content-center">
-        <div class="input-group m-0 w-75">
-            <input type="text" id="guessTheSentenceInput" class="form-control border-dark">
-            <button class="btn btn-dark fw-bold" type="button" id="guessTheSentenceButton">Tebak!</button>
         </div>
     </div>
-    <div class="col-1 text-center">
-        <p class="fw-bold m-0 fs-5">Atau</p>
+    <div class="col-12 col-md-4 d-flex flex-column">
+        <p class="fw-bold m-0 fs-5 mb-2 text-center">Tebak Kalimatnya</p>
+        <div class="flex-grow-1 d-flex flex-row align-items-center justify-content-center">
+            <div class="input-group m-0 w-75">
+                <input type="text" id="guessTheSentenceInput" class="form-control border-dark">
+                <button class="btn btn-dark fw-bold" type="button" id="guessTheSentenceButton">Tebak!</button>
+            </div>
+        </div>
     </div>
-    <div class="col-5 text-center">
+    <div class="col-12 col-md-1 d-flex flex-column">
+        <p class="fw-bold m-0 fs-5 mb-2 d-none d-md-block" aria-hidden="true">&nbsp;</p>
+        <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+            <p class="fw-bold m-0 fs-5">Atau</p>
+        </div>
+    </div>
+    <div class="col-12 col-md-5 d-flex flex-column text-center">
+        <p class="fw-bold m-0 fs-5 mb-2">Tebak Hurufnya</p>
+        <div class="flex-grow-1 d-flex flex-column justify-content-center">
         <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
             <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Q">Q</button>
             <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="W">W</button>
@@ -117,6 +130,7 @@
             <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="N">N</button>
             <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="M">M</button>
             <div class="guess-the-letter-btn"></div>
+        </div>
         </div>
     </div>
 </div>

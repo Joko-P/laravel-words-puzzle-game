@@ -52,8 +52,9 @@
     </div>
     @endif
 </div>
-<hr style="width: calc(100vw - 6rem);">
-<div class="d-flex flex-column justify-content-start align-items-center overflow-y-auto" style="max-width: 25vw; width: 25vw; height: 16rem; max-height: 16rem;">
+<hr class="content-divider">
+{{-- Lebar 25vw seperti desain awal, tapi minimal 20rem supaya tidak terlalu sempit saat di-zoom --}}
+<div class="d-flex flex-column justify-content-start align-items-center overflow-y-auto" style="width: min(100%, max(25vw, 20rem)); height: 16rem; max-height: 16rem;">
     @for ($i = 3; $i < count($leaderBoard); $i++)
     <div class="d-flex flex-row align-items-center justify-content-start p-3 my-1 border border-2 border-dark bg-white w-100 rounded-3">
         <p class="m-0 fw-bold fs-5 pe-2">{{ $i + 1 }}.</p>
