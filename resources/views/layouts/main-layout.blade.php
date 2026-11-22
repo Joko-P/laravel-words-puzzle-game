@@ -173,6 +173,7 @@
                         <li><a href="https://jquery.com/" target="_blank"><p class="m-0 mb-1 text-start">jQuery 4.0.0</p></a></li>
                         <li><a href="https://sweetalert2.github.io/" target="_blank"><p class="m-0 mb-1 text-start">SweetAlert2</p></a></li>
                         <li><a href="https://openmoji.org/" target="_blank"><p class="m-0 mb-1 text-start">OpenMoji</p></a></li>
+                        <li><a href="https://wikipedia.org/" target="_blank"><p class="m-0 mb-1 text-start">Wikipedia</p></a></li>
                     </ul>
                 </div>
                 <div class="modal-footer justify-content-center">

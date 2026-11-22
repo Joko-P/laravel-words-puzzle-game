@@ -36,6 +36,7 @@ Here are the credits section for what other components I used to make this game 
 3. [Jquery](https://jquery.com/)
 4. [SweetAlert2](https://sweetalert2.github.io/)
 5. [OpenMoji](https://openmoji.org/)
+6. [Wikipedia](https://wikipedia.org/)
 
 ## Words list format
 
