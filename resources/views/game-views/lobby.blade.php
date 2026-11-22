@@ -1,4 +1,5 @@
 @extends('layouts.main-layout')
+@inject('mainService', 'App\Services\MainService')
 @section('page-title')
     Lobby
 @endsection
@@ -47,6 +48,19 @@
                     </div>
                     <div class="col-3">
                         <button type="submit" class="btn btn-dark btn-lg text-center fs-5 fw-bold w-100 py-1"><i class="bi bi-play-fill pe-2"></i></button>
+                    </div>
+                    <div class="col-12 pt-1">
+                        <button class="btn btn-link btn-sm p-0 text-dark text-decoration-none small" type="button" data-bs-toggle="collapse" data-bs-target="#pengaturanLainnya" aria-expanded="false" aria-controls="pengaturanLainnya">
+                            <i class="bi bi-gear-fill pe-1"></i>Pengaturan Lainnya <i class="bi bi-chevron-down small"></i>
+                        </button>
+                        <div class="collapse" id="pengaturanLainnya">
+                            <div class="input-group input-group-sm mt-1">
+                                <span class="input-group-text border-dark-subtle">Batas Waktu</span>
+                                <input type="number" step="1" min="0" max="600" value="{{ old('batasWaktu', 0) }}" class="form-control border-dark-subtle" id="batasWaktuInput" name="batasWaktu" inputmode="numeric">
+                                <span class="input-group-text border-dark-subtle">detik</span>
+                            </div>
+                            <div class="form-text m-0">0 = tanpa batas waktu. Kalau waktu habis, giliran pindah dan pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin.</div>
+                        </div>
                     </div>
                 </div>
             </form>

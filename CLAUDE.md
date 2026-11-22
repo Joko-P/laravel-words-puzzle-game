@@ -30,12 +30,14 @@ No database models are used. All game data is in the session:
   - `playersList`: `[id => {id, name, profilePicID, profilePicPath, score, order}]`
   - `loadedWordsList`: shuffled word entries for the game
   - `roundsAmount`, `currentRound`
+  - `turnTimeLimit`: seconds per turn set in the lobby (0 = no limit)
   - `roundsData`: `[roundNumber => round]`
 - Each round:
   - `roundNumber`, `wordId`, `currentWord` (a plain string)
   - `hints`, `hintsRevealed`, `hintLog`: `[{turn, playerId, penalty}]`
   - `availableLetters`, `guessedLetters`
   - `currentPlayerTurn` (a player's `order`), `turnCount` (the current turn number within the round, starting at 1)
+  - `turnStartedAt` (epoch milliseconds; reset whenever the turn passes), `timeoutLog`: `[{turn, playerId, penalty}]`
   - `isAnswered`, `roundWinner`
 - `current_game`: `{name, url}`. This is **per browser, not per tab**: running two games in two tabs doesn't work.
 
@@ -50,12 +52,14 @@ No database models are used. All game data is in the session:
   - `gameAlreadyStarted()` guards the endpoints: players can't be changed after Start, and the game screen and guesses are refused before it.
   - `new_round_data()` builds a round; `make_new_rounds()` advances rounds and sets `endTime` once.
   - `game_screen_data()` strips `loadedWordsList` and unrevealed `hints` before sending data to the browser.
+  - `applyTurnTimeoutIfExpired()` is the only place a timeout happens. It runs at the start of `game_screen_data()`, both guess handlers, `show_hint()` and `turn_timeout()`. It applies at most one timeout per call and does nothing before the time is up, so calling it repeatedly is safe.
+  - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock.
 - `app/Services/WordsList.php`: loads and normalises word packs (see below).
 - `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`.
 - `app/Services/MainService.php`: helpers.
   - `returnAllLettersAsArray()` returns the guessable characters, A–Z and 0–9. Each round copies it into `availableLetters`.
-  - `hintPenalty()` and `hintUnlocksAfterTurn()` read config with no fallback; the defaults live only in `config/game.php`.
-- `config/game.php`: `hint_penalty` (`GAME_HINT_PENALTY`, default 5) and `hint_unlocks_after_turn` (`GAME_HINT_UNLOCKS_AFTER_TURN`, default 5).
+  - `hintPenalty()`, `hintUnlocksAfterTurn()` and `turnTimeoutPenalty()` read config with no fallback; the defaults live only in `config/game.php`.
+- `config/game.php`: `hint_penalty` (`GAME_HINT_PENALTY`, default 5), `hint_unlocks_after_turn` (`GAME_HINT_UNLOCKS_AFTER_TURN`, default 5) and `turn_timeout_penalty` (`GAME_TURN_TIMEOUT_PENALTY`, default 35).
 - Views in `resources/views/`: `layouts/main-layout.blade.php`, with header, rules and credits modals, and `@inject('mainService', …)`. Plus `game-views/{main-menu,lobby,game-screen,game-over-screen}.blade.php`. The front end is Bootstrap 5.3, jQuery 4 and SweetAlert2. Tailwind/Vite are installed but not used.
 
 ## Game rules (keep the rules modal in sync)
@@ -75,6 +79,11 @@ No database models are used. All game data is in the session:
   - at most **one hint per turn**, checked with `hintLog`.
 
   Each rule is enforced in `show_hint()` on the server. The button state in JS only reflects it.
+- **Turn time limit** (optional, set under "Pengaturan Lainnya" in the lobby, 0–600 s, 0 = off):
+  - the clock keeps running during the hint and sentence prompts;
+  - when it runs out, the current player loses `turn_timeout_penalty` points and the turn passes, which counts as a turn for the hint lock;
+  - a guess or hint that arrives after the time is up is refused;
+  - the bar in JS counts down from the server's `remaining_ms` (so the PC's clock doesn't matter), but the server decides when time is up.
 - **Rounds:** at least 2 players, 1–16 rounds, capped at the number of words available.
 
 ## Word packs: `storage/app/words-list/*.json`

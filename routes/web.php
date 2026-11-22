@@ -24,5 +24,6 @@ Route::name('game.')->prefix('game/{urlEncodedNamaSesi}')->middleware(['activeGa
     Route::post('/guessing-the-sentence', [GameController::class,'guess_the_sentence'])->name('guess-the-sentence');
     Route::post('/guessing-the-letter', [GameController::class,'guess_the_leter'])->name('guess-the-letter');
     Route::post('/show-hint', [GameController::class,'show_hint'])->name('show-hint');
+    Route::post('/turn-timeout', [GameController::class,'turn_timeout'])->name('turn-timeout');
     Route::get('/game-over-screen', [GameController::class,'game_over_screen'])->name('game-over-screen');
 });
