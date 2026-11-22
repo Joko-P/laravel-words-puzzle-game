@@ -44,10 +44,10 @@
     .guess-the-letter-btn{
         flex: 0 1 3.5rem;
         min-width: 0;
-        max-width: 3.5rem;
+        max-width: 3rem;
         margin: 0.125rem;
         padding-inline: 0;
-        font-size: clamp(0.9rem, 1.6vw, 1.5rem);
+        font-size: clamp(0.875rem, 1.5vw, 1.25rem);
         text-align: center;
     }
 
@@ -98,39 +98,54 @@
     <div class="col-12 col-md-5 d-flex flex-column text-center">
         <p class="fw-bold m-0 fs-5 mb-2">Tebak Hurufnya</p>
         <div class="flex-grow-1 d-flex flex-column justify-content-center">
-        <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Q">Q</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="W">W</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="E">E</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="R">R</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="T">T</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Y">Y</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="U">U</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="I">I</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="O">O</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="P">P</button>
-        </div>
-        <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="A">A</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="S">S</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="D">D</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="F">F</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="G">G</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="H">H</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="J">J</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="K">K</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="L">L</button>
-        </div>
-        <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Z">Z</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="X">X</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="C">C</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="V">V</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="B">B</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="N">N</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="M">M</button>
-            <div class="guess-the-letter-btn"></div>
-        </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="1">1</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="2">2</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="3">3</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="4">4</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="5">5</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="6">6</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="7">7</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="8">8</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="9">9</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="0">0</button>
+            </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <div class="guess-the-letter-btn"></div>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Q">Q</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="W">W</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="E">E</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="R">R</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="T">T</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Y">Y</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="U">U</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="I">I</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="O">O</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="P">P</button>
+            </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <div class="guess-the-letter-btn"></div>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="A">A</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="S">S</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="D">D</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="F">F</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="G">G</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="H">H</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="J">J</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="K">K</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="L">L</button>
+            </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <div class="guess-the-letter-btn"></div>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Z">Z</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="X">X</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="C">C</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="V">V</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="B">B</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="N">N</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="M">M</button>
+                <div class="guess-the-letter-btn"></div>
+            </div>
         </div>
     </div>
 </div>

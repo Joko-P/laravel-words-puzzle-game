@@ -91,7 +91,10 @@ class WordsList
         }
 
         $word = strtoupper(preg_replace('/\s+/', ' ', trim($entry['word'])));
-        if ($word === '') {
+
+        // Dicek setelah dinormalisasi (huruf besar, spasi dirapikan), supaya berlaku untuk format lama
+        // maupun baru. Karakter lain tidak bisa ditebak lewat tombol, jadi ronde-nya tidak bisa selesai.
+        if ($word === '' || !preg_match('/^[A-Z0-9 ]+$/', $word)) {
             return null;
         }
 
@@ -116,7 +119,7 @@ class WordsList
             $normalizedEntry = self::normalizeEntry($entry, $isLegacyList ? null : (string) $key);
 
             if ($normalizedEntry === null) {
-                Log::warning("Words list '{$filename}': entry '{$key}' dilewati karena \"word\" tidak ada / kosong.");
+                Log::warning("Words list '{$filename}': entry '{$key}' dilewati karena \"word\" tidak ada / kosong, atau berisi karakter selain A-Z, 0-9 dan spasi.");
                 continue;
             }
 

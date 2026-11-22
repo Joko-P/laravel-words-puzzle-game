@@ -64,7 +64,7 @@
             <hr class="my-2 border-dark border">
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 m-0 p-0 d-flex flex-row justify-content-start align-items-center overflow-y-auto" id="player-list-area" style="width: 90vw; max-width: 90vw; height: 16rem; max-height: 16rem;">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 m-0 p-0 d-flex flex-row justify-content-start align-items-start overflow-y-auto" id="player-list-area" style="width: 90vw; max-width: 90vw; max-height: 16rem;">
     </div>
 @endsection
 @push('modals')

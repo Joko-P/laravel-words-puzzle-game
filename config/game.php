@@ -12,7 +12,7 @@ return [
     |
     */
 
-    'hint_penalty' => (int) env('GAME_HINT_PENALTY', 7),
+    'hint_penalty' => (int) env('GAME_HINT_PENALTY', 5),
 
     /*
     |--------------------------------------------------------------------------

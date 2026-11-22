@@ -197,11 +197,11 @@
                         <li>Sistem <span style="font-style: italic;">Scoring</span> :</li>
                         <ul class="m-0 w-100" style="padding-left: 1.25rem;">
                             <li>
-                                <b>Jika menebak huruf</b>, akan ada skor dasar 25.<br>
-                                Nilai akhir dihitung dengan 25 + (100 / jumlah huruf ditebak)<br>
+                                <b>Jika menebak huruf/angka</b>, akan ada skor dasar 25.<br>
+                                Nilai akhir dihitung dengan 25 + (100 / jumlah huruf/angka ditebak)<br>
                                 Contoh, jika menebak huruf 'A' dan ada 5 huruf 'A' yang muncul, maka skor yang didapat : 25 + (100 / 5) => <b>45</b>.<br>
                                 Contoh lain jika menebak huruf 'W' dan ada 2 huruf yang muncul, maka skor yang didapat : 25 + (100 / 2) => <b>75</b>.<br>
-                                <b>Namun jika huruf yang ditebak tidak ada di kalimat, maka -25 poin</b>.
+                                <b>Namun jika huruf/angka yang ditebak tidak ada di kalimat, maka -25 poin</b>.
                             </li>
                             <li>
                                 <b>Jika menebak kalimat</b>, akan ada skor dasar 100 dan skor 20 per-huruf.<br>
