@@ -34,4 +34,9 @@ class MainService
     {
         return (int) config('game.hint_unlocks_after_turn');
     }
+
+    public function turnTimeoutPenalty(): int
+    {
+        return (int) config('game.turn_timeout_penalty');
+    }
 }

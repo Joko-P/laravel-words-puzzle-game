@@ -187,6 +187,17 @@ class GameController extends Controller
                 'min:1',
                 'max:16',
             ],
+            // Batas waktu per giliran dalam detik, 0 = tanpa batas waktu
+            'batasWaktu' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:600',
+            ],
+        ], [
+            'batasWaktu.integer' => 'Batas waktu harus berupa angka bulat (detik).',
+            'batasWaktu.min' => 'Batas waktu minimal 0 detik (0 = tanpa batas waktu).',
+            'batasWaktu.max' => 'Batas waktu maksimal 600 detik.',
         ]);
 
         $currentGameSession = session($this->currentSessionKey());
@@ -202,6 +213,7 @@ class GameController extends Controller
             $this->currentSessionKey() . '.roundsAmount' => (int)$validated['jumlahRonde'],
             $this->currentSessionKey() . '.loadedWordsList' => $shuffled_words,
             $this->currentSessionKey() . '.playersList' => $shuffled_players_list,
+            $this->currentSessionKey() . '.turnTimeLimit' => (int) ($validated['batasWaktu'] ?? 0),
             $this->currentSessionKey() . '.startTime' => now('Asia/Jakarta')->toDateTimeString(),
         ]);
 
@@ -246,6 +258,8 @@ class GameController extends Controller
             'guessedLetters' => [],
             'currentPlayerTurn' => $playerTurn,
             'turnCount' => 1,
+            'turnStartedAt' => now()->getTimestampMs(), // diisi ulang setiap giliran pindah, dipakai untuk batas waktu
+            'timeoutLog' => [], // [['turn' => N, 'playerId' => ..., 'penalty' => ...], ...]
             'isAnswered' => false,
             'roundWinner' => null,
         ];
@@ -280,6 +294,8 @@ class GameController extends Controller
             return $this->gameNotReadyResponse();
         }
 
+        // Waktu giliran yang sudah habis juga diproses di sini, misal setelah halaman ditutup lalu dibuka lagi
+        $timeout = $this->applyTurnTimeoutIfExpired();
         $this->make_new_rounds();
         $current_session = session($this->currentSessionKey());
 
@@ -288,6 +304,7 @@ class GameController extends Controller
         $scoreBoard = $this->getScoreLeaderboard($current_session);
         $playersTurn = $this->getPlayerTurnsOrder($current_session);
         $hintsData = $this->getHintsData($current_session);
+        $timerData = $this->getTimerData($current_session);
 
         // Hint yang belum dibuka (dan daftar kalimat berikutnya) tidak perlu dikirim ke browser
         unset($current_session['loadedWordsList']);
@@ -302,6 +319,8 @@ class GameController extends Controller
             'leaderboard' => $scoreBoard,
             'players_turn' => $playersTurn,
             'hints' => $hintsData,
+            'timer' => $timerData,
+            'timeout' => $timeout, // diisi kalau barusan ada giliran yang waktunya habis
         ]);
     }
 
@@ -340,8 +359,107 @@ class GameController extends Controller
         return $lastHint !== false && (int) $lastHint['turn'] === (int) ($round['turnCount'] ?? 1);
     }
 
+    // Batas waktu per giliran (detik) yang diatur di lobby, 0 = tanpa batas waktu
+    private function turnTimeLimit(array $session): int
+    {
+        return max(0, (int) ($session['turnTimeLimit'] ?? 0));
+    }
+
+    private function getTimerData($current_session): array
+    {
+        $limit = $this->turnTimeLimit($current_session);
+        $latestRound = end($current_session['roundsData']);
+        $running = $limit > 0
+            && empty($current_session['endTime'])
+            && !$latestRound['isAnswered']
+            && isset($latestRound['turnStartedAt']);
+
+        $elapsedMs = $running ? now()->getTimestampMs() - (int) $latestRound['turnStartedAt'] : 0;
+
+        return [
+            'limit_seconds' => $limit,
+            'running' => $running,
+            // Sisa waktu dihitung server, supaya jam komputer yang beda tidak berpengaruh
+            'remaining_ms' => $running ? max(0, $limit * 1000 - $elapsedMs) : 0,
+            'penalty' => $this->mainService->turnTimeoutPenalty(),
+        ];
+    }
+
+    /**
+     * Kalau waktu giliran sudah habis: kurangi skor pemain yang sedang giliran, catat di timeoutLog,
+     * lalu pindahkan giliran (giliran baru mulai dihitung dari sekarang). Paling banyak 1 giliran
+     * per panggilan, dan tidak melakukan apa-apa kalau waktunya belum habis, jadi aman dipanggil berulang.
+     * Mengembalikan info timeout, atau null kalau tidak ada yang berubah.
+     */
+    private function applyTurnTimeoutIfExpired(): ?array
+    {
+        $session = $this->currentSession();
+        $limit = $this->turnTimeLimit($session);
+        if ($limit <= 0 || empty($session['startTime']) || !empty($session['endTime']) || empty($session['roundsData'])) {
+            return null;
+        }
+
+        $round = end($session['roundsData']);
+        if ($round['isAnswered'] || !isset($round['turnStartedAt'])) {
+            return null;
+        }
+        if (now()->getTimestampMs() - (int) $round['turnStartedAt'] < $limit * 1000) {
+            return null;
+        }
+
+        $playersList = collect(array_values($session['playersList']));
+        $currentPlayerTurn = (int) $round['currentPlayerTurn'];
+        $currentPlayer = $playersList->first(fn ($player) => $player['order'] !== null && (int) $player['order'] === $currentPlayerTurn);
+        if (empty($currentPlayer)) {
+            return null;
+        }
+
+        $nextPlayerTurn = (($playersList->count() - 1) <= $currentPlayerTurn) ? 0 : ($currentPlayerTurn + 1);
+        $penalty = $this->mainService->turnTimeoutPenalty();
+        $roundKey = $this->currentSessionKey() . '.roundsData.' . $round['roundNumber'];
+
+        $timeoutLog = $round['timeoutLog'] ?? [];
+        $timeoutLog[] = [
+            'turn' => (int) $round['turnCount'],
+            'playerId' => $currentPlayer['id'],
+            'penalty' => $penalty,
+        ];
+
+        session([
+            $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayer['score'] - $penalty,
+            $roundKey . '.currentPlayerTurn' => $nextPlayerTurn,
+            $roundKey . '.turnCount' => (int) $round['turnCount'] + 1,
+            $roundKey . '.turnStartedAt' => now()->getTimestampMs(),
+            $roundKey . '.timeoutLog' => $timeoutLog,
+        ]);
+
+        return [
+            'player_name' => $currentPlayer['name'],
+            'penalty' => $penalty,
+        ];
+    }
+
+    // Dipanggil oleh timer di game screen saat waktunya habis. Server tetap mengecek sendiri apakah benar sudah habis.
+    public function turn_timeout(Request $request)
+    {
+        if (!$this->gameAlreadyStarted()) {
+            return $this->gameNotReadyResponse();
+        }
+
+        $timeout = $this->applyTurnTimeoutIfExpired();
+        if ($timeout) {
+            return response()->json(['state' => 'timeout'] + $timeout, 200);
+        }
+
+        return response()->json(['state' => 'running'], 200);
+    }
+
     public function show_hint(Request $request)
     {
+        if ($timeout = $this->applyTurnTimeoutIfExpired()) {
+            return response()->json(['state' => 'timeout'] + $timeout, 200);
+        }
+
         $roundsKey = $this->currentSessionKey() . '.roundsData';
         $currentSessionRounds = session($roundsKey, []);
         if (!$this->gameAlreadyStarted() || empty($currentSessionRounds)) {
@@ -483,6 +601,11 @@ class GameController extends Controller
 
     public function guess_the_sentence(Request $request)
     {
+        // Tebakan yang masuk setelah waktu giliran habis ditolak, giliran langsung dipindah
+        if ($timeout = $this->applyTurnTimeoutIfExpired()) {
+            return response()->json(['state' => 'timeout'] + $timeout, 200);
+        }
+
         $sentence = $request->input('sentence', null);
         $sentence = trim(strtoupper(str_replace(' ','',$sentence)));
 
@@ -541,6 +664,7 @@ class GameController extends Controller
                     session([
                         $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.currentPlayerTurn' => $nextPlayerTurn,
                         $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.turnCount' => $turnCount + 1,
+                        $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.turnStartedAt' => now()->getTimestampMs(),
                     ]);
                 }
             }
@@ -554,6 +678,11 @@ class GameController extends Controller
 
     public function guess_the_leter(Request $request)
     {
+        // Tebakan yang masuk setelah waktu giliran habis ditolak, giliran langsung dipindah
+        if ($timeout = $this->applyTurnTimeoutIfExpired()) {
+            return response()->json(['state' => 'timeout'] + $timeout, 200);
+        }
+
         $letter = $request->input('letter', null);
         if ($letter) {
             $letter = trim(strtoupper($letter));
@@ -624,6 +753,7 @@ class GameController extends Controller
                         session([
                             $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.currentPlayerTurn' => $nextPlayerTurn,
                             $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.turnCount' => $turnCount + 1,
+                            $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.turnStartedAt' => now()->getTimestampMs(),
                         ]);
                     }
                 }

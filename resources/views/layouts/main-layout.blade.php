@@ -213,6 +213,11 @@
                                 Hint baru bisa dibuka <b>setelah giliran ke-{{ $mainService->hintUnlocksAfterTurn() }}</b> di setiap ronde, <b>maksimal 1 hint per giliran</b>.<br>
                                 Pemain yang sedang giliran <b>dikurangi {{ $mainService->hintPenalty() }} poin</b>, tapi gilirannya tidak hilang.
                             </li>
+                            <li>
+                                <b>Jika batas waktu diatur</b> (di "Pengaturan Lainnya" saat lobby), setiap giliran punya waktu yang sama.<br>
+                                Waktu tetap berjalan walaupun sedang membuka hint atau mengetik kalimat.<br>
+                                Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.
+                            </li>
                         </ul>
                     </ol>
                 </div>

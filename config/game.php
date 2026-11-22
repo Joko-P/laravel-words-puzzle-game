@@ -27,4 +27,19 @@ return [
 
     'hint_unlocks_after_turn' => (int) env('GAME_HINT_UNLOCKS_AFTER_TURN', 5),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Turn Timeout Penalty
+    |--------------------------------------------------------------------------
+    |
+    | Kalau batas waktu per giliran diatur di lobby (lebih dari 0 detik) dan
+    | waktunya habis, pemain yang sedang giliran dikurangi skor sebanyak ini
+    | lalu giliran pindah ke pemain berikutnya. Sengaja lebih besar dari salah
+    | tebak huruf (-25), supaya diam saja tidak lebih untung daripada menebak.
+    | Bisa diubah lewat GAME_TURN_TIMEOUT_PENALTY di .env.
+    |
+    */
+
+    'turn_timeout_penalty' => (int) env('GAME_TURN_TIMEOUT_PENALTY', 35),
+
 ];
