@@ -1,0 +1,362 @@
+{
+    "name": "Permainan dan Lomba Tradisional",
+    "words": {
+      "petak_umpet": {
+        "word": "PETAK UMPET",
+        "hints": [
+          "Di Sunda disebut ucing sumput",
+          "Hitung sampai sepuluh sambil tutup mata",
+          "Satu jaga, yang lain sembunyi"
+        ]
+      },
+      "gobak_sodor": {
+        "word": "GOBAK SODOR",
+        "hints": [
+          "Disebut juga galasin atau hadang",
+          "Garis-garis di lapangan",
+          "Penjaga menghadang lawan agar tidak lolos"
+        ]
+      },
+      "congklak": {
+        "word": "CONGKLAK",
+        "hints": [
+          "Disebut juga dakon",
+          "Biji-bijian dan papan berlubang"
+        ]
+      },
+      "engklek": {
+        "word": "ENGKLEK",
+        "hints": [
+          "Gacuk dari pecahan genteng",
+          "Kotak-kotak digambar di tanah",
+          "Melompat dengan satu kaki"
+        ]
+      },
+      "lompat_tali": {
+        "word": "LOMPAT TALI",
+        "hints": [
+          "Sampai level merdeka",
+          "Tali dari karet gelang yang disambung"
+        ]
+      },
+      "kelereng": {
+        "word": "KELERENG",
+        "hints": [
+          "Disebut juga gundu",
+          "Bola kaca kecil yang disentil"
+        ]
+      },
+      "bentengan": {
+        "word": "BENTENGAN",
+        "hints": [
+          "Dua tim saling menjaga markas",
+          "Menang kalau menyentuh tiang lawan"
+        ]
+      },
+      "layang_layang": {
+        "word": "LAYANG LAYANG",
+        "hints": [
+          "Benang gelasan",
+          "Adu putus di musim kemarau",
+          "Diterbangkan dengan angin"
+        ]
+      },
+      "gasing": {
+        "word": "GASING",
+        "hints": [
+          "Bisa dari kayu atau bambu",
+          "Diputar dengan tali"
+        ]
+      },
+      "egrang": {
+        "word": "EGRANG",
+        "hints": [
+          "Butuh keseimbangan",
+          "Berjalan di atas bambu tinggi"
+        ]
+      },
+      "bakiak": {
+        "word": "BAKIAK",
+        "hints": [
+          "Harus kompak kiri kanan",
+          "Sandal kayu panjang untuk beberapa orang"
+        ]
+      },
+      "ular_naga": {
+        "word": "ULAR NAGA",
+        "hints": [
+          "Panjangnya bukan kepalang",
+          "Dua anak jadi gerbang",
+          "Berbaris memegang pundak teman"
+        ]
+      },
+      "cublak_cublak_suweng": {
+        "word": "CUBLAK CUBLAK SUWENG",
+        "hints": [
+          "Lagu berbahasa Jawa",
+          "Satu anak telungkup",
+          "Menebak siapa yang memegang kerikil"
+        ]
+      },
+      "boi_boian": {
+        "word": "BOI BOIAN",
+        "hints": [
+          "Tumpukan pecahan genteng",
+          "Dirobohkan dengan lemparan bola lalu disusun lagi"
+        ]
+      },
+      "patok_lele": {
+        "word": "PATOK LELE",
+        "hints": [
+          "Disebut juga gatrik",
+          "Kayu pendek dipukul kayu panjang"
+        ]
+      },
+      "bola_bekel": {
+        "word": "BOLA BEKEL",
+        "hints": [
+          "Biji logam kecil",
+          "Bola karet dipantulkan sambil memungut biji"
+        ]
+      },
+      "kasti": {
+        "word": "KASTI",
+        "hints": [
+          "Sering dimainkan saat pelajaran olahraga",
+          "Mirip bisbol"
+        ]
+      },
+      "petak_jongkok": {
+        "word": "PETAK JONGKOK",
+        "hints": [
+          "Jaga dan kejar-kejaran",
+          "Aman kalau jongkok"
+        ]
+      },
+      "hompimpa": {
+        "word": "HOMPIMPA",
+        "hints": [
+          "Telapak tangan atas atau bawah",
+          "Alaium gambreng"
+        ]
+      },
+      "suit": {
+        "word": "SUIT",
+        "hints": [
+          "Jempol, telunjuk, kelingking",
+          "Gajah, orang, semut"
+        ]
+      },
+      "meriam_bambu": {
+        "word": "MERIAM BAMBU",
+        "hints": [
+          "Pakai karbit atau minyak tanah",
+          "Dentuman saat bulan puasa"
+        ]
+      },
+      "otok_otok": {
+        "word": "OTOK OTOK",
+        "hints": [
+          "Perahu kaleng bertenaga api lilin",
+          "Namanya dari bunyinya"
+        ]
+      },
+      "jamuran": {
+        "word": "JAMURAN",
+        "hints": [
+          "Lagu dolanan Jawa",
+          "Anak-anak melingkar, satu di tengah"
+        ]
+      },
+      "domikado": {
+        "word": "DOMIKADO",
+        "hints": [
+          "Duduk melingkar",
+          "Saling menepuk tangan sambil bernyanyi"
+        ]
+      },
+      "bongkar_pasang": {
+        "word": "BONGKAR PASANG",
+        "hints": [
+          "Mainan anak perempuan era 90an",
+          "Boneka kertas dengan baju yang bisa diganti"
+        ]
+      },
+      "umbul": {
+        "word": "UMBUL",
+        "hints": [
+          "Kartu bergambar digunting dari lembaran",
+          "Dilempar ke atas, yang tertutup menang"
+        ]
+      },
+      "kucing_dan_tikus": {
+        "word": "KUCING DAN TIKUS",
+        "hints": [
+          "Pemain bergandengan membentuk lingkaran",
+          "Satu mengejar, satu dilindungi"
+        ]
+      },
+      "sepak_raga": {
+        "word": "SEPAK RAGA",
+        "hints": [
+          "Bola dari rotan",
+          "Cikal bakal sepak takraw"
+        ]
+      },
+      "karapan_sapi": {
+        "word": "KARAPAN SAPI",
+        "hints": [
+          "Pulau Madura",
+          "Balapan sepasang sapi"
+        ]
+      },
+      "pacu_jalur": {
+        "word": "PACU JALUR",
+        "hints": [
+          "Kuantan Singingi, Riau",
+          "Viral 2025 karena bocah menari di ujung perahu",
+          "Lomba perahu panjang"
+        ]
+      },
+      "lompat_batu": {
+        "word": "LOMPAT BATU",
+        "hints": [
+          "Pernah ada di uang seribu rupiah",
+          "Tradisi Pulau Nias"
+        ]
+      },
+      "tarik_tambang": {
+        "word": "TARIK TAMBANG",
+        "hints": [
+          "Adu kekuatan dua tim",
+          "Tali besar ditarik ke dua arah"
+        ]
+      },
+      "balap_karung": {
+        "word": "BALAP KARUNG",
+        "hints": [
+          "Lomba wajib 17 Agustus",
+          "Lompat-lompat di dalam karung"
+        ]
+      },
+      "panjat_pinang": {
+        "word": "PANJAT PINANG",
+        "hints": [
+          "Batangnya dilumuri oli",
+          "Hadiah digantung di puncak"
+        ]
+      },
+      "makan_kerupuk": {
+        "word": "MAKAN KERUPUK",
+        "hints": [
+          "Kerupuk digantung di tali",
+          "Tangan di belakang punggung"
+        ]
+      },
+      "balap_kelereng": {
+        "word": "BALAP KELERENG",
+        "hints": [
+          "Lomba 17 Agustus anak-anak",
+          "Kelereng di atas sendok yang digigit"
+        ]
+      },
+      "paku_dalam_botol": {
+        "word": "PAKU DALAM BOTOL",
+        "hints": [
+          "Paku diikat tali di pinggang",
+          "Lomba 17 Agustus yang bikin goyang"
+        ]
+      },
+      "joget_balon": {
+        "word": "JOGET BALON",
+        "hints": [
+          "Berpasangan",
+          "Balon dijepit dahi sambil berjoget"
+        ]
+      },
+      "sepak_bola_sarung": {
+        "word": "SEPAK BOLA SARUNG",
+        "hints": [
+          "Pemainnya tidak bisa lari kencang",
+          "Main bola pakai sarung"
+        ]
+      },
+      "tangkap_belut": {
+        "word": "TANGKAP BELUT",
+        "hints": [
+          "Licin",
+          "Lomba di kolam lumpur"
+        ]
+      },
+      "pukul_bantal": {
+        "word": "PUKUL BANTAL",
+        "hints": [
+          "Duduk di atas batang bambu",
+          "Yang jatuh nyebur ke kolam atau sungai"
+        ]
+      },
+      "gigit_koin": {
+        "word": "GIGIT KOIN",
+        "hints": [
+          "Wajah pasti belepotan",
+          "Koin ditancapkan di semangka atau pepaya berlumur arang"
+        ]
+      },
+      "sepeda_hias": {
+        "word": "SEPEDA HIAS",
+        "hints": [
+          "Karnaval Agustusan",
+          "Sepeda didandani warna-warni"
+        ]
+      },
+      "benang_ke_jarum": {
+        "word": "BENANG KE JARUM",
+        "hints": [
+          "Lomba untuk ibu-ibu",
+          "Butuh mata jeli dan tangan stabil"
+        ]
+      },
+      "ular_tangga": {
+        "word": "ULAR TANGGA",
+        "hints": [
+          "Naik dan turun",
+          "Papan bergambar dan dadu"
+        ]
+      },
+      "dam_daman": {
+        "word": "DAM DAMAN",
+        "hints": [
+          "Papan digambar di tanah",
+          "Pakai batu atau tutup botol sebagai bidak"
+        ]
+      },
+      "kotak_pos": {
+        "word": "KOTAK POS",
+        "hints": [
+          "Duduk melingkar sambil bernyanyi",
+          "Menyebutkan nama sesuai kategori"
+        ]
+      },
+      "masak_masakan": {
+        "word": "MASAK MASAKAN",
+        "hints": [
+          "Di Jawa disebut pasaran",
+          "Pura-pura memasak dengan daun dan tanah"
+        ]
+      },
+      "bisik_berantai": {
+        "word": "BISIK BERANTAI",
+        "hints": [
+          "Kalimat makin lama makin melenceng",
+          "Pesan dibisikkan dari orang ke orang"
+        ]
+      },
+      "pletokan": {
+        "word": "PLETOKAN",
+        "hints": [
+          "Mainan khas Betawi",
+          "Pistol bambu berpeluru kertas basah"
+        ]
+      }
+    }
+  }

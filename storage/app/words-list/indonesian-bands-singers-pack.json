@@ -1,0 +1,850 @@
+{
+    "name": "Band dan Penyanyi Indonesia",
+    "words": {
+      "koes_plus": {
+        "word": "KOES PLUS",
+        "hints": [
+          "Legenda era 70an",
+          "Bujangan",
+          "Kolam Susu"
+        ]
+      },
+      "bimbo": {
+        "word": "BIMBO",
+        "hints": [
+          "Grup legendaris asal Bandung",
+          "Lagu religi",
+          "Sajadah Panjang"
+        ]
+      },
+      "ebiet_g_ade": {
+        "word": "EBIET G ADE",
+        "hints": [
+          "Penyanyi balada",
+          "Camelia",
+          "Berita kepada Kawan"
+        ]
+      },
+      "rhoma_irama": {
+        "word": "RHOMA IRAMA",
+        "hints": [
+          "Soneta Group",
+          "Begadang",
+          "Raja Dangdut"
+        ]
+      },
+      "elvy_sukaesih": {
+        "word": "ELVY SUKAESIH",
+        "hints": [
+          "Mandi Madu",
+          "Ratu Dangdut"
+        ]
+      },
+      "iwan_fals": {
+        "word": "IWAN FALS",
+        "hints": [
+          "Penyanyi balada kritik sosial",
+          "Oemar Bakri"
+        ]
+      },
+      "chrisye": {
+        "word": "CHRISYE",
+        "hints": [
+          "Badai Pasti Berlalu",
+          "Kala Cinta Menggoda",
+          "Lilin Lilin Kecil"
+        ]
+      },
+      "vina_panduwinata": {
+        "word": "VINA PANDUWINATA",
+        "hints": [
+          "Populer era 80an",
+          "Surat Cinta",
+          "Burung Camar"
+        ]
+      },
+      "kla_project": {
+        "word": "KLA PROJECT",
+        "hints": [
+          "Katon Bagaskara",
+          "Tak Bisa ke Lain Hati",
+          "Yogyakarta"
+        ]
+      },
+      "nike_ardilla": {
+        "word": "NIKE ARDILLA",
+        "hints": [
+          "Lady rocker era 90an",
+          "Sandiwara Cinta",
+          "Bintang Kehidupan"
+        ]
+      },
+      "slank": {
+        "word": "SLANK",
+        "hints": [
+          "Slankers",
+          "Bimbim dan Kaka",
+          "Terlalu Manis"
+        ]
+      },
+      "dewa": {
+        "word": "DEWA",
+        "hints": [
+          "Ahmad Dhani",
+          "Dulu pakai angka di belakang namanya",
+          "Kangen"
+        ]
+      },
+      "kahitna": {
+        "word": "KAHITNA",
+        "hints": [
+          "Band pop asal Bandung",
+          "Soulmate",
+          "Cantik"
+        ]
+      },
+      "naif": {
+        "word": "NAIF",
+        "hints": [
+          "Gaya retro",
+          "Mobil Balap",
+          "Posesif"
+        ]
+      },
+      "jamrud": {
+        "word": "JAMRUD",
+        "hints": [
+          "Krisyanto",
+          "Surti Tejo",
+          "Pelangi di Matamu"
+        ]
+      },
+      "boomerang": {
+        "word": "BOOMERANG",
+        "hints": [
+          "Roy Jeconiah",
+          "Band rock asal Surabaya"
+        ]
+      },
+      "rif": {
+        "word": "RIF",
+        "hints": [
+          "Band rock asal Bandung",
+          "Vokalisnya Andy",
+          "Lagu Radja"
+        ]
+      },
+      "potret": {
+        "word": "POTRET",
+        "hints": [
+          "Anto Hoed",
+          "Mak Comblang",
+          "Band Melly Goeslaw"
+        ]
+      },
+      "stinky": {
+        "word": "STINKY",
+        "hints": [
+          "Andre Taulany pernah jadi vokalis",
+          "Mungkinkah"
+        ]
+      },
+      "gigi": {
+        "word": "GIGI",
+        "hints": [
+          "Dewa Budjana",
+          "Rutin rilis album religi",
+          "Armand Maulana"
+        ]
+      },
+      "padi": {
+        "word": "PADI",
+        "hints": [
+          "Piyu dan Fadly",
+          "Mahadewi",
+          "Begitu Indah"
+        ]
+      },
+      "sheila_on_seven": {
+        "word": "SHEILA ON SEVEN",
+        "hints": [
+          "Sheila Gank",
+          "Band asal Yogyakarta",
+          "Duta",
+          "Sephia"
+        ]
+      },
+      "krisdayanti": {
+        "word": "KRISDAYANTI",
+        "hints": [
+          "Salah satu Tiga Diva",
+          "Menghitung Hari",
+          "KD"
+        ]
+      },
+      "titi_dj": {
+        "word": "TITI DJ",
+        "hints": [
+          "Salah satu Tiga Diva",
+          "Sang Dewi"
+        ]
+      },
+      "ruth_sahanaya": {
+        "word": "RUTH SAHANAYA",
+        "hints": [
+          "Salah satu Tiga Diva",
+          "Kaulah Segalanya",
+          "Astaga"
+        ]
+      },
+      "anggun": {
+        "word": "ANGGUN",
+        "hints": [
+          "Berkarier di Prancis",
+          "Snow on the Sahara",
+          "Mimpi"
+        ]
+      },
+      "glenn_fredly": {
+        "word": "GLENN FREDLY",
+        "hints": [
+          "Kasih Putih",
+          "Januari"
+        ]
+      },
+      "base_jam": {
+        "word": "BASE JAM",
+        "hints": [
+          "Band pop era 90an",
+          "Bukan Pujangga"
+        ]
+      },
+      "tipe_x": {
+        "word": "TIPE X",
+        "hints": [
+          "Band ska",
+          "Mawar Hitam"
+        ]
+      },
+      "sherina": {
+        "word": "SHERINA",
+        "hints": [
+          "Penyanyi cilik era 2000",
+          "Lihatlah Lebih Dekat",
+          "Petualangan Sherina"
+        ]
+      },
+      "tasya": {
+        "word": "TASYA",
+        "hints": [
+          "Penyanyi cilik",
+          "Libur Telah Tiba"
+        ]
+      },
+      "joshua": {
+        "word": "JOSHUA",
+        "hints": [
+          "Penyanyi cilik",
+          "Diobok obok"
+        ]
+      },
+      "trio_kwek_kwek": {
+        "word": "TRIO KWEK KWEK",
+        "hints": [
+          "Populer era 90an",
+          "Trio penyanyi cilik"
+        ]
+      },
+      "peterpan": {
+        "word": "PETERPAN",
+        "hints": [
+          "Bintang di Surga",
+          "Mungkin Nanti",
+          "Ariel"
+        ]
+      },
+      "noah": {
+        "word": "NOAH",
+        "hints": [
+          "Dulu bernama Peterpan",
+          "Separuh Aku",
+          "Ariel"
+        ]
+      },
+      "ungu": {
+        "word": "UNGU",
+        "hints": [
+          "Andai Ku Tahu",
+          "Demi Waktu",
+          "Pasha"
+        ]
+      },
+      "kangen_band": {
+        "word": "KANGEN BAND",
+        "hints": [
+          "Band asal Lampung",
+          "Yolanda",
+          "Andika"
+        ]
+      },
+      "radja": {
+        "word": "RADJA",
+        "hints": [
+          "Selalu berkacamata hitam",
+          "Jujur",
+          "Ian Kasela"
+        ]
+      },
+      "wali": {
+        "word": "WALI",
+        "hints": [
+          "Faank",
+          "Baik Baik Sayang",
+          "Cari Jodoh"
+        ]
+      },
+      "d_masiv": {
+        "word": "D MASIV",
+        "hints": [
+          "Rian",
+          "Jangan Menyerah",
+          "Cinta Ini Membunuhku"
+        ]
+      },
+      "armada": {
+        "word": "ARMADA",
+        "hints": [
+          "Mau Dibawa Kemana",
+          "Asal Kau Bahagia"
+        ]
+      },
+      "letto": {
+        "word": "LETTO",
+        "hints": [
+          "Vokalisnya putra Emha Ainun Nadjib",
+          "Ruang Rindu",
+          "Sebelum Cahaya"
+        ]
+      },
+      "samsons": {
+        "word": "SAMSONS",
+        "hints": [
+          "Bams",
+          "Kenangan Terindah"
+        ]
+      },
+      "nidji": {
+        "word": "NIDJI",
+        "hints": [
+          "Giring",
+          "Hapus Aku",
+          "Laskar Pelangi"
+        ]
+      },
+      "j_rocks": {
+        "word": "J ROCKS",
+        "hints": [
+          "Vokalisnya Iman",
+          "Band beraliran rock Jepang"
+        ]
+      },
+      "the_changcuters": {
+        "word": "THE CHANGCUTERS",
+        "hints": [
+          "Tria",
+          "I Love You Bibeh"
+        ]
+      },
+      "seventeen": {
+        "word": "SEVENTEEN",
+        "hints": [
+          "Vokalisnya Ifan",
+          "Kemarin"
+        ]
+      },
+      "hijau_daun": {
+        "word": "HIJAU DAUN",
+        "hints": [
+          "Dide",
+          "Suara Ku Berharap"
+        ]
+      },
+      "kerispatih": {
+        "word": "KERISPATIH",
+        "hints": [
+          "Sammy Simorangkir",
+          "Mengenangmu",
+          "Demi Cinta"
+        ]
+      },
+      "element": {
+        "word": "ELEMENT",
+        "hints": [
+          "Ferdy",
+          "Rahasia Hati"
+        ]
+      },
+      "yovie_and_nuno": {
+        "word": "YOVIE AND NUNO",
+        "hints": [
+          "Dia Milikku",
+          "Janji Suci"
+        ]
+      },
+      "geisha": {
+        "word": "GEISHA",
+        "hints": [
+          "Momo",
+          "Cinta dan Benci",
+          "Lumpuhkan Ingatanku"
+        ]
+      },
+      "vierra": {
+        "word": "VIERRA",
+        "hints": [
+          "Widy",
+          "Kesepian",
+          "Rasa Ini"
+        ]
+      },
+      "kotak": {
+        "word": "KOTAK",
+        "hints": [
+          "Band rock dengan vokalis perempuan",
+          "Tantri",
+          "Pelan Pelan Saja"
+        ]
+      },
+      "ran": {
+        "word": "RAN",
+        "hints": [
+          "Trio pop",
+          "Dekat di Hati"
+        ]
+      },
+      "ratu": {
+        "word": "RATU",
+        "hints": [
+          "Maia dan Mulan",
+          "Teman Tapi Mesra"
+        ]
+      },
+      "mulan_jameela": {
+        "word": "MULAN JAMEELA",
+        "hints": [
+          "Pernah jadi bagian duo Ratu",
+          "Makhluk Tuhan Paling Seksi"
+        ]
+      },
+      "andra_and_the_backbone": {
+        "word": "ANDRA AND THE BACKBONE",
+        "hints": [
+          "Gitarisnya pernah di Dewa",
+          "Sempurna"
+        ]
+      },
+      "zivilia": {
+        "word": "ZIVILIA",
+        "hints": [
+          "Aishiteru"
+        ]
+      },
+      "drive": {
+        "word": "DRIVE",
+        "hints": [
+          "Anji pernah jadi vokalis",
+          "Bersama Bintang"
+        ]
+      },
+      "anji": {
+        "word": "ANJI",
+        "hints": [
+          "Dulu vokalis Drive",
+          "Dia"
+        ]
+      },
+      "last_child": {
+        "word": "LAST CHILD",
+        "hints": [
+          "Pedih",
+          "Seluruh Nafas Ini"
+        ]
+      },
+      "virgoun": {
+        "word": "VIRGOUN",
+        "hints": [
+          "Vokalis Last Child",
+          "Surat Cinta untuk Starla"
+        ]
+      },
+      "ada_band": {
+        "word": "ADA BAND",
+        "hints": [
+          "Haruskah Ku Mati",
+          "Manusia Bodoh"
+        ]
+      },
+      "ari_lasso": {
+        "word": "ARI LASSO",
+        "hints": [
+          "Mantan vokalis Dewa",
+          "Mengejar Matahari",
+          "Hampa"
+        ]
+      },
+      "once": {
+        "word": "ONCE",
+        "hints": [
+          "Mantan vokalis Dewa",
+          "Aku Mau"
+        ]
+      },
+      "marcell": {
+        "word": "MARCELL",
+        "hints": [
+          "Firasat"
+        ]
+      },
+      "melly_goeslaw": {
+        "word": "MELLY GOESLAW",
+        "hints": [
+          "Bunda",
+          "Soundtrack Ada Apa dengan Cinta"
+        ]
+      },
+      "rossa": {
+        "word": "ROSSA",
+        "hints": [
+          "Hati yang Kau Sakiti",
+          "Tegar"
+        ]
+      },
+      "agnes_monica": {
+        "word": "AGNES MONICA",
+        "hints": [
+          "Sekarang dikenal sebagai Agnez Mo",
+          "Tak Ada Logika",
+          "Matahariku"
+        ]
+      },
+      "bunga_citra_lestari": {
+        "word": "BUNGA CITRA LESTARI",
+        "hints": [
+          "Cinta Sejati",
+          "Karena Kucinta Kau",
+          "BCL"
+        ]
+      },
+      "gita_gutawa": {
+        "word": "GITA GUTAWA",
+        "hints": [
+          "Putri Erwin Gutawa",
+          "Harmoni Cinta"
+        ]
+      },
+      "afgan": {
+        "word": "AFGAN",
+        "hints": [
+          "Selalu berkacamata",
+          "Terima Kasih Cinta",
+          "Sadis"
+        ]
+      },
+      "judika": {
+        "word": "JUDIKA",
+        "hints": [
+          "Jebolan Indonesian Idol",
+          "Mama Papa Larang"
+        ]
+      },
+      "rio_febrian": {
+        "word": "RIO FEBRIAN",
+        "hints": [
+          "Jenuh"
+        ]
+      },
+      "audy": {
+        "word": "AUDY",
+        "hints": [
+          "Janji di Atas Ingkar"
+        ]
+      },
+      "opick": {
+        "word": "OPICK",
+        "hints": [
+          "Lagu religi",
+          "Tombo Ati"
+        ]
+      },
+      "inul_daratista": {
+        "word": "INUL DARATISTA",
+        "hints": [
+          "Penyanyi dangdut",
+          "Goyang ngebor"
+        ]
+      },
+      "dewi_perssik": {
+        "word": "DEWI PERSSIK",
+        "hints": [
+          "Penyanyi dangdut",
+          "Goyang gergaji"
+        ]
+      },
+      "superman_is_dead": {
+        "word": "SUPERMAN IS DEAD",
+        "hints": [
+          "Jerinx",
+          "Band punk asal Bali",
+          "Kuta Rock City"
+        ]
+      },
+      "endank_soekamti": {
+        "word": "ENDANK SOEKAMTI",
+        "hints": [
+          "Band punk asal Yogyakarta",
+          "Sampai Jumpa"
+        ]
+      },
+      "shaggydog": {
+        "word": "SHAGGYDOG",
+        "hints": [
+          "Band ska asal Yogyakarta",
+          "Di Sayidan"
+        ]
+      },
+      "burgerkill": {
+        "word": "BURGERKILL",
+        "hints": [
+          "Band metal asal Bandung"
+        ]
+      },
+      "smash": {
+        "word": "SMASH",
+        "hints": [
+          "Boyband era 2010an",
+          "I Heart You"
+        ]
+      },
+      "cherrybelle": {
+        "word": "CHERRYBELLE",
+        "hints": [
+          "Girlband era 2010an",
+          "Gerakan chibi chibi",
+          "Love Is You"
+        ]
+      },
+      "coboy_junior": {
+        "word": "COBOY JUNIOR",
+        "hints": [
+          "Boyband remaja",
+          "Kamu",
+          "Iqbaal"
+        ]
+      },
+      "ayu_ting_ting": {
+        "word": "AYU TING TING",
+        "hints": [
+          "Asal Depok",
+          "Alamat Palsu"
+        ]
+      },
+      "zaskia_gotik": {
+        "word": "ZASKIA GOTIK",
+        "hints": [
+          "Goyang itik",
+          "Bang Jono"
+        ]
+      },
+      "siti_badriah": {
+        "word": "SITI BADRIAH",
+        "hints": [
+          "Penyanyi dangdut",
+          "Lagi Syantik"
+        ]
+      },
+      "via_vallen": {
+        "word": "VIA VALLEN",
+        "hints": [
+          "Meraih Bintang di Asian Games 2018",
+          "Sayang"
+        ]
+      },
+      "nella_kharisma": {
+        "word": "NELLA KHARISMA",
+        "hints": [
+          "Dangdut koplo",
+          "Jaran Goyang"
+        ]
+      },
+      "didi_kempot": {
+        "word": "DIDI KEMPOT",
+        "hints": [
+          "Sobat Ambyar",
+          "The Godfather of Broken Heart",
+          "Stasiun Balapan"
+        ]
+      },
+      "denny_caknan": {
+        "word": "DENNY CAKNAN",
+        "hints": [
+          "Asal Ngawi",
+          "Kartonyono Medot Janji"
+        ]
+      },
+      "guyon_waton": {
+        "word": "GUYON WATON",
+        "hints": [
+          "Grup musik Jawa",
+          "Korban Janji"
+        ]
+      },
+      "raisa": {
+        "word": "RAISA",
+        "hints": [
+          "Could It Be",
+          "LDR",
+          "Apalah Arti Menunggu"
+        ]
+      },
+      "isyana_sarasvati": {
+        "word": "ISYANA SARASVATI",
+        "hints": [
+          "Keep Being You",
+          "Tetap Dalam Jiwa"
+        ]
+      },
+      "tulus": {
+        "word": "TULUS",
+        "hints": [
+          "Gajah",
+          "Monokrom",
+          "Sewindu"
+        ]
+      },
+      "maudy_ayunda": {
+        "word": "MAUDY AYUNDA",
+        "hints": [
+          "Lulusan Oxford",
+          "Perahu Kertas"
+        ]
+      },
+      "yura_yunita": {
+        "word": "YURA YUNITA",
+        "hints": [
+          "Intuisi",
+          "Cinta dan Rahasia"
+        ]
+      },
+      "hivi": {
+        "word": "HIVI",
+        "hints": [
+          "Grup pop dengan vokal laki-laki dan perempuan",
+          "Siapkah Kau Tuk Jatuh Cinta Lagi"
+        ]
+      },
+      "kunto_aji": {
+        "word": "KUNTO AJI",
+        "hints": [
+          "Pilu Membiru",
+          "Rehat"
+        ]
+      },
+      "fiersa_besari": {
+        "word": "FIERSA BESARI",
+        "hints": [
+          "Celengan Rindu",
+          "Waktu yang Salah"
+        ]
+      },
+      "andmesh": {
+        "word": "ANDMESH",
+        "hints": [
+          "Cinta Luar Biasa",
+          "Hanya Rindu"
+        ]
+      },
+      "rizky_febian": {
+        "word": "RIZKY FEBIAN",
+        "hints": [
+          "Putra pelawak Sule",
+          "Kesempurnaan Cinta"
+        ]
+      },
+      "feast": {
+        "word": "FEAST",
+        "hints": [
+          "Vokalisnya Baskara Putra",
+          "Peradaban"
+        ]
+      },
+      "hindia": {
+        "word": "HINDIA",
+        "hints": [
+          "Baskara Putra",
+          "Secukupnya"
+        ]
+      },
+      "pamungkas": {
+        "word": "PAMUNGKAS",
+        "hints": [
+          "To the Bone"
+        ]
+      },
+      "ardhito_pramono": {
+        "word": "ARDHITO PRAMONO",
+        "hints": [
+          "Nuansa jazz",
+          "Cigarettes of Ours"
+        ]
+      },
+      "nadin_amizah": {
+        "word": "NADIN AMIZAH",
+        "hints": [
+          "Rayuan Perempuan Gila",
+          "Bertaut"
+        ]
+      },
+      "juicy_luicy": {
+        "word": "JUICY LUICY",
+        "hints": [
+          "Tampar",
+          "Lantas"
+        ]
+      },
+      "mahalini": {
+        "word": "MAHALINI",
+        "hints": [
+          "Jebolan Indonesian Idol",
+          "Melawan Restu",
+          "Sial"
+        ]
+      },
+      "lyodra": {
+        "word": "LYODRA",
+        "hints": [
+          "Juara Indonesian Idol",
+          "Pesan Terakhir"
+        ]
+      },
+      "tiara_andini": {
+        "word": "TIARA ANDINI",
+        "hints": [
+          "Jebolan Indonesian Idol",
+          "Merasa Indah"
+        ]
+      },
+      "sal_priadi": {
+        "word": "SAL PRIADI",
+        "hints": [
+          "Gala Bunga Matahari"
+        ]
+      },
+      "bernadya": {
+        "word": "BERNADYA",
+        "hints": [
+          "Populer tahun 2024",
+          "Untungnya Hidup Harus Tetap Berjalan"
+        ]
+      }
+    }
+  }

@@ -1,0 +1,391 @@
+{
+    "name": "Kartun",
+    "words": {
+      "doraemon": {
+        "word": "DORAEMON",
+        "hints": [
+          "Takut sama tikus",
+          "Punya kantong ajaib",
+          "Kucing robot dari abad ke-22"
+        ]
+      },
+      "crayon_shinchan": {
+        "word": "CRAYON SHINCHAN",
+        "hints": [
+          "Tinggal di Kasukabe",
+          "Punya adik Himawari dan anjing Shiro",
+          "Bocah lima tahun yang suka goyang pantat"
+        ]
+      },
+      "dragon_ball": {
+        "word": "DRAGON BALL",
+        "hints": [
+          "Kamehameha",
+          "Mengumpulkan tujuh bola ajaib",
+          "Son Goku"
+        ]
+      },
+      "sailor_moon": {
+        "word": "SAILOR MOON",
+        "hints": [
+          "Tuxedo Mask",
+          "Dengan kekuatan bulan, akan menghukummu",
+          "Usagi Tsukino"
+        ]
+      },
+      "detective_conan": {
+        "word": "DETECTIVE CONAN",
+        "hints": [
+          "Kebenaran selalu hanya ada satu",
+          "Tubuhnya mengecil karena racun",
+          "Detektif SMA Shinichi Kudo"
+        ]
+      },
+      "ninja_hattori": {
+        "word": "NINJA HATTORI",
+        "hints": [
+          "Punya adik Shinzo dan anjing Shishimaru",
+          "Musuhnya Kemumaki dan kucing ninja Kagechiyo",
+          "Ninja kecil yang tinggal bersama Kenichi"
+        ]
+      },
+      "captain_tsubasa": {
+        "word": "CAPTAIN TSUBASA",
+        "hints": [
+          "Genzo Wakabayashi dan Kojiro Hyuga",
+          "Bola adalah teman",
+          "Anime sepak bola legendaris"
+        ]
+      },
+      "saint_seiya": {
+        "word": "SAINT SEIYA",
+        "hints": [
+          "Pegasus",
+          "Ksatria berzirah rasi bintang",
+          "Pelindung Dewi Athena"
+        ]
+      },
+      "chibi_maruko_chan": {
+        "word": "CHIBI MARUKO CHAN",
+        "hints": [
+          "Kakeknya bernama Tomozo",
+          "Gadis kelas tiga SD berponi",
+          "Keluarga Sakura"
+        ]
+      },
+      "hamtaro": {
+        "word": "HAMTARO",
+        "hints": [
+          "Suka biji bunga matahari",
+          "Hamster jingga putih"
+        ]
+      },
+      "digimon": {
+        "word": "DIGIMON",
+        "hints": [
+          "Digivice",
+          "Anak-anak terlempar ke Dunia Digital",
+          "Agumon"
+        ]
+      },
+      "pokemon": {
+        "word": "POKEMON",
+        "hints": [
+          "Gotta catch em all",
+          "Ash Ketchum",
+          "Pikachu"
+        ]
+      },
+      "yu_gi_oh": {
+        "word": "YU GI OH",
+        "hints": [
+          "Duel kartu monster",
+          "Yugi Muto",
+          "Naga Putih Bermata Biru"
+        ]
+      },
+      "naruto": {
+        "word": "NARUTO",
+        "hints": [
+          "Desa Konoha",
+          "Rasengan",
+          "Ninja berambut kuning dengan siluman rubah ekor sembilan"
+        ]
+      },
+      "one_piece": {
+        "word": "ONE PIECE",
+        "hints": [
+          "Mencari harta karun legendaris",
+          "Bajak laut topi jerami",
+          "Monkey D Luffy"
+        ]
+      },
+      "chalkzone": {
+        "word": "CHALKZONE",
+        "hints": [
+          "Dunia Fantasi yang digambar",
+          "Papan Kapur",
+          "Karakter utamanya memiliki nama depan Rudy"
+        ]
+      },
+      "spongebob_squarepants": {
+        "word": "SPONGEBOB SQUAREPANTS",
+        "hints": [
+          "Bikini Bottom",
+          "Krabby Patty",
+          "Spons kuning sahabat Patrick"
+        ]
+      },
+      "tom_and_jerry": {
+        "word": "TOM AND JERRY",
+        "hints": [
+          "Hampir tanpa dialog",
+          "Kejar-kejaran kucing dan tikus"
+        ]
+      },
+      "curious_george": {
+        "word": "CURIOUS GEORGE",
+        "hints": [
+          "Karakter utamanya merupakan hewan mamalia",
+          "Karakter utamanya memiliki rasa penasaran yang tinggi",
+          "Pemilikya adalah pria bertopi kuning",
+          "Nama panggilan karakter utamanya adalah George"
+        ]
+      },
+      "code_lyoko": {
+        "word": "CODE LYOKO",
+        "hints": [
+          "Tayang di Spacetoon",
+          "Animasi buatan studio Prancis dengan 2 style, yaitu anime dan 3D animation",
+          "Tentang sekelompok remaja yang masuk ke dunia virtual untuk melawan AI yang ingin menyerang dunia",
+          "Nama AI tersebut adalah X.A.N.A."
+        ]
+      },
+      "dora_the_explorer": {
+        "word": "DORA THE EXPLORER",
+        "hints": [
+          "Swiper jangan mencuri",
+          "Peta dan ransel",
+          "Penjelajah cilik dan monyet bernama Boots"
+        ]
+      },
+      "teletubbies": {
+        "word": "TELETUBBIES",
+        "hints": [
+          "Matahari berwajah bayi",
+          "Ada televisi di perutnya",
+          "Tinky Winky, Dipsy, Laa-Laa, Po"
+        ]
+      },
+      "upin_dan_ipin": {
+        "word": "UPIN DAN IPIN",
+        "hints": [
+          "Betul betul betul",
+          "Kampung Durian Runtuh",
+          "Anak kembar botak dari Malaysia"
+        ]
+      },
+      "boboiboy": {
+        "word": "BOBOIBOY",
+        "hints": [
+          "Tok Aba dan kedai koko",
+          "Bisa membelah diri jadi elemen",
+          "Pahlawan super animasi Malaysia"
+        ]
+      },
+      "adit_sopo_jarwo": {
+        "word": "ADIT SOPO JARWO",
+        "hints": [
+          "Haji Udin",
+          "Adit dan sahabatnya Dennis",
+          "Animasi Indonesia dengan duo pengangguran"
+        ]
+      },
+      "si_unyil": {
+        "word": "SI UNYIL",
+        "hints": [
+          "Cepek dulu dong",
+          "Pak Raden",
+          "Boneka legendaris TVRI"
+        ]
+      },
+      "shaun_the_sheep": {
+        "word": "SHAUN THE SHEEP",
+        "hints": [
+          "Anjing gembala bernama Bitzer",
+          "Animasi tanah liat dari Inggris",
+          "Domba yang pintar"
+        ]
+      },
+      "masha_and_the_bear": {
+        "word": "MASHA AND THE BEAR",
+        "hints": [
+          "Animasi dari Rusia",
+          "Gadis kecil berkerudung yang usil",
+          "Beruang yang sabar"
+        ]
+      },
+      "peppa_pig": {
+        "word": "PEPPA PIG",
+        "hints": [
+          "Adiknya bernama George",
+          "Suka lompat di genangan lumpur",
+          "Babi merah muda"
+        ]
+      },
+      "ben_ten": {
+        "word": "BEN TEN",
+        "hints": [
+          "Kakek Max dan sepupu Gwen",
+          "Omnitrix",
+          "Bisa berubah jadi alien"
+        ]
+      },
+      "avatar_the_legend_of_aang": {
+        "word": "AVATAR THE LEGEND OF AANG",
+        "hints": [
+          "Bison terbang bernama Appa",
+          "Pengendali empat elemen",
+          "Aang"
+        ]
+      },
+      "powerpuff_girls": {
+        "word": "POWERPUFF GIRLS",
+        "hints": [
+          "Bahan kimia X",
+          "Musuhnya Mojo Jojo",
+          "Blossom, Bubbles, Buttercup"
+        ]
+      },
+      "scooby_doo": {
+        "word": "SCOOBY DOO",
+        "hints": [
+          "Mystery Machine",
+          "Sahabatnya Shaggy",
+          "Anjing penakut pemecah misteri"
+        ]
+      },
+      "the_penguins_of_madagascar": {
+        "word": "THE PENGUINS OF MADAGASCAR",
+        "hints": [
+          "Seri animasi dari Nicklodeon tentang sekelompok hewan",
+          "Sekelompok hewan ini dikategorikan sebagai kelas \"Aves\" dalam klasifikasi ilmiah",
+          "Sekelompok hewan ini terdiri dari 4 anggota, dengan pemimpinnya yang bernama \"Skipper\""
+        ]
+      },
+      "looney_tunes": {
+        "word": "LOONEY TUNES",
+        "hints": [
+          "Whats up doc",
+          "Tweety dan Sylvester",
+          "Bugs Bunny"
+        ]
+      },
+      "mickey_mouse": {
+        "word": "MICKEY MOUSE",
+        "hints": [
+          "Pacarnya Minnie",
+          "Maskot Disney"
+        ]
+      },
+      "winnie_the_pooh": {
+        "word": "WINNIE THE POOH",
+        "hints": [
+          "Piglet, Tigger, Eeyore",
+          "Beruang kuning pencinta madu"
+        ]
+      },
+      "the_simpsons": {
+        "word": "THE SIMPSONS",
+        "hints": [
+          "Springfield",
+          "Keluarga berkulit kuning",
+          "Homer dan Bart"
+        ]
+      },
+      "inuyasha": {
+        "word": "INUYASHA",
+        "hints": [
+          "Pecahan permata Shikon",
+          "Kagome",
+          "Setengah siluman bertelinga anjing"
+        ]
+      },
+      "beyblade": {
+        "word": "BEYBLADE",
+        "hints": [
+          "Let it rip",
+          "Dragoon",
+          "Gasing tempur"
+        ]
+      },
+      "oggy_and_the_cockroaches": {
+        "word": "OGGY AND THE COCKROACHES",
+        "hints": [
+          "Joey, Dee Dee, Marky",
+          "Kucing biru melawan tiga kecoak"
+        ]
+      },
+      "larva": {
+        "word": "LARVA",
+        "hints": [
+          "Animasi Korea tanpa dialog",
+          "Dua ulat merah dan kuning"
+        ]
+      },
+      "tayo": {
+        "word": "TAYO",
+        "hints": [
+          "Animasi Korea",
+          "Bus kecil berwarna biru"
+        ]
+      },
+      "paw_patrol": {
+        "word": "PAW PATROL",
+        "hints": [
+          "Ryder",
+          "Chase dan Marshall",
+          "Anak anjing penyelamat"
+        ]
+      },
+      "garfield": {
+        "word": "GARFIELD",
+        "hints": [
+          "Pemiliknya Jon, temannya Odie",
+          "Benci hari Senin",
+          "Kucing oranye pemalas pencinta lasagna"
+        ]
+      },
+      "woody_woodpecker": {
+        "word": "WOODY WOODPECKER",
+        "hints": [
+          "Tawanya khas",
+          "Burung pelatuk usil"
+        ]
+      },
+      "popeye": {
+        "word": "POPEYE",
+        "hints": [
+          "Pacarnya Olive Oyl",
+          "Pelaut berotot",
+          "Makan bayam jadi kuat"
+        ]
+      },
+      "the_flintstones": {
+        "word": "THE FLINTSTONES",
+        "hints": [
+          "Yabba dabba doo",
+          "Fred dan Barney",
+          "Keluarga zaman batu"
+        ]
+      },
+      "jimmy_neutron": {
+        "word": "JIMMY NEUTRON",
+        "hints": [
+          "Anjing robot bernama Goddard",
+          "Rambutnya seperti es krim",
+          "Bocah jenius penemu"
+        ]
+      }
+    }
+  }

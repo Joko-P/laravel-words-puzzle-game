@@ -1,0 +1,467 @@
+{
+    "name": "Destinasi Wisata Indonesia",
+    "words": {
+      "raja_ampat": {
+        "word": "RAJA AMPAT",
+        "hints": [
+          "Piaynemo",
+          "Papua Barat Daya",
+          "Surga bawah laut di ujung timur"
+        ]
+      },
+      "labuan_bajo": {
+        "word": "LABUAN BAJO",
+        "hints": [
+          "Ujung barat Pulau Flores",
+          "Gerbang menuju Taman Nasional Komodo"
+        ]
+      },
+      "pulau_komodo": {
+        "word": "PULAU KOMODO",
+        "hints": [
+          "Nusa Tenggara Timur",
+          "Rumah kadal raksasa"
+        ]
+      },
+      "pulau_padar": {
+        "word": "PULAU PADAR",
+        "hints": [
+          "Foto dari puncak bukit dengan tiga teluk",
+          "Dekat Pulau Komodo"
+        ]
+      },
+      "danau_toba": {
+        "word": "DANAU TOBA",
+        "hints": [
+          "Pulau Samosir di tengahnya",
+          "Sumatera Utara",
+          "Danau vulkanik raksasa"
+        ]
+      },
+      "gunung_bromo": {
+        "word": "GUNUNG BROMO",
+        "hints": [
+          "Upacara Kasada",
+          "Suku Tengger",
+          "Lautan pasir dan matahari terbit"
+        ]
+      },
+      "kawah_ijen": {
+        "word": "KAWAH IJEN",
+        "hints": [
+          "Penambang belerang",
+          "Dekat Banyuwangi",
+          "Api biru"
+        ]
+      },
+      "candi_borobudur": {
+        "word": "CANDI BOROBUDUR",
+        "hints": [
+          "Magelang",
+          "Ratusan stupa",
+          "Candi Buddha terbesar di dunia"
+        ]
+      },
+      "candi_prambanan": {
+        "word": "CANDI PRAMBANAN",
+        "hints": [
+          "Legenda Roro Jonggrang",
+          "Candi Hindu",
+          "Dekat Yogyakarta"
+        ]
+      },
+      "malioboro": {
+        "word": "MALIOBORO",
+        "hints": [
+          "Andong dan pedagang kaki lima",
+          "Jalan paling terkenal di Yogyakarta"
+        ]
+      },
+      "pantai_kuta": {
+        "word": "PANTAI KUTA",
+        "hints": [
+          "Ramai turis dan peselancar",
+          "Sunset",
+          "Bali"
+        ]
+      },
+      "ubud": {
+        "word": "UBUD",
+        "hints": [
+          "Monkey Forest",
+          "Sawah terasering Tegallalang",
+          "Bali"
+        ]
+      },
+      "tanah_lot": {
+        "word": "TANAH LOT",
+        "hints": [
+          "Tabanan",
+          "Pura di atas batu karang di laut",
+          "Bali"
+        ]
+      },
+      "nusa_penida": {
+        "word": "NUSA PENIDA",
+        "hints": [
+          "Pantai Kelingking",
+          "Tebing berbentuk kepala dinosaurus",
+          "Pulau dekat Bali"
+        ]
+      },
+      "uluwatu": {
+        "word": "ULUWATU",
+        "hints": [
+          "Tari Kecak",
+          "Pura di atas tebing",
+          "Bali"
+        ]
+      },
+      "garuda_wisnu_kencana": {
+        "word": "GARUDA WISNU KENCANA",
+        "hints": [
+          "Bisa dilihat dari kejauhan",
+          "Patung raksasa",
+          "Bali"
+        ]
+      },
+      "kintamani": {
+        "word": "KINTAMANI",
+        "hints": [
+          "Kopi khas",
+          "Pemandangan Gunung Batur",
+          "Bali"
+        ]
+      },
+      "gili_trawangan": {
+        "word": "GILI TRAWANGAN",
+        "hints": [
+          "Tidak ada kendaraan bermotor",
+          "Cidomo dan sepeda",
+          "Lombok"
+        ]
+      },
+      "mandalika": {
+        "word": "MANDALIKA",
+        "hints": [
+          "Lombok Tengah",
+          "Sirkuit MotoGP"
+        ]
+      },
+      "gunung_rinjani": {
+        "word": "GUNUNG RINJANI",
+        "hints": [
+          "Danau Segara Anak",
+          "Favorit pendaki",
+          "Lombok"
+        ]
+      },
+      "pantai_senggigi": {
+        "word": "PANTAI SENGGIGI",
+        "hints": [
+          "Pantai populer di barat Lombok"
+        ]
+      },
+      "pantai_pink": {
+        "word": "PANTAI PINK",
+        "hints": [
+          "Ada di Lombok dan Komodo",
+          "Pasir berwarna merah muda"
+        ]
+      },
+      "danau_kelimutu": {
+        "word": "DANAU KELIMUTU",
+        "hints": [
+          "Ende, Flores",
+          "Danau tiga warna"
+        ]
+      },
+      "sumba": {
+        "word": "SUMBA",
+        "hints": [
+          "Tradisi Pasola",
+          "Bukit Wairinding",
+          "Pulau di Nusa Tenggara Timur"
+        ]
+      },
+      "wakatobi": {
+        "word": "WAKATOBI",
+        "hints": [
+          "Singkatan nama empat pulau",
+          "Sulawesi Tenggara",
+          "Surga menyelam"
+        ]
+      },
+      "bunaken": {
+        "word": "BUNAKEN",
+        "hints": [
+          "Sulawesi Utara",
+          "Taman laut dekat Manado"
+        ]
+      },
+      "derawan": {
+        "word": "DERAWAN",
+        "hints": [
+          "Kalimantan Timur",
+          "Penyu dan ubur-ubur tidak menyengat"
+        ]
+      },
+      "belitung": {
+        "word": "BELITUNG",
+        "hints": [
+          "Batu granit raksasa di pantai",
+          "Lokasi film Laskar Pelangi"
+        ]
+      },
+      "karimunjawa": {
+        "word": "KARIMUNJAWA",
+        "hints": [
+          "Jepara",
+          "Kepulauan di Jawa Tengah"
+        ]
+      },
+      "dieng": {
+        "word": "DIENG",
+        "hints": [
+          "Anak berambut gimbal",
+          "Candi Arjuna",
+          "Negeri di atas awan"
+        ]
+      },
+      "kawah_putih": {
+        "word": "KAWAH PUTIH",
+        "hints": [
+          "Ciwidey",
+          "Danau kawah putih kehijauan",
+          "Bandung selatan"
+        ]
+      },
+      "tangkuban_perahu": {
+        "word": "TANGKUBAN PERAHU",
+        "hints": [
+          "Legenda Sangkuriang",
+          "Gunung berbentuk perahu terbalik",
+          "Bandung utara"
+        ]
+      },
+      "kebun_raya_bogor": {
+        "word": "KEBUN RAYA BOGOR",
+        "hints": [
+          "Bunga bangkai",
+          "Bersebelahan dengan Istana Bogor"
+        ]
+      },
+      "puncak": {
+        "word": "PUNCAK",
+        "hints": [
+          "Kebun teh dan vila",
+          "Macet tiap akhir pekan",
+          "Jalur Bogor ke Cianjur"
+        ]
+      },
+      "taman_safari": {
+        "word": "TAMAN SAFARI",
+        "hints": [
+          "Cisarua",
+          "Melihat satwa dari dalam mobil"
+        ]
+      },
+      "pangandaran": {
+        "word": "PANGANDARAN",
+        "hints": [
+          "Green Canyon tidak jauh dari sini",
+          "Pantai di Jawa Barat"
+        ]
+      },
+      "monas": {
+        "word": "MONAS",
+        "hints": [
+          "Puncaknya berlapis emas",
+          "Tugu di Jakarta"
+        ]
+      },
+      "kota_tua": {
+        "word": "KOTA TUA",
+        "hints": [
+          "Sepeda ontel warna-warni",
+          "Museum Fatahillah",
+          "Jakarta"
+        ]
+      },
+      "ancol": {
+        "word": "ANCOL",
+        "hints": [
+          "Dufan",
+          "Pantai di Jakarta Utara"
+        ]
+      },
+      "taman_mini": {
+        "word": "TAMAN MINI",
+        "hints": [
+          "Anjungan setiap provinsi",
+          "Jakarta Timur"
+        ]
+      },
+      "kepulauan_seribu": {
+        "word": "KEPULAUAN SERIBU",
+        "hints": [
+          "Pulau Pari dan Pulau Tidung",
+          "Gugusan pulau di utara Jakarta"
+        ]
+      },
+      "masjid_istiqlal": {
+        "word": "MASJID ISTIQLAL",
+        "hints": [
+          "Berseberangan dengan gereja katedral",
+          "Masjid terbesar di Asia Tenggara",
+          "Jakarta"
+        ]
+      },
+      "tana_toraja": {
+        "word": "TANA TORAJA",
+        "hints": [
+          "Upacara Rambu Solo",
+          "Rumah adat Tongkonan",
+          "Sulawesi Selatan"
+        ]
+      },
+      "pantai_losari": {
+        "word": "PANTAI LOSARI",
+        "hints": [
+          "Pisang epe",
+          "Makassar"
+        ]
+      },
+      "pulau_weh": {
+        "word": "PULAU WEH",
+        "hints": [
+          "Titik Nol Kilometer Indonesia",
+          "Sabang",
+          "Aceh"
+        ]
+      },
+      "jam_gadang": {
+        "word": "JAM GADANG",
+        "hints": [
+          "Bukittinggi",
+          "Menara jam ikonik di Sumatera Barat"
+        ]
+      },
+      "ngarai_sianok": {
+        "word": "NGARAI SIANOK",
+        "hints": [
+          "Lembah curam",
+          "Bukittinggi"
+        ]
+      },
+      "danau_maninjau": {
+        "word": "DANAU MANINJAU",
+        "hints": [
+          "Kelok 44",
+          "Sumatera Barat"
+        ]
+      },
+      "bukit_lawang": {
+        "word": "BUKIT LAWANG",
+        "hints": [
+          "Sumatera Utara",
+          "Melihat orangutan di alam liar"
+        ]
+      },
+      "way_kambas": {
+        "word": "WAY KAMBAS",
+        "hints": [
+          "Lampung",
+          "Sekolah gajah"
+        ]
+      },
+      "tanjung_puting": {
+        "word": "TANJUNG PUTING",
+        "hints": [
+          "Naik perahu klotok",
+          "Kalimantan Tengah",
+          "Taman nasional orangutan"
+        ]
+      },
+      "lembah_baliem": {
+        "word": "LEMBAH BALIEM",
+        "hints": [
+          "Wamena",
+          "Festival budaya di pegunungan Papua"
+        ]
+      },
+      "danau_sentani": {
+        "word": "DANAU SENTANI",
+        "hints": [
+          "Festival tahunan",
+          "Jayapura"
+        ]
+      },
+      "pantai_parangtritis": {
+        "word": "PANTAI PARANGTRITIS",
+        "hints": [
+          "Legenda Nyi Roro Kidul",
+          "Bantul",
+          "Pantai terkenal di Yogyakarta"
+        ]
+      },
+      "goa_pindul": {
+        "word": "GOA PINDUL",
+        "hints": [
+          "Gunungkidul",
+          "Cave tubing pakai ban"
+        ]
+      },
+      "keraton_yogyakarta": {
+        "word": "KERATON YOGYAKARTA",
+        "hints": [
+          "Abdi dalem",
+          "Istana Sultan"
+        ]
+      },
+      "lawang_sewu": {
+        "word": "LAWANG SEWU",
+        "hints": [
+          "Katanya angker",
+          "Gedung seribu pintu",
+          "Semarang"
+        ]
+      },
+      "sam_poo_kong": {
+        "word": "SAM POO KONG",
+        "hints": [
+          "Laksamana Cheng Ho",
+          "Klenteng di Semarang"
+        ]
+      },
+      "jatim_park": {
+        "word": "JATIM PARK",
+        "hints": [
+          "Taman rekreasi",
+          "Kota Batu"
+        ]
+      },
+      "gunung_semeru": {
+        "word": "GUNUNG SEMERU",
+        "hints": [
+          "Mahameru",
+          "Puncak tertinggi di Pulau Jawa"
+        ]
+      },
+      "ranu_kumbolo": {
+        "word": "RANU KUMBOLO",
+        "hints": [
+          "Tanjakan Cinta",
+          "Danau di jalur pendakian Semeru"
+        ]
+      },
+      "baluran": {
+        "word": "BALURAN",
+        "hints": [
+          "Situbondo",
+          "Africa van Java",
+          "Savana dan banteng"
+        ]
+      }
+    }
+  }
