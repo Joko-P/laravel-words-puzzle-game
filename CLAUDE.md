@@ -87,7 +87,8 @@ The file name is the pack id.
 
 - `word` uses only **A–Z, 0–9 and spaces**, because no other character can be guessed. `WordsList::normalizeEntry()` enforces this with `^[A-Z0-9 ]+$`, *after* uppercasing and collapsing spaces, so lowercase input is fine. Any other entry is skipped and logged. Each part must be ≤ 16 characters, because the game screen wraps rows at 16 columns.
 - Digits and spelled-out numbers are different answers: `5 CM` doesn't match a guess of `LIMA CM`. Only use digits where they're really part of the name.
-- Hints are written in Indonesian, from vaguest to most obvious, and must not contain any part of the answer.
+- Hints are written in Indonesian, from vaguest to most obvious, and could contain any part of the answer.
+- "Could contain any part of the answer" means, if the word is `PANTAI SOMETHING SOMETHING`, and the hint is `Pantai di daerah something`, then it's allowed. Just, keep it lax. Not the whole asnwer in the hint, but not too strict either.
 - **Keys must be unique.** `json_decode` silently keeps only the last of a duplicate key.
 - The old format (`"words": ["…"]`) still loads, with generated ids and no hints.
 - Invalid packs or entries are skipped and logged as warnings instead of causing a 500.
