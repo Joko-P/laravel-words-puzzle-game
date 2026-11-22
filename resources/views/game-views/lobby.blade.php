@@ -54,12 +54,15 @@
                             <i class="bi bi-gear-fill pe-1"></i>Pengaturan Lainnya <i class="bi bi-chevron-down small"></i>
                         </button>
                         <div class="collapse" id="pengaturanLainnya">
-                            <div class="input-group input-group-sm mt-1">
-                                <span class="input-group-text border-dark-subtle">Batas Waktu</span>
-                                <input type="number" step="1" min="0" max="600" value="{{ old('batasWaktu', 0) }}" class="form-control border-dark-subtle" id="batasWaktuInput" name="batasWaktu" inputmode="numeric">
-                                <span class="input-group-text border-dark-subtle">detik</span>
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 m-0 p-0 g-1">
+                                <div class="col">
+                                    <div class="input-group input-group-sm mt-1">
+                                        <span class="input-group-text border-dark-subtle">Timer</span>
+                                        <input type="number" step="1" min="0" max="600" value="{{ old('batasWaktu', 0) }}" class="form-control border-dark-subtle" id="batasWaktuInput" name="batasWaktu" inputmode="numeric">
+                                    </div>
+                                    <div class="form-text m-0">Dalam detik<br>0 = Tanpa Timer<br>Recommended 30</div>
+                                </div>
                             </div>
-                            <div class="form-text m-0">0 = tanpa batas waktu. Kalau waktu habis, giliran pindah dan pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin.</div>
                         </div>
                     </div>
                 </div>
