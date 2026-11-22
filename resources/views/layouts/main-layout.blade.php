@@ -81,25 +81,18 @@
     <div class="app-shell d-flex flex-column bg-dark w-100 p-2 align-items-center">
         <div class="w-100 bg-secondary-subtle main-header-area d-flex align-items-center py-1 px-2 rounded-top-4">
             <div class="row m-0 gx-2 d-flex flex-row justify-content-between align-items-center w-100">
-                <div class="col-1">
+                <div class="col-3 col-md-2">
                     <a href="/">
                         <img src="{{ asset('images/game-icon.png') }}" alt="Game Icon" class="img-fluid main-header-logo">
                     </a>
                 </div>
-                <div class="col-2">
-                    <p class="m-0">Sesi game saat ini :</p>
-                    <p class="m-0 fs-6 fw-bold" style="cursor: pointer;" id="sessionDetailsButton">{{ session('current_game')['name'] ?? '-' }}</p>
+                <div class="col-6 col-md-8">
+                    <h3 class="m-0 text-center fw-bold" id="header-screen-title">@yield('page-title')</h3>
+                    <p class="m-0 text-center fw-bold" style="cursor: pointer; font-size: 0.875rem; line-height: 1rem;" id="sessionDetailsButton">{{ session('current_game')['name'] ?? '-' }}</p>
                 </div>
-                <div class="col-6">
-                    <h2 class="m-0 text-center fw-bold" id="header-screen-title">@yield('page-title')</h2>
-                </div>
-                <div class="col-2">
-                    <p class="m-0">Jumlah sesi game :</p>
-                    <p class="m-0 fs-6"><span class="fw-bold">{{ count(session('gameSessions', [])) }}</span> sesi game</p>
-                </div>
-                <div class="col-1">
-                    <p class="m-0 p-0 text-center fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayCredits();">Credits</p>
-                    <p class="m-0 p-0 text-center fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayGameRules();">Game Rules</p>
+                <div class="col-3 col-md-2">
+                    <p class="m-0 p-0 text-end fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayCredits();">Credits</p>
+                    <p class="m-0 p-0 text-end fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayGameRules();">Game Rules</p>
                 </div>
             </div>
         </div>
