@@ -315,7 +315,7 @@
                         const playersTurn = result.players_turn;
 
                         $("title").html(`Round ${gameSessionData.currentRound}, Turn ${result.current_turn} - {{ config('app.name', 'Laravel') }}`);
-                        $("h2#header-screen-title").html(`
+                        $("#header-screen-title").html(`
                             Round ${gameSessionData.currentRound}, Turn ${result.current_turn}
                             <i class="bi bi-arrow-clockwise ps-2" style="cursor: pointer;" id="reloadGameScreen"></i>
                         `);
@@ -540,7 +540,7 @@
             });
         });
 
-        $("h2#header-screen-title").on('click', 'i#reloadGameScreen', function() {
+        $("#header-screen-title").on('click', 'i#reloadGameScreen', function() {
             grabGameSessionData();
         })
 

@@ -114,7 +114,8 @@ The file name is the pack id.
 - `Collection::firstWhere('order', $x)` compares loosely, so `null == 0` is true. Use strict comparisons for `order`.
 - **`"0"` is falsy in PHP.** Since digits are guessable, never check guess input with `if ($letter)` / `if ($sentence)`; use `!== ''`. Use strict `in_array(..., true)`, `array_search(..., true)` and `===` for letters. (In JS, `"0"` is truthy, so `if (letter)` there is fine.)
 - **Layout:** the original desktop layout (1920×1080 at 100% zoom) must stay as it is.
-  - `.app-shell` is at least one screen tall, and content is centred with auto margins, so zoomed-in content scrolls instead of being clipped.
+  - `.app-shell` is exactly one screen tall (`100vh` / `100dvh`), so the page itself never scrolls. The header and footer never shrink and are always visible. Only `.main-content-area` scrolls (`min-height: 0; overflow-y: auto`) when content doesn't fit. Inside it, `.main-content-inner` is centred with auto margins, so tall content scrolls instead of being clipped at the top. To scroll in JS, use `.main-content-area`, not `window`.
+  - The page title is `#header-screen-title` (currently an `<h3>`). Select it by id only; the game screen JS rewrites it with "Round X, Turn Y".
   - The game screen's letter boxes and keys shrink to fit.
   - The bottom row is 2/4/1/5 columns from `md` up, and stacks below that.
   - Don't use `vw-100` or `100vw` widths: they cause sideways scrolling.

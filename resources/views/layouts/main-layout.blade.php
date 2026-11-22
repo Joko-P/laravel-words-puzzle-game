@@ -42,24 +42,26 @@
             scale: 0.75;
         }
 
-        /* Layout dasar: tampilan pas 1 layar seperti biasa, tapi kalau di-zoom dan kontennya
-           tidak muat, halaman bisa di-scroll (bukan terpotong / saling tumpuk) */
+        /* Layout dasar: tinggi tepat 1 layar. Header & footer selalu terlihat, dan kalau konten
+           tidak muat (layar kecil / di-zoom), hanya area konten di tengah yang di-scroll. */
         .app-shell {
-            min-height: 100vh;
+            height: 100vh;
+            height: 100dvh; /* di HP, ikut tinggi layar yang terlihat (address bar) */
         }
         .main-header-area,
         .main-footer-area {
             min-height: 7.5vh;
             flex-shrink: 0;
         }
+        .main-content-area {
+            min-height: 0; /* supaya area ini boleh lebih pendek dari isinya, lalu di-scroll */
+            overflow-y: auto;
+        }
         .main-header-area p,
-        .main-header-area h2 {
+        #header-screen-title {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-        .main-header-area h2 {
-            font-size: clamp(1rem, 2.5vw, 2rem);
         }
         .main-header-logo {
             max-height: 5vh;
@@ -87,7 +89,7 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-8">
-                    <h3 class="m-0 text-center fw-bold" id="header-screen-title">@yield('page-title')</h3>
+                    <h4 class="m-0 text-center fw-bold" id="header-screen-title">@yield('page-title')</h4>
                     <p class="m-0 text-center fw-bold" style="cursor: pointer; font-size: 0.875rem; line-height: 1rem;" id="sessionDetailsButton">{{ session('current_game')['name'] ?? '-' }}</p>
                 </div>
                 <div class="col-3 col-md-2">
