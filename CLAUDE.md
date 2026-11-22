@@ -13,7 +13,7 @@ php artisan serve
 
 - **Never run `php artisan migrate`, `db:seed` or similar without asking the user first.** They usually create the database themselves, and the game doesn't need any tables (see State below).
 - Read the real `.env`, not `.env.example`, before saying how anything is configured. The real one uses `SESSION_DRIVER=file`, `CACHE_STORE=file`, `LOG_CHANNEL=daily` (logs go to `storage/logs/laravel-YYYY-MM-DD.log`) and `SESSION_LIFETIME=300`.
-- The user's main checkout uses `php artisan config:cache`. **After adding or changing anything in `config/`, they must re-run `config:cache`**, or the new config is read as null. Settings read in code should have a safe default; see `MainService::hintPenalty()`.
+- **The user doesn't keep a config cache.** They run `php artisan config:clear`, so Laravel reads `config/` directly. If `bootstrap/cache/config.php` exists, it's stale: settings missing from it read as null. `MainService` has no fallback defaults (the user's choice), so a stale cache makes hints cost 0 and unlock from turn 1. When a config change "doesn't apply", check for that file first.
 - There are no real tests (only Laravel's example tests). To verify changes, run `php artisan serve`, then drive the flow with `curl` (with a cookie jar) and/or the browser pane.
 
 ## Branches
@@ -52,14 +52,16 @@ No database models are used. All game data is in the session:
   - `game_screen_data()` strips `loadedWordsList` and unrevealed `hints` before sending data to the browser.
 - `app/Services/WordsList.php`: loads and normalises word packs (see below).
 - `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`.
-- `app/Services/MainService.php`: helpers, including `hintPenalty()` and `hintUnlocksAfterTurn()` with defaults.
-- `config/game.php`: `hint_penalty` (`GAME_HINT_PENALTY`, default 7) and `hint_unlocks_after_turn` (`GAME_HINT_UNLOCKS_AFTER_TURN`, default 5).
+- `app/Services/MainService.php`: helpers.
+  - `returnAllLettersAsArray()` returns the guessable characters, A–Z and 0–9. Each round copies it into `availableLetters`.
+  - `hintPenalty()` and `hintUnlocksAfterTurn()` read config with no fallback; the defaults live only in `config/game.php`.
+- `config/game.php`: `hint_penalty` (`GAME_HINT_PENALTY`, default 5) and `hint_unlocks_after_turn` (`GAME_HINT_UNLOCKS_AFTER_TURN`, default 5).
 - Views in `resources/views/`: `layouts/main-layout.blade.php`, with header, rules and credits modals, and `@inject('mainService', …)`. Plus `game-views/{main-menu,lobby,game-screen,game-over-screen}.blade.php`. The front end is Bootstrap 5.3, jQuery 4 and SweetAlert2. Tailwind/Vite are installed but not used.
 
 ## Game rules (keep the rules modal in sync)
 
-- **Letter guess:**
-  - correct: +25 + round(100 / number of times the letter appears);
+- **Letter guess** (a letter A–Z or a digit 0–9; the game screen keyboard has a number row above QWERTY):
+  - correct: +25 + round(100 / number of times the character appears);
   - wrong: −25;
   - the turn always passes to the next player.
 - **Sentence guess:**
@@ -83,7 +85,8 @@ The file name is the pack id.
 { "name": "Pack Name", "words": { "<uuid>": { "word": "STARDEW VALLEY", "hints": ["vaguest", "...", "most obvious"] } } }
 ```
 
-- `word` uses only **A–Z and spaces**: letter guessing only covers A–Z, so any other character could never be revealed. Each part must be ≤ 16 characters, because the game screen wraps rows at 16 columns.
+- `word` uses only **A–Z, 0–9 and spaces**, because no other character can be guessed. `WordsList::normalizeEntry()` enforces this with `^[A-Z0-9 ]+$`, *after* uppercasing and collapsing spaces, so lowercase input is fine. Any other entry is skipped and logged. Each part must be ≤ 16 characters, because the game screen wraps rows at 16 columns.
+- Digits and spelled-out numbers are different answers: `5 CM` doesn't match a guess of `LIMA CM`. Only use digits where they're really part of the name.
 - Hints are written in Indonesian, from vaguest to most obvious, and must not contain any part of the answer.
 - **Keys must be unique.** `json_decode` silently keeps only the last of a duplicate key.
 - The old format (`"words": ["…"]`) still loads, with generated ids and no hints.
