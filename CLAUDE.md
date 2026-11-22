@@ -28,12 +28,13 @@ No database models are used. All game data is in the session:
   - `namaSesi`, `urlEncodedNamaSesi`
   - `sessionCreatedAt`, `startTime`, `endTime`
   - `playersList`: `[id => {id, name, profilePicID, profilePicPath, score, order}]`
-  - `loadedWordsList`: shuffled word entries for the game
+  - `loadedWordsList`: shuffled word entries for the game, `{id, packId, word, hints}`. `desc` and `image` are deliberately left out to keep the session small; the game over summary looks them up in the pack files.
   - `roundsAmount`, `currentRound`
   - `turnTimeLimit`: seconds per turn set in the lobby (0 = no limit)
   - `roundsData`: `[roundNumber => round]`
 - Each round:
-  - `roundNumber`, `wordId`, `currentWord` (a plain string)
+  - `roundNumber`, `packId`, `wordId`, `currentWord` (a plain string). Word ids are only unique *within* a pack, so `packId` is needed to find the entry again.
+  - `turnLog`: `[{turn, playerId, type: letter|sentence|hint|timeout, value, correct, points}]`, one entry per action, added through `appendTurnLog()`. It's used for the game over summary. Rounds from before this field existed don't have it.
   - `hints`, `hintsRevealed`, `hintLog`: `[{turn, playerId, penalty}]`
   - `availableLetters`, `guessedLetters`
   - `currentPlayerTurn` (a player's `order`), `turnCount` (the current turn number within the round, starting at 1)
@@ -53,7 +54,8 @@ No database models are used. All game data is in the session:
   - `new_round_data()` builds a round; `make_new_rounds()` advances rounds and sets `endTime` once.
   - `game_screen_data()` strips `loadedWordsList` and unrevealed `hints` before sending data to the browser.
   - `applyTurnTimeoutIfExpired()` is the only place a timeout happens. It runs at the start of `game_screen_data()`, both guess handlers, `show_hint()` and `turn_timeout()`. It applies at most one timeout per call and does nothing before the time is up, so calling it repeatedly is safe.
-  - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock.
+  - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock. **Any new action must also call `appendTurnLog()`**, or it won't show in the summary.
+  - `game_over_screen()` builds the summary with `buildGameSummary()`. It loads `WordsList::all()` once and calls `WordsList::wordInfo()` for each round's `desc`/`image`. If there's no `packId` (older games), it falls back to matching the word text.
 - `app/Services/WordsList.php`: loads and normalises word packs (see below).
 - `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`.
 - `app/Services/MainService.php`: helpers.
@@ -99,6 +101,9 @@ The file name is the pack id.
 - Hints are written in Indonesian, from vaguest to most obvious, and could contain any part of the answer.
 - "Could contain any part of the answer" means, if the word is `PANTAI SOMETHING SOMETHING`, and the hint is `Pantai di daerah something`, then it's allowed. Just, keep it lax. Not the whole asnwer in the hint, but not too strict either.
 - **Keys must be unique.** `json_decode` silently keeps only the last of a duplicate key.
+- Optional `desc` and `image` fields are shown only in the game over summary.
+  - `desc` goes through `WordsList::formatDescription()`. It escapes everything, then restores only `<b> <strong> <i> <em> <u> <s> <del> <br>` and `<a href='http(s)://…'>`, with either quote style and `target="_blank" rel="noopener noreferrer"`. It's the only HTML rendered with `{!! !!}` on that page, so keep it that way.
+  - `image` goes through `WordsList::imageUrl()`. It must match `images/words-images/…` with an image extension and exist under `public/`; otherwise it's ignored. The suggested layout is `public/images/words-images/<pack id>/<word id>.<ext>`.
 - The old format (`"words": ["…"]`) still loads, with generated ids and no hints.
 - Invalid packs or entries are skipped and logged as warnings instead of causing a 500.
 - `popular-actors-pack.json` (95 names) was a first draft written by Claude. Its hints still need a fact check by the user.

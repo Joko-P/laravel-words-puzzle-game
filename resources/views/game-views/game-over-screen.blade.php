@@ -4,7 +4,19 @@
 @endsection
 @push('css')
 <style>
-    
+    .summary-area{
+        width: min(100%, 60rem);
+    }
+
+    .summary-word-image{
+        max-width: 12rem;
+        max-height: 12rem;
+        object-fit: contain;
+    }
+
+    .summary-word-desc a{
+        color: var(--bs-link-color);
+    }
 </style>
 @endpush
 @section('content')
@@ -68,6 +80,100 @@
     </div>
     @endfor
 </div>
+@if (!empty($summary))
+<hr class="content-divider">
+{{-- Ringkasan per ronde: kalimat, siapa yang menebak apa, dan desc / gambar dari pack kalau ada --}}
+<div class="summary-area px-3 mb-3">
+    <h4 class="fw-bold text-center mb-3">Ringkasan Permainan</h4>
+    <div class="accordion" id="summaryAccordion">
+        @foreach ($summary as $index => $round)
+        <div class="accordion-item border-dark-subtle">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#summaryRound{{ $index }}" aria-expanded="false" aria-controls="summaryRound{{ $index }}">
+                    <span class="fw-bold me-2 text-nowrap">Ronde {{ $round['number'] }}</span>
+                    <span class="badge text-bg-dark me-2 fs-6">{{ $round['word'] }}</span>
+                    <span class="small">
+                        @if ($round['winner'])
+                            Ditebak oleh <b>{{ $round['winner'] }}</b>
+                        @else
+                            Tidak terjawab
+                        @endif
+                    </span>
+                </button>
+            </h2>
+            <div id="summaryRound{{ $index }}" class="accordion-collapse collapse">
+                <div class="accordion-body">
+                    @if ($round['imageUrl'] || $round['descHtml'])
+                    <div class="d-flex flex-column flex-md-row gap-3 mb-3 align-items-center align-items-md-start">
+                        @if ($round['imageUrl'])
+                        <img src="{{ $round['imageUrl'] }}" alt="{{ $round['word'] }}" class="summary-word-image rounded border">
+                        @endif
+                        @if ($round['descHtml'])
+                        {{-- descHtml sudah dibersihkan oleh WordsList::formatDescription(), hanya tag sederhana & link https --}}
+                        <div class="summary-word-desc">{!! $round['descHtml'] !!}</div>
+                        @endif
+                    </div>
+                    @endif
+
+                    @if ($round['hasTurnLog'] && count($round['events']))
+                    <div class="table-responsive">
+                        <table class="table table-sm align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 4.5rem;">Giliran</th>
+                                    <th>Pemain</th>
+                                    <th>Aksi</th>
+                                    <th class="text-end" style="width: 4.5rem;">Poin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($round['events'] as $event)
+                                <tr>
+                                    <td class="text-center">{{ $event['turn'] }}</td>
+                                    <td class="fw-bold">{{ $event['player'] }}</td>
+                                    <td>
+                                        @switch($event['type'])
+                                            @case('letter')
+                                                Tebak huruf <b>{{ $event['value'] }}</b>
+                                                {!! $event['correct'] ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>' !!}
+                                                @break
+                                            @case('sentence')
+                                                Tebak kalimat <b>"{{ $event['value'] }}"</b>
+                                                {!! $event['correct'] ? '<i class="bi bi-check-circle-fill text-success"></i>' : '<i class="bi bi-x-circle-fill text-danger"></i>' !!}
+                                                @break
+                                            @case('hint')
+                                                <i class="bi bi-lightbulb-fill text-warning"></i> Buka hint: <i>"{{ $event['value'] }}"</i>
+                                                @break
+                                            @case('timeout')
+                                                <i class="bi bi-hourglass-bottom text-danger"></i> Waktu habis
+                                                @break
+                                            @default
+                                                {{ $event['type'] }}
+                                        @endswitch
+                                    </td>
+                                    <td class="text-end fw-bold {{ $event['points'] >= 0 ? 'text-success' : 'text-danger' }}">
+                                        {{ $event['points'] > 0 ? '+' : '' }}{{ $event['points'] }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @elseif (!$round['hasTurnLog'])
+                    <p class="small text-body-secondary m-0">
+                        Detail per giliran tidak tersedia (game ini dimulai sebelum fitur ringkasan ada).
+                        @if (count($round['guessedLetters']))
+                            Huruf yang ditebak: <b>{{ implode(', ', $round['guessedLetters']) }}</b>
+                        @endif
+                    </p>
+                    @endif
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
 @endsection
 @push('modals')
 

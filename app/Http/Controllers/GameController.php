@@ -229,7 +229,14 @@ class GameController extends Controller
             $words = WordsList::find($id)['words'] ?? [];
             foreach ($words as $entry) {
                 if (!isset($merged_words[$entry['word']])) {
-                    $merged_words[$entry['word']] = $entry;
+                    // packId disimpan supaya desc / image bisa dicari lagi di game over screen.
+                    // desc dan image sendiri tidak disimpan di session, supaya session tidak membengkak.
+                    $merged_words[$entry['word']] = [
+                        'id' => $entry['id'],
+                        'packId' => $id,
+                        'word' => $entry['word'],
+                        'hints' => $entry['hints'],
+                    ];
                 }
             }
         }
@@ -249,6 +256,7 @@ class GameController extends Controller
 
         return [
             'roundNumber' => $roundNumber,
+            'packId' => is_array($wordEntry) ? ($wordEntry['packId'] ?? null) : null,
             'wordId' => $entry['id'],
             'currentWord' => $entry['word'],
             'hints' => $entry['hints'],
@@ -260,9 +268,29 @@ class GameController extends Controller
             'turnCount' => 1,
             'turnStartedAt' => now()->getTimestampMs(), // diisi ulang setiap giliran pindah, dipakai untuk batas waktu
             'timeoutLog' => [], // [['turn' => N, 'playerId' => ..., 'penalty' => ...], ...]
+            'turnLog' => [], // semua aksi di ronde ini, untuk ringkasan di game over screen (lihat appendTurnLog)
             'isAnswered' => false,
             'roundWinner' => null,
         ];
+    }
+
+    /**
+     * Catat 1 aksi di turnLog ronde, untuk ringkasan di game over screen.
+     * $type: 'letter' | 'sentence' | 'hint' | 'timeout'. $correct null kalau tidak relevan (hint / timeout).
+     */
+    private function appendTurnLog(int $roundNumber, string $type, string $playerId, int $turn, ?string $value, ?bool $correct, int $points): void
+    {
+        $key = $this->currentSessionKey() . '.roundsData.' . $roundNumber . '.turnLog';
+        $turnLog = session($key, []);
+        $turnLog[] = [
+            'turn' => $turn,
+            'playerId' => $playerId,
+            'type' => $type,
+            'value' => $value,
+            'correct' => $correct,
+            'points' => $points,
+        ];
+        session([$key => $turnLog]);
     }
 
     private function shuffle_player_order(): array
@@ -432,6 +460,7 @@ class GameController extends Controller
             $roundKey . '.turnStartedAt' => now()->getTimestampMs(),
             $roundKey . '.timeoutLog' => $timeoutLog,
         ]);
+        $this->appendTurnLog((int) $round['roundNumber'], 'timeout', $currentPlayer['id'], (int) $round['turnCount'], null, null, -$penalty);
 
         return [
             'player_name' => $currentPlayer['name'],
@@ -507,6 +536,7 @@ class GameController extends Controller
             $roundsKey . '.' . $currentRoundNum . '.hintLog' => $hintLog,
             $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayer['score'] - $penalty,
         ]);
+        $this->appendTurnLog((int) $currentRoundNum, 'hint', $currentPlayer['id'], (int) ($currentRound['turnCount'] ?? 1), $hints[$revealed], null, -$penalty);
 
         return response()->json([
             'state' => 'hint_revealed',
@@ -607,6 +637,8 @@ class GameController extends Controller
         }
 
         $sentence = $request->input('sentence', null);
+        // Versi yang rapi (spasi tetap ada) untuk ditampilkan di ringkasan game over
+        $sentenceForLog = is_string($sentence) ? strtoupper(preg_replace('/\s+/', ' ', trim($sentence))) : '';
         $sentence = trim(strtoupper(str_replace(' ','',$sentence)));
 
         if ($sentence) {
@@ -647,6 +679,7 @@ class GameController extends Controller
                 session([
                     $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayerScore + $score,
                 ]);
+                $this->appendTurnLog((int) $currentRoundNum, 'sentence', $currentPlayer['id'], (int) $turnCount, $sentenceForLog, $sentence === $currentWord, (int) $score);
 
                 if ($sentence === $currentWord) {
                     session([
@@ -736,6 +769,7 @@ class GameController extends Controller
                         $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.guessedLetters' => $guessedLetters,
                         $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayerScore + $score,
                     ]);
+                    $this->appendTurnLog((int) $currentRoundNum, 'letter', $currentPlayer['id'], (int) $turnCount, $letter, $occurrences > 0, (int) $score);
 
                     if ($allRevealed) {
                         session([
@@ -773,6 +807,47 @@ class GameController extends Controller
 
         return view('game-views.game-over-screen', [
             'leaderBoard' => $scoreBoard,
+            'summary' => $this->buildGameSummary($current_session),
         ]);
+    }
+
+    /**
+     * Ringkasan per ronde untuk game over screen: kalimat, pemenang, desc/image dari pack (kalau ada),
+     * dan semua aksi dari turnLog. Game lama (sebelum ada turnLog) hanya punya daftar huruf yang ditebak.
+     */
+    private function buildGameSummary(array $session): array
+    {
+        $players = $session['playersList'] ?? [];
+        $playerName = fn ($id) => $players[$id]['name'] ?? '(pemain tidak ditemukan)';
+        $packs = WordsList::all(); // dimuat sekali untuk semua ronde
+
+        $summary = [];
+        foreach ($session['roundsData'] ?? [] as $round) {
+            $word = (string) ($round['currentWord'] ?? '');
+            $info = WordsList::wordInfo($packs, $round['packId'] ?? null, $round['wordId'] ?? null, $word);
+
+            $events = array_map(fn ($event) => [
+                'turn' => (int) ($event['turn'] ?? 0),
+                'player' => $playerName($event['playerId'] ?? null),
+                'type' => $event['type'] ?? '',
+                'value' => $event['value'] ?? null,
+                'correct' => $event['correct'] ?? null,
+                'points' => (int) ($event['points'] ?? 0),
+            ], $round['turnLog'] ?? []);
+
+            $summary[] = [
+                'number' => (int) ($round['roundNumber'] ?? 0),
+                'word' => $word,
+                'answered' => (bool) ($round['isAnswered'] ?? false),
+                'winner' => !empty($round['roundWinner']) ? $playerName($round['roundWinner']) : null,
+                'hasTurnLog' => array_key_exists('turnLog', $round),
+                'events' => $events,
+                'guessedLetters' => $round['guessedLetters'] ?? [],
+                'descHtml' => $info['descHtml'],
+                'imageUrl' => $info['imageUrl'],
+            ];
+        }
+
+        return $summary;
     }
 }

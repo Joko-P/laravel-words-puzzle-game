@@ -11,7 +11,12 @@ use Illuminate\Support\Facades\Log;
  * {
  *     "name": "Nama Pack",
  *     "words": {
- *         "<id unik, misal UUID>": { "word": "KALIMAT", "hints": ["hint 1", "hint 2"] }
+ *         "<id unik, misal UUID>": {
+ *             "word": "KALIMAT",
+ *             "hints": ["hint 1", "hint 2"],
+ *             "desc": "Opsional, boleh pakai <b>tebal</b>, <i>miring</i>, <u>garis bawah</u>, <s>coret</s>, <a href='https://...'>link</a>",
+ *             "image": "Opsional, misal images/words-images/<pack id>/<word id>.jpg (di folder public/)"
+ *         }
  *     }
  * }
  *
@@ -103,10 +108,87 @@ class WordsList
             fn ($hint) => $hint !== ''
         ));
 
+        // "desc" dan "image" opsional, hanya dipakai untuk ringkasan di game over screen
+        $optionalText = fn ($value) => (is_string($value) && trim($value) !== '') ? trim($value) : null;
+
         return [
             'id' => (string) ($id ?? $entry['id'] ?? 'legacy-' . md5($word)),
             'word' => $word,
             'hints' => $hints,
+            'desc' => $optionalText($entry['desc'] ?? null),
+            'image' => $optionalText($entry['image'] ?? null),
+        ];
+    }
+
+    /**
+     * Ubah "desc" dari pack menjadi HTML yang aman untuk ditampilkan.
+     * Semua teks di-escape dulu, lalu hanya tag ini yang dikembalikan:
+     *   <b> <strong> <i> <em> <u> <s> <del> <br>, dan
+     *   <a href='https://...'>teks</a> (petik satu atau dua, hanya http/https, dibuka di tab baru).
+     * Tag lain (misal <script>, onclick, javascript:) tetap tampil sebagai teks biasa. Enter jadi baris baru.
+     */
+    public static function formatDescription(?string $desc): ?string
+    {
+        if (!is_string($desc) || trim($desc) === '') {
+            return null;
+        }
+
+        $html = e(trim($desc));
+        $html = preg_replace('#&lt;(/?)(b|strong|i|em|u|s|del)&gt;#i', '<$1$2>', $html);
+        $html = preg_replace('#&lt;br\s*/?&gt;#i', '<br>', $html);
+        $html = preg_replace_callback(
+            '#&lt;a\s+href=(?:&quot;|&\#039;)(https?://[^\s<>]*?)(?:&quot;|&\#039;)\s*&gt;(.*?)&lt;/a&gt;#is',
+            fn ($m) => '<a href="' . $m[1] . '" target="_blank" rel="noopener noreferrer">' . $m[2] . '</a>',
+            $html
+        );
+
+        return nl2br($html, false);
+    }
+
+    /**
+     * URL gambar untuk "image" di pack, misal "images/words-images/kartun-pack/ben_ten.jpg".
+     * Hanya file gambar yang benar-benar ada di public/images/words-images/ yang diterima,
+     * selain itu (path aneh, "../", file tidak ada) diabaikan saja.
+     */
+    public static function imageUrl(?string $image): ?string
+    {
+        if (!is_string($image)) {
+            return null;
+        }
+
+        $image = ltrim(str_replace('\\', '/', trim($image)), '/');
+        if (!preg_match('#^images/words-images/[A-Za-z0-9_\-/]+\.(jpe?g|png|webp|gif|svg)$#i', $image)) {
+            return null;
+        }
+        if (!is_file(public_path($image))) {
+            return null;
+        }
+
+        return asset($image);
+    }
+
+    /**
+     * Cari desc & image sebuah kalimat untuk ringkasan game over.
+     * $packs adalah hasil all() (dimuat sekali saja). Kalau packId tidak ada (game lama), dicari dari teks kalimatnya.
+     */
+    public static function wordInfo(object $packs, ?string $packId, ?string $wordId, string $word): array
+    {
+        $entry = null;
+        if ($packId !== null && $wordId !== null) {
+            $entry = $packs[$packId]['words'][$wordId] ?? null;
+        }
+        if ($entry === null) {
+            foreach ($packs as $pack) {
+                $entry = collect($pack['words'])->firstWhere('word', $word);
+                if ($entry !== null) {
+                    break;
+                }
+            }
+        }
+
+        return [
+            'descHtml' => self::formatDescription($entry['desc'] ?? null),
+            'imageUrl' => self::imageUrl($entry['image'] ?? null),
         ];
     }
 

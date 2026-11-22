@@ -47,14 +47,19 @@ Word packs live in `storage/app/words-list/*.json`. The file name (without `.jso
     "words": {
         "8c1f4e2a-5b6d-4c3e-9f10-2a3b4c5d6e7f": {
             "word": "STARDEW VALLEY",
-            "hints": ["Hint pertama (paling samar)", "Hint kedua"]
+            "hints": ["Hint pertama (paling samar)", "Hint kedua"],
+            "desc": "Game <b>simulasi bertani</b> buatan ConcernedApe. <a href='https://en.wikipedia.org/wiki/Stardew_Valley'>Wikipedia</a>",
+            "image": "images/words-images/nama-pack/8c1f4e2a-5b6d-4c3e-9f10-2a3b4c5d6e7f.jpg"
         }
     }
 }
 ```
 
 - Each key in `words` is a unique id for that sentence (a UUID, or any unique string). JSON silently keeps only the last entry when a key is repeated, so make sure ids stay unique.
-- `hints` are revealed in order, one per click on **Show Hint**. Each reveal costs the current player `GAME_HINT_PENALTY` points (default 7). Hints stay locked until `GAME_HINT_UNLOCKS_AFTER_TURN` turns of the round have passed (default 5), and only 1 hint can be opened per turn (each one is recorded in the round's `hintLog`). Both live in `config/game.php`. Leave `hints` as `[]` for no hints.
+- `hints` are revealed in order, one per click on **Show Hint**. Each reveal costs the current player `GAME_HINT_PENALTY` points (default 5). Hints stay locked until `GAME_HINT_UNLOCKS_AFTER_TURN` turns of the round have passed (default 5), and only 1 hint can be opened per turn (each one is recorded in the round's `hintLog`). Both live in `config/game.php`. Leave `hints` as `[]` for no hints.
 - If you use `php artisan config:cache`, run it again after changing `config/game.php` or these `.env` values.
+- `desc` and `image` are optional. They're shown in the **Ringkasan Permainan** section of the game over screen, so players can read up on words they didn't know.
+  - `desc` is text with a few simple tags: `<b>`/`<strong>`, `<i>`/`<em>`, `<u>`, `<s>`/`<del>`, `<br>`, combined however you like. Links are written as `<a href='https://...'>teks</a>`; single quotes avoid escaping `\"` in JSON. Only `http`/`https` links work, and they open in a new tab. Any other tag is shown as plain text. A new line (`\n`) becomes a line break.
+  - `image` is a path inside `public/`, under `images/words-images/` (suggested: `images/words-images/<pack id>/<word id>.jpg`). Allowed types: jpg, jpeg, png, webp, gif, svg. Paths outside that folder, or files that don't exist, are ignored.
 - The old format (`"words": ["KALIMAT", ...]`) still loads, with no hints.
 - Packs with invalid JSON or no valid sentences are skipped and logged in `storage/logs`.
