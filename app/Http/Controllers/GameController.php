@@ -61,6 +61,8 @@ class GameController extends Controller
         
         return view('game-views.lobby', [
             'default_pic' => $default_profile_pic,
+            // Semua pilihan profile pic untuk modal "Change" di lobby
+            'emojis' => Emoji::all(),
             'words_list' => $words_list,
         ]);
     }
@@ -129,6 +131,7 @@ class GameController extends Controller
         session([
             $current_session_name . '.playersList' => $playersList
         ]);
+        Emoji::remove_from_deck($request->profilePicID);
 
         return response()->json(['success' => true], 200);
     }

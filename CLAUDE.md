@@ -57,7 +57,7 @@ No database models are used. All game data is in the session:
   - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock. **Any new action must also call `appendTurnLog()`**, or it won't show in the summary.
   - `game_over_screen()` builds the summary with `buildGameSummary()`. It loads `WordsList::all()` once and calls `WordsList::wordInfo()` for each round's `desc`/`image`. If there's no `packId` (older games), it falls back to matching the word text.
 - `app/Services/WordsList.php`: loads and normalises word packs (see below).
-- `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`.
+- `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`. In the lobby, the "Change" button opens a picker modal (`#profilePicModal`, every entry of `Emoji::all()`). The default avatar is still random (`get_random_profile_pic()`, an `emojiDeck` in the session) on page load and after each Tambah Player.
 - `app/Services/MainService.php`: helpers.
   - `returnAllLettersAsArray()` returns the guessable characters, A–Z and 0–9. Each round copies it into `availableLetters`.
   - `hintPenalty()`, `hintUnlocksAfterTurn()` and `turnTimeoutPenalty()` read config with no fallback; the defaults live only in `config/game.php`.

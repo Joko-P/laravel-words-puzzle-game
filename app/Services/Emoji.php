@@ -271,4 +271,18 @@ class Emoji
         $item = self::find($emoji);
         return $item;
     }
+
+    /**
+     * Keluarkan profile pic yang dipilih manual (lewat modal "Change") dari deck acak,
+     * supaya default acak berikutnya tidak kembar dengan pilihan player itu.
+     */
+    public static function remove_from_deck(string $id): void
+    {
+        $deck = session('emojiDeck');
+        if (empty($deck)) {
+            return;
+        }
+
+        session(['emojiDeck' => array_values(array_filter($deck, fn ($deckId) => $deckId !== $id))]);
+    }
 }
