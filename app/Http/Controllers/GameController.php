@@ -637,11 +637,13 @@ class GameController extends Controller
         }
 
         $sentence = $request->input('sentence', null);
+        $sentence = is_string($sentence) ? $sentence : '';
         // Versi yang rapi (spasi tetap ada) untuk ditampilkan di ringkasan game over
-        $sentenceForLog = is_string($sentence) ? strtoupper(preg_replace('/\s+/', ' ', trim($sentence))) : '';
+        $sentenceForLog = strtoupper(preg_replace('/\s+/', ' ', trim($sentence)));
         $sentence = trim(strtoupper(str_replace(' ','',$sentence)));
 
-        if ($sentence) {
+        // Cek string kosong secara eksplisit: "0" bernilai false di PHP, jadi `if ($sentence)` akan melewatinya
+        if ($sentence !== '') {
             $currentSessionRounds = session($this->currentSessionKey() . '.roundsData', []);
             if (!$this->gameAlreadyStarted() || empty($currentSessionRounds)) {
                 return $this->gameNotReadyResponse();
@@ -717,8 +719,10 @@ class GameController extends Controller
         }
 
         $letter = $request->input('letter', null);
-        if ($letter) {
-            $letter = trim(strtoupper($letter));
+        $letter = is_string($letter) ? trim(strtoupper($letter)) : '';
+
+        // Cek string kosong secara eksplisit: tombol "0" mengirim "0", yang bernilai false di PHP
+        if ($letter !== '') {
             $currentSessionRounds = session($this->currentSessionKey() . '.roundsData', []);
             if (!$this->gameAlreadyStarted() || empty($currentSessionRounds)) {
                 return $this->gameNotReadyResponse();
@@ -740,14 +744,15 @@ class GameController extends Controller
             $currentPlayerScore = $currentPlayer['score'];
             $turnCount = $currentRound['turnCount'];
             
-            if (in_array($letter, $availableLetters) && !in_array($letter, $guessedLetters) && !$isAnswered) {
+            // Perbandingan strict (true / ===), karena sekarang ada angka: jangan sampai "0" dibandingkan secara longgar
+            if (in_array($letter, $availableLetters, true) && !in_array($letter, $guessedLetters, true) && !$isAnswered) {
                 // Kalau huruf belum ketebak, cek
                 $currentWord = str_replace(' ','',trim(strtoupper($currentRound['currentWord'])));
                 $uniqueLetters = [];
                 $occurrences = 0;
                 foreach (str_split($currentWord) as $char) {
-                    if (!in_array($char, $uniqueLetters)) { $uniqueLetters[] = $char; }
-                    if ($char == $letter) { $occurrences++;}
+                    if (!in_array($char, $uniqueLetters, true)) { $uniqueLetters[] = $char; }
+                    if ($char === $letter) { $occurrences++;}
                 }
                 
                 if ($occurrences > 0) {
@@ -757,7 +762,7 @@ class GameController extends Controller
                 }
                 
                 // Scoring and letter control
-                $key = array_search($letter, $availableLetters);
+                $key = array_search($letter, $availableLetters, true);
                 if ($key !== false) {
                     $guessedLetters[] = $letter;
                     unset($availableLetters[$key]);

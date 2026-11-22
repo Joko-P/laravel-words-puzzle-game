@@ -112,6 +112,7 @@ The file name is the pack id.
 
 - **Validate on the server, not only in JS.** The UI can be stale (Back button, cached pages, two tabs), so every rule needs a server-side check. Return 4xx JSON instead of letting a 500 happen.
 - `Collection::firstWhere('order', $x)` compares loosely, so `null == 0` is true. Use strict comparisons for `order`.
+- **`"0"` is falsy in PHP.** Since digits are guessable, never check guess input with `if ($letter)` / `if ($sentence)`; use `!== ''`. Use strict `in_array(..., true)`, `array_search(..., true)` and `===` for letters. (In JS, `"0"` is truthy, so `if (letter)` there is fine.)
 - **Layout:** the original desktop layout (1920×1080 at 100% zoom) must stay as it is.
   - `.app-shell` is at least one screen tall, and content is centred with auto margins, so zoomed-in content scrolls instead of being clipped.
   - The game screen's letter boxes and keys shrink to fit.
