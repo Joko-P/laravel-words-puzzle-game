@@ -44,11 +44,11 @@
 <div id="game-icon-area">
 
 </div>
-<div class="row m-0 mt-5 d-flex flex-row justify-content-center align-items-center w-100">
-    <div class="col-4">
+<div class="row m-0 mt-5 gy-2 gy-sm-0 d-flex flex-row justify-content-center align-items-center w-100">
+    <div class="col-12 col-sm-6 col-md-4">
         <button type="button" class="btn btn-lg btn-outline-dark w-100 fw-bold" id="newGameBtn">Mulai Game Baru</button>
     </div>
-    <div class="col-4">
+    <div class="col-12 col-sm-6 col-md-4">
         <button type="button" class="btn btn-lg btn-outline-dark w-100 fw-bold" id="resumeGameBtn">Lanjutkan Game Sebelumnya</button>
     </div>
 </div>

@@ -1,4 +1,5 @@
 @extends('layouts.main-layout')
+@inject('mainService', 'App\Services\MainService')
 @section('page-title')
     Lobby
 @endsection
@@ -7,14 +8,14 @@
 </style>
 @endpush
 @section('content')
-    <div class="row m-0 mb-4 p-0 d-flex flex-row justify-content-center align-items-center" style="width: 90vw; max-width: 90vw;">
-        <div class="col-2">
+    <div class="row m-0 mb-4 p-0 gy-3 gy-md-0 d-flex flex-row justify-content-center align-items-center" style="width: 90vw; max-width: 90vw;">
+        <div class="col-4 col-md-2">
             <div class="image-profile-element-container">
                 <img class="profile-pic-container" id="profilePicSelectionImage" src="{{ asset($default_pic['path']) }}">
             </div>
             <button type="button" class="btn btn-sm btn-outline-dark w-100 text-center mt-2" id="randomizePicButton"><i class="bi bi-dice-3-fill pe-1"></i>Randomize</button>
         </div>
-        <div class="col-4">
+        <div class="col-8 col-md-4">
             <input type="text" class="d-none" id="profilePicIdSelectionInput" name="profilePicIdSelection" hidden required readonly value="{{ $default_pic['id'] }}">
             <div class="input-group mb-3">
                 <span class="input-group-text border-dark-subtle">Nama Player</span>
@@ -22,7 +23,7 @@
             </div>
             <button type="button" class="btn btn-success w-100 fw-bold fs-5" id="addNewPlayerButton"><i class="bi bi-plus-square-fill pe-2"></i>Tambah Player</button>
         </div>
-        <div class="col-4">
+        <div class="col-12 col-md-4">
             <form method="POST" action="{{ route('game.start-game', ['urlEncodedNamaSesi' => session('current_game')['url']]) }}">
                 @csrf
                 <div class="row m-0 p-0 gx-1 d-flex flex-row justify-content-center align-items-center w-100">
@@ -48,23 +49,39 @@
                     <div class="col-3">
                         <button type="submit" class="btn btn-dark btn-lg text-center fs-5 fw-bold w-100 py-1"><i class="bi bi-play-fill pe-2"></i></button>
                     </div>
+                    <div class="col-12 pt-1">
+                        <button class="btn btn-link btn-sm p-0 text-dark text-decoration-none small" type="button" data-bs-toggle="collapse" data-bs-target="#pengaturanLainnya" aria-expanded="false" aria-controls="pengaturanLainnya">
+                            <i class="bi bi-gear-fill pe-1"></i>Pengaturan Lainnya <i class="bi bi-chevron-down small"></i>
+                        </button>
+                        <div class="collapse" id="pengaturanLainnya">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 m-0 p-0 g-1">
+                                <div class="col">
+                                    <div class="input-group input-group-sm mt-1">
+                                        <span class="input-group-text border-dark-subtle">Timer</span>
+                                        <input type="number" step="1" min="0" max="600" value="{{ old('batasWaktu', 0) }}" class="form-control border-dark-subtle" id="batasWaktuInput" name="batasWaktu" inputmode="numeric">
+                                    </div>
+                                    <div class="form-text m-0">Dalam detik<br>0 = Tanpa Timer<br>Recommended 30</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
     <div class="row m-0 my-2 p-0 d-flex flex-row justify-content-center align-items-center" style="width: 90vw; max-width: 90vw;">
-        <div class="col-2"></div>
-        <div class="col-8">
-            <h2 class="m-0 text-center fw-bold">Players List</h2>
+        <div class="col-3 col-md-2"></div>
+        <div class="col-6 col-md-8">
+            <h2 class="m-0 text-center fw-bold text-nowrap">Players List</h2>
         </div>
-        <div class="col-2 d-flex flex-row justify-content-end align-items-center">
+        <div class="col-3 col-md-2 d-flex flex-row justify-content-end align-items-center">
             <button type="button" class="btn btn-sm btn-outline-dark" id="refreshPlayersListButton"><i class="bi bi-arrow-clockwise pe-2"></i>Refresh</button>
         </div>
         <div class="col-12">
             <hr class="my-2 border-dark border">
         </div>
     </div>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 m-0 p-0 d-flex flex-row justify-content-start align-items-center overflow-y-auto" id="player-list-area" style="width: 90vw; max-width: 90vw; height: 16rem; max-height: 16rem;">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 m-0 p-0 d-flex flex-row justify-content-start align-items-start overflow-y-auto" id="player-list-area" style="width: 90vw; max-width: 90vw; max-height: 16rem;">
     </div>
 @endsection
 @push('modals')
@@ -122,27 +139,7 @@
                 },
                 error: function(err) {
                     console.log(err);
-                    var list_error = "";
-                    for (const [inputName, arrayMessage] of Object.entries(err.responseJSON)) {
-                        arrayMessage.forEach(message => {
-                            list_error += `<li>${message}</li>`;
-                        });
-                    }
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Terjadi Kesalahan',
-                        theme: 'bootstrap-5',
-                        customClass: {
-                            confirmButton: 'btn btn-primary',
-                        },
-                        html: `
-                                <div class="d-flex w-100 justify-content-center m-0 p-0">
-                                    <ul>
-                                        ${list_error}
-                                    </ul>
-                                </div>
-                        `
-                    });
+                    showErrorList(err);
                 }
             });
         });
@@ -209,9 +206,38 @@
                 },
                 error: function(err) {
                     console.log(err);
+                    showErrorList(err);
+                    refreshPlayersListButton.trigger('click');
                 }
             });
         });
+
+        function showErrorList(err) {
+            var list_error = "";
+            for (const [inputName, arrayMessage] of Object.entries(err.responseJSON ?? {})) {
+                [].concat(arrayMessage).forEach(message => {
+                    list_error += `<li>${message}</li>`;
+                });
+            }
+            if (!list_error) {
+                list_error = `<li>Terjadi kesalahan (HTTP ${err.status}).</li>`;
+            }
+            Swal.fire({
+                icon: 'error',
+                title: 'Terjadi Kesalahan',
+                theme: 'bootstrap-5',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                },
+                html: `
+                        <div class="d-flex w-100 justify-content-center m-0 p-0">
+                            <ul>
+                                ${list_error}
+                            </ul>
+                        </div>
+                `
+            });
+        }
 
         refreshPlayersListButton.trigger('click');
     });

@@ -158,8 +158,8 @@ class Emoji
             'path' => 'profile-pics-openmoji/full-moon.svg',
         ],
         [
-            'id' => 'gihtub',
-            'path' => 'profile-pics-openmoji/gihtub.svg',
+            'id' => 'github',
+            'path' => 'profile-pics-openmoji/github.svg',
         ],
         [
             'id' => 'hacker-cat',

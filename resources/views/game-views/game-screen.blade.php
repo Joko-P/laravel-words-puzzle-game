@@ -11,9 +11,11 @@
         margin-top:0.25rem;
     }
 
+    /* Ukuran kotak huruf mengecil kalau layar sempit (misal di-zoom), maksimal tetap 3rem x 4rem
+       seperti desain aslinya. 17 = 16 kolom maksimal + ruang untuk margin. */
     .letter{
-        min-width: 3rem;
-        height:4rem;
+        width: clamp(1.5rem, calc((100vw - 5rem) / 17), 3rem);
+        aspect-ratio: 3 / 4;
         margin:0.125rem;
         display:flex;
         justify-content:center;
@@ -25,7 +27,7 @@
     }
 
     .letter p{
-        font-size:2rem;
+        font-size: clamp(0.9rem, calc((100vw - 5rem) / 30), 2rem);
         font-weight:bold;
         margin:0;
     }
@@ -38,79 +40,136 @@
         opacity:1;
     }
 
+    /* Tombol huruf boleh mengecil (maksimal tetap 3.5rem) supaya keyboard tidak keluar dari kolomnya */
     .guess-the-letter-btn{
-        min-width: 3.5rem;
-        max-width: 3.5rem;
+        flex: 0 1 3.5rem;
+        min-width: 0;
+        max-width: 3rem;
         margin: 0.125rem;
-        font-size: 1.5rem;
+        padding-inline: 0;
+        font-size: clamp(0.875rem, 1.5vw, 1.25rem);
         text-align: center;
+    }
+
+    .leaderboard-area{
+        height: 16rem;
+        max-height: 16rem;
+    }
+
+    /* Timer giliran: bar penuh di awal, lalu menyusut ke arah tengah (karena justify-content: center) */
+    .turn-timer-track{
+        width: min(100%, 40rem);
+        height: 0.5rem;
+        display: flex;
+        justify-content: center;
+        background-color: rgba(33, 37, 41, 0.08);
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+
+    .turn-timer-bar{
+        width: 100%;
+        height: 100%;
+        border-radius: 1rem;
+        background-color: hsl(120, 70%, 42%);
     }
 </style>
 @endpush
 @section('content')
-<div class="mb-4" id="words-display-area">
+<div class="mb-2" id="words-display-area">
 
+</div>
+<div class="mb-3 d-flex flex-column align-items-center" id="hint-area">
+    <button type="button" class="btn btn-sm btn-outline-dark fw-bold" id="showHintButton" disabled>
+        <i class="bi bi-lightbulb-fill pe-1"></i><span class="hint-label">Show Hint</span> <span id="hintCounter" class="fw-normal"></span>
+    </button>
+    <ol class="m-0 mt-2 d-none" id="revealedHintsList" style="max-width: 60vw;"></ol>
 </div>
 <div class="w-100 px-4 d-flex flex-row justify-content-center overflow-x-auto" style="max-width: 80vw;" id="player-turns-indicator-area">
 
 </div>
-<hr style="width: calc(100vw - 6rem);">
-<div class="row m-0 p-0 g-0 w-100 d-flex flex-row justify-content-center align-items-center">
-    <div class="col-2 text-center">
-        <p class="fw-bold m-0 fs-5 mb-2">Leaderboard</p>
+<div class="w-100 px-4 mt-2 d-none flex-column align-items-center" style="max-width: 80vw;" id="turn-timer-area">
+    <div class="turn-timer-track">
+        <div class="turn-timer-bar" id="turnTimerBar"></div>
     </div>
-    <div class="col-4 text-center">
-        <p class="fw-bold m-0 fs-5 mb-2">Tebak Kalimatnya</p>
-    </div>
-    <div class="col-1"></div>
-    <div class="col-5 text-center">
-        <p class="fw-bold m-0 fs-5 mb-2">Tebak Hurufnya</p>
-    </div>
-    <div class="col-2 d-flex flex-column align-items-start justify-content-start overflow-y-auto" id="leaderboardArea" style="max-height: 16rem; height: 16rem;">
+    <p class="m-0 mt-1 small fw-bold" id="turnTimerLabel"></p>
+</div>
+<hr class="content-divider">
+{{-- Setiap kolom berisi judul + isinya sendiri, supaya di layar sempit (zoom besar) bisa ditumpuk
+     ke bawah. Di layar normal (md ke atas) posisinya sama seperti sebelumnya: 2 / 4 / 1 / 5. --}}
+<div class="row m-0 p-0 g-0 gy-4 gy-md-0 w-100 d-flex flex-row justify-content-center">
+    <div class="col-12 col-md-2 order-last order-md-0 d-flex flex-column">
+        <p class="fw-bold m-0 fs-5 mb-2 text-center">Leaderboard</p>
+        <div class="d-flex flex-column align-items-start justify-content-start overflow-y-auto leaderboard-area" id="leaderboardArea">
 
-    </div>
-    <div class="col-4 d-flex flex-row align-items-center justify-content-center">
-        <div class="input-group m-0 w-75">
-            <input type="text" id="guessTheSentenceInput" class="form-control border-dark">
-            <button class="btn btn-dark fw-bold" type="button" id="guessTheSentenceButton">Tebak!</button>
         </div>
     </div>
-    <div class="col-1 text-center">
-        <p class="fw-bold m-0 fs-5">Atau</p>
+    <div class="col-12 col-md-4 d-flex flex-column">
+        <p class="fw-bold m-0 fs-5 mb-2 text-center">Tebak Kalimatnya</p>
+        <div class="flex-grow-1 d-flex flex-row align-items-center justify-content-center">
+            <div class="input-group m-0 w-75">
+                <input type="text" id="guessTheSentenceInput" class="form-control border-dark">
+                <button class="btn btn-dark fw-bold" type="button" id="guessTheSentenceButton">Tebak!</button>
+            </div>
+        </div>
     </div>
-    <div class="col-5 text-center">
-        <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Q">Q</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="W">W</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="E">E</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="R">R</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="T">T</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Y">Y</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="U">U</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="I">I</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="O">O</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="P">P</button>
+    <div class="col-12 col-md-1 d-flex flex-column">
+        <p class="fw-bold m-0 fs-5 mb-2 d-none d-md-block" aria-hidden="true">&nbsp;</p>
+        <div class="flex-grow-1 d-flex align-items-center justify-content-center">
+            <p class="fw-bold m-0 fs-5">Atau</p>
         </div>
-        <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="A">A</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="S">S</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="D">D</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="F">F</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="G">G</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="H">H</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="J">J</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="K">K</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="L">L</button>
-        </div>
-        <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Z">Z</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="X">X</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="C">C</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="V">V</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="B">B</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="N">N</button>
-            <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="M">M</button>
-            <div class="guess-the-letter-btn"></div>
+    </div>
+    <div class="col-12 col-md-5 d-flex flex-column text-center">
+        <p class="fw-bold m-0 fs-5 mb-2">Tebak Hurufnya</p>
+        <div class="flex-grow-1 d-flex flex-column justify-content-center">
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="1">1</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="2">2</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="3">3</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="4">4</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="5">5</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="6">6</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="7">7</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="8">8</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="9">9</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="0">0</button>
+            </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <div class="guess-the-letter-btn"></div>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Q">Q</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="W">W</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="E">E</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="R">R</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="T">T</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Y">Y</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="U">U</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="I">I</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="O">O</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="P">P</button>
+            </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <div class="guess-the-letter-btn"></div>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="A">A</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="S">S</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="D">D</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="F">F</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="G">G</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="H">H</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="J">J</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="K">K</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="L">L</button>
+            </div>
+            <div class="m-0 p-0 w-100 d-flex flex-row justify-content-center align-items-center">
+                <div class="guess-the-letter-btn"></div>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="Z">Z</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="X">X</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="C">C</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="V">V</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="B">B</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="N">N</button>
+                <button type="button" class="btn btn-outline-dark guess-the-letter-btn" value="M">M</button>
+                <div class="guess-the-letter-btn"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -124,8 +183,94 @@
         const wordsDisplayArea = $("div#words-display-area");
         const guessTheSentenceInput = $("input#guessTheSentenceInput");
         const guessTheSentenceButton = $("button#guessTheSentenceButton");
+        const showHintButton = $("button#showHintButton");
         const maxCols = 16;
         var gameSessionData = [];
+        var hintsState = { revealed: [], total: 0, penalty: 0, can_reveal: false };
+        var currentPlayerName = '';
+
+        // Timer giliran. Sisa waktu selalu diambil dari server (remaining_ms), browser hanya menghitung mundur
+        // dan memberi tahu server saat habis. Yang memutuskan waktu habis tetap server.
+        const turnTimerArea = $("div#turn-timer-area");
+        const turnTimerBar = $("div#turnTimerBar");
+        const turnTimerLabel = $("p#turnTimerLabel");
+        var timerState = null;
+        var timerDeadline = 0;
+        var timerFrame = null;
+        var timeoutRequestSent = false;
+
+        function displayTimer(timer) {
+            timerState = timer;
+            if (!timer || !timer.limit_seconds || !timer.running) {
+                turnTimerArea.removeClass('d-flex').addClass('d-none');
+                if (timerFrame) { cancelAnimationFrame(timerFrame); timerFrame = null; }
+                return;
+            }
+
+            turnTimerArea.removeClass('d-none').addClass('d-flex');
+            timerDeadline = performance.now() + timer.remaining_ms;
+            timeoutRequestSent = false;
+            if (!timerFrame) { timerFrame = requestAnimationFrame(tickTimer); }
+        }
+
+        function tickTimer() {
+            timerFrame = null;
+            if (!timerState || !timerState.running) { return; }
+
+            const totalMs = timerState.limit_seconds * 1000;
+            const remainingMs = Math.max(0, timerDeadline - performance.now());
+            const ratio = Math.min(1, remainingMs / totalMs);
+
+            // Hue 120 (hijau) -> 60 (kuning) -> 30 (oranye) -> 0 (merah), berubah perlahan sesuai sisa waktu
+            turnTimerBar.css({
+                'width': `${ratio * 100}%`,
+                'background-color': `hsl(${Math.round(120 * ratio)}, 75%, 45%)`,
+            });
+            turnTimerLabel.text(`${Math.ceil(remainingMs / 1000)} detik`);
+
+            if (remainingMs <= 0) {
+                if (!timeoutRequestSent) {
+                    timeoutRequestSent = true;
+                    sendTurnTimeout();
+                }
+                return;
+            }
+
+            timerFrame = requestAnimationFrame(tickTimer);
+        }
+
+        function sendTurnTimeout() {
+            $.ajax({
+                type: "POST",
+                url: "{{ route('game.turn-timeout', ['urlEncodedNamaSesi' => session('current_game.url')]) }}",
+                data: {
+                    "_token" : "{{ csrf_token() }}",
+                },
+                success: function(result) {
+                    if (result && result.state === 'timeout') {
+                        showTimeoutNotice(result);
+                    }
+                    // Kalau server bilang belum habis (selisih beberapa milidetik), data terbaru akan menyamakan timernya lagi
+                    grabGameSessionData();
+                },
+                error: function(err) {
+                    console.log(err);
+                    grabGameSessionData();
+                }
+            });
+        }
+
+        function showTimeoutNotice(timeout) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Waktu habis!',
+                text: `${timeout.player_name} dikurangi ${timeout.penalty} poin, giliran pindah ke pemain berikutnya.`,
+                theme: 'bootstrap-5',
+                timer: 2500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+        }
 
         function wrapSentence(sentence) {
             const words = sentence.trim().split(/\s+/);
@@ -170,15 +315,24 @@
                         const playersTurn = result.players_turn;
 
                         $("title").html(`Round ${gameSessionData.currentRound}, Turn ${result.current_turn} - {{ config('app.name', 'Laravel') }}`);
-                        $("h2#header-screen-title").html(`
+                        $("#header-screen-title").html(`
                             Round ${gameSessionData.currentRound}, Turn ${result.current_turn}
                             <i class="bi bi-arrow-clockwise ps-2" style="cursor: pointer;" id="reloadGameScreen"></i>
                         `);
+
+                        currentPlayerName = (playersTurn.find(player => player.currentlyPlay) || {}).name || '';
 
                         displayLeaderboard(leaderboard);
                         disableSomeLetterGuesses(roundData);
                         displayBaseWords(roundData);
                         displayPlayersTurn(playersTurn);
+                        displayHints(result.hints);
+                        displayTimer(result.game_over ? null : result.timer);
+
+                        // Giliran yang waktunya habis saat halaman ditutup / belum dibuka juga diberi tahu
+                        if (result.timeout) {
+                            showTimeoutNotice(result.timeout);
+                        }
                     }
                 },
                 error: function(err) {
@@ -300,7 +454,93 @@
             }
         }
 
-        $("h2#header-screen-title").on('click', 'i#reloadGameScreen', function() {
+        function displayHints(hints) {
+            hintsState = hints || { revealed: [], total: 0, penalty: 0, can_reveal: false };
+            const revealedHintsList = $("ol#revealedHintsList");
+            revealedHintsList.html('');
+
+            hintsState.revealed.forEach(hint => {
+                // .text() supaya isi hint dari file JSON tidak dibaca sebagai HTML
+                revealedHintsList.append($("<li>").addClass('fw-semibold').text(hint));
+            });
+            revealedHintsList.toggleClass('d-none', hintsState.revealed.length === 0);
+
+            showHintButton.find('.hint-label').text(hintsState.total ? 'Show Hint' : 'Tidak ada hint');
+            var hintCounterText = '';
+            if (hintsState.total && hintsState.locked) {
+                // Server juga menolak hint sebelum giliran ini, tombol ini hanya penanda
+                hintCounterText = `(Terbuka di giliran ke-${(hintsState.unlocks_after_turn) + 1})`;
+            } else if (hintsState.total && hintsState.used_this_turn && hintsState.revealed.length < hintsState.total) {
+                hintCounterText = `(${hintsState.revealed.length}/${hintsState.total})`;
+            } else if (hintsState.total) {
+                hintCounterText = `(${hintsState.revealed.length}/${hintsState.total}, -${hintsState.penalty} poin)`;
+            }
+            $("span#hintCounter").text(hintCounterText);
+            showHintButton.prop('disabled', !hintsState.can_reveal);
+        }
+
+        showHintButton.on('click', function() {
+            if (!hintsState.can_reveal) { return; }
+
+            Swal.fire({
+                icon: 'question',
+                title: 'Buka hint?',
+                text: `Skor ${currentPlayerName || 'pemain yang sedang giliran'} akan dikurangi ${hintsState.penalty} poin.`,
+                theme: 'bootstrap-5',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, buka hint',
+                cancelButtonText: 'Batal',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-secondary',
+                },
+            }).then((confirmation) => {
+                if (!confirmation.isConfirmed) { return; }
+
+                showHintButton.prop('disabled', true);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('game.show-hint', ['urlEncodedNamaSesi' => session('current_game.url')]) }}",
+                    data: {
+                        "_token" : "{{ csrf_token() }}",
+                    },
+                    success: function(result) {
+                        if (result && result.state === 'timeout') {
+                            // Waktu giliran sudah habis sebelum hint dibuka, jadi hint tidak dibuka
+                            showTimeoutNotice(result);
+                            grabGameSessionData();
+                            return;
+                        }
+
+                        Swal.fire({
+                            icon: 'info',
+                            title: `Hint ${result.hint_number}/${result.hints_total}`,
+                            text: result.hint,
+                            theme: 'bootstrap-5',
+                            customClass: {
+                                confirmButton: 'btn btn-primary',
+                            },
+                        });
+                        grabGameSessionData();
+                    },
+                    error: function(err) {
+                        console.log(err);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: (err.responseJSON && err.responseJSON.error) || `HTTP ${err.status}`,
+                            theme: 'bootstrap-5',
+                            customClass: {
+                                confirmButton: 'btn btn-primary',
+                            },
+                        });
+                        grabGameSessionData();
+                    }
+                });
+            });
+        });
+
+        $("#header-screen-title").on('click', 'i#reloadGameScreen', function() {
             grabGameSessionData();
         })
 
@@ -318,6 +558,10 @@
                     success: function(result) {
                         if (result) {
                             const game_state = result.state;
+                            if (game_state == 'timeout') {
+                                // Tebakan masuk setelah waktu giliran habis: tidak dihitung, giliran sudah pindah
+                                showTimeoutNotice(result);
+                            }
                             if (game_state == 'next_round') {
                                 Swal.fire({
                                     icon: 'success',
@@ -331,7 +575,8 @@
                                             <p class="m-0 my-2 fw-bold fs-4">${result.sentence}</p>
                                         </div>
                                     `
-                                });
+                                }).then(() => grabGameSessionData()); // Tunggu popup ditutup dulu, supaya popup ronde terakhir tidak langsung hilang karena redirect ke game over
+                                return;
                             }
                         }
                         grabGameSessionData();
@@ -363,6 +608,10 @@
                     success: function(result) {
                         if (result) {
                             const game_state = result.state;
+                            if (game_state == 'timeout') {
+                                // Tebakan masuk setelah waktu giliran habis: tidak dihitung, giliran sudah pindah
+                                showTimeoutNotice(result);
+                            }
                             if (game_state == 'next_round') {
                                 Swal.fire({
                                     icon: 'success',
@@ -376,7 +625,8 @@
                                             <p class="m-0 my-2 fw-bold fs-4">${result.sentence}</p>
                                         </div>
                                     `
-                                });
+                                }).then(() => grabGameSessionData()); // Tunggu popup ditutup dulu, supaya popup ronde terakhir tidak langsung hilang karena redirect ke game over
+                                return;
                             }
                         }
                         grabGameSessionData();

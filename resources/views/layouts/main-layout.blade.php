@@ -1,3 +1,4 @@
+@inject('mainService', 'App\Services\MainService')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -40,39 +41,69 @@
         .profile-pic-container {
             scale: 0.75;
         }
+
+        /* Layout dasar: tinggi tepat 1 layar. Header & footer selalu terlihat, dan kalau konten
+           tidak muat (layar kecil / di-zoom), hanya area konten di tengah yang di-scroll. */
+        .app-shell {
+            height: 100vh;
+            height: 100dvh; /* di HP, ikut tinggi layar yang terlihat (address bar) */
+        }
+        .main-header-area,
+        .main-footer-area {
+            min-height: 7.5vh;
+            flex-shrink: 0;
+        }
+        .main-content-area {
+            min-height: 0; /* supaya area ini boleh lebih pendek dari isinya, lalu di-scroll */
+            overflow-y: auto;
+        }
+        .main-header-area p,
+        #header-screen-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .main-header-logo {
+            max-height: 5vh;
+            min-height: 1.5rem;
+        }
+        /* margin auto (bukan justify-content center) supaya konten yang lebih tinggi dari layar
+           tidak terpotong di bagian atas */
+        .main-content-inner {
+            margin-block: auto;
+        }
+        .content-divider {
+            align-self: stretch;
+            margin-inline: 2rem;
+        }
     </style>
     @stack('css')
 </head>
 <body>
-    <div class="d-flex flex-column bg-dark vw-100 vh-100 p-2 align-items-center justify-content-center" style="max-height: 100vh; max-width: 100vw;">
-        <div class="w-100 bg-secondary-subtle main-header-area h-100 py-1 px-2 rounded-top-4" style="max-height: 7.5vh;">
-            <div class="row m-0 gx-2 d-flex flex-row justify-content-between align-items-center w-100 h-100">
-                <div class="col-1">
+    <div class="app-shell d-flex flex-column bg-dark w-100 p-2 align-items-center">
+        <div class="w-100 bg-secondary-subtle main-header-area d-flex align-items-center py-1 px-2 rounded-top-4">
+            <div class="row m-0 gx-2 d-flex flex-row justify-content-between align-items-center w-100">
+                <div class="col-3 col-md-2">
                     <a href="/">
-                        <img src="{{ asset('images/game-icon.png') }}" alt="Game Icon" class="img-fluid" style="max-height: 5vh;">
+                        <img src="{{ asset('images/game-icon.png') }}" alt="Game Icon" class="img-fluid main-header-logo">
                     </a>
                 </div>
-                <div class="col-2">
-                    <p class="m-0">Sesi game saat ini :</p>
-                    <p class="m-0 fs-6 fw-bold" style="cursor: pointer;" id="sessionDetailsButton">{{ session('current_game')['name'] ?? '-' }}</p>
+                <div class="col-6 col-md-8">
+                    <h4 class="m-0 text-center fw-bold" id="header-screen-title">@yield('page-title')</h4>
+                    <p class="m-0 text-center fw-bold" style="cursor: pointer; font-size: 0.875rem; line-height: 1rem;" id="sessionDetailsButton">{{ session('current_game')['name'] ?? '-' }}</p>
                 </div>
-                <div class="col-6">
-                    <h2 class="m-0 text-center fw-bold" id="header-screen-title">@yield('page-title')</h2>
-                </div>
-                <div class="col-2">
-                    <p class="m-0">Jumlah sesi game :</p>
-                    <p class="m-0 fs-6"><span class="fw-bold">{{ count(session('gameSessions', [])) }}</span> sesi game</p>
-                </div>
-                <div class="col-1">
-                    <p class="m-0 p-0 text-center fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayCredits();">Credits</p>
-                    <p class="m-0 p-0 text-center fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayGameRules();">Game Rules</p>
+                <div class="col-3 col-md-2">
+                    <p class="m-0 p-0 text-end fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayCredits();">Credits</p>
+                    <p class="m-0 p-0 text-end fw-bold text-primary" style="font-size: 0.75rem; cursor: pointer;" onclick="displayGameRules();">Game Rules</p>
                 </div>
             </div>
         </div>
-        <div class="w-100 bg-light main-content-area flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-            @yield('content')
+        <div class="w-100 bg-light main-content-area flex-grow-1 d-flex flex-column py-2">
+            <div class="main-content-inner w-100 d-flex flex-column align-items-center">
+                @yield('content')
+            </div>
         </div>
-        <div class="w-100 bg-secondary-subtle main-footer-area h-100 py-1 px-2 rounded-bottom-4" style="max-height: 7.5vh;">
+        <div class="w-100 bg-secondary-subtle main-footer-area py-1 px-2 rounded-bottom-4">
             @yield('footer-area')
         </div>
     </div>
@@ -161,16 +192,26 @@
                         <li>Sistem <span style="font-style: italic;">Scoring</span> :</li>
                         <ul class="m-0 w-100" style="padding-left: 1.25rem;">
                             <li>
-                                <b>Jika menebak huruf</b>, akan ada skor dasar 25.<br>
-                                Nilai akhir dihitung dengan 25 + (100 / jumlah huruf ditebak)<br>
+                                <b>Jika menebak huruf/angka</b>, akan ada skor dasar 25.<br>
+                                Nilai akhir dihitung dengan 25 + (100 / jumlah huruf/angka ditebak)<br>
                                 Contoh, jika menebak huruf 'A' dan ada 5 huruf 'A' yang muncul, maka skor yang didapat : 25 + (100 / 5) => <b>45</b>.<br>
                                 Contoh lain jika menebak huruf 'W' dan ada 2 huruf yang muncul, maka skor yang didapat : 25 + (100 / 2) => <b>75</b>.<br>
-                                <b>Namun jika huruf yang ditebak tidak ada di kalimat, maka -25 poin</b>.
+                                <b>Namun jika huruf/angka yang ditebak tidak ada di kalimat, maka -25 poin</b>.
                             </li>
                             <li>
                                 <b>Jika menebak kalimat</b>, akan ada skor dasar 100 dan skor 20 per-huruf.<br>
                                 Jika tebakan <span class="text-success fw-bold">benar</span>, maka skor yang didapat 100 + (sisa huruf * 20).<br>
                                 Jika tebakan <span class="text-danger fw-bold">salah</span>, maka skor yang didapat (sisa huruf * <b>-</b>20).<br>
+                            </li>
+                            <li>
+                                <b>Jika membuka hint</b>, 1 hint akan ditampilkan (urut dari hint pertama).<br>
+                                Hint baru bisa dibuka <b>setelah giliran ke-{{ $mainService->hintUnlocksAfterTurn() }}</b> di setiap ronde, <b>maksimal 1 hint per giliran</b>.<br>
+                                Pemain yang sedang giliran <b>dikurangi {{ $mainService->hintPenalty() }} poin</b>, tapi gilirannya tidak hilang.
+                            </li>
+                            <li>
+                                <b>Jika batas waktu diatur</b> (di "Pengaturan Lainnya" saat lobby), setiap giliran punya waktu yang sama.<br>
+                                Waktu tetap berjalan walaupun sedang membuka hint atau mengetik kalimat.<br>
+                                Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.
                             </li>
                         </ul>
                     </ol>
@@ -281,12 +322,22 @@
                     },
                     error: function(err) {
                         console.log(err);
+                        if (err.status == 404) {
+                            Swal.fire({
+                                icon: 'info',
+                                title: 'Belum ada sesi game yang dipilih',
+                                theme: 'bootstrap-5',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary',
+                                },
+                            });
+                        }
                     }
                 });
             });
 
             sessionDeleteButton.click(function() {
-                const sessionName = sessionDetailsModal.find("#namaSesiInput").val();
+                const sessionName = sessionDetailsModal.find("#namaSesiInput").text();
                 Swal.fire({
                     title: 'Apakah Anda yakin?',
                     text: `Anda akan menghapus sesi game "${sessionName}"!`,
