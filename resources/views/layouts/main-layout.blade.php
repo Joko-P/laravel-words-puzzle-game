@@ -76,6 +76,12 @@
             align-self: stretch;
             margin-inline: 2rem;
         }
+
+        @media (min-width: 992px) and (max-height: 800px) {
+            html {
+                font-size: 12px;
+            }
+        }
     </style>
     @stack('css')
 </head>

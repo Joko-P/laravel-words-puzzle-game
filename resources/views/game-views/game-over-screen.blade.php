@@ -66,20 +66,24 @@
 </div>
 <hr class="content-divider">
 {{-- Lebar 25vw seperti desain awal, tapi minimal 20rem supaya tidak terlalu sempit saat di-zoom --}}
-<div class="d-flex flex-column justify-content-start align-items-center overflow-y-auto" style="width: min(100%, max(25vw, 20rem)); height: 16rem; max-height: 16rem;">
+@if (count($leaderBoard) > 3)
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 w-100 m-0 g-2 overflow-y-auto" style="height: 16rem; max-height: 16rem;">
     @for ($i = 3; $i < count($leaderBoard); $i++)
-    <div class="d-flex flex-row align-items-center justify-content-start p-3 my-1 border border-2 border-dark bg-white w-100 rounded-3">
-        <p class="m-0 fw-bold fs-5 pe-2">{{ $i + 1 }}.</p>
-        <div class="p-0">
-            <div class="image-profile-element-container me-2" style="max-width: 48px; min-width: 48px;">
-                <img class="profile-pic-container" src="{{ $leaderBoard[$i]['profilePicPath'] ?? '-' }}">
+    <div class="col">
+        <div class="d-flex flex-row align-items-center justify-content-start p-3 border border-2 border-dark bg-white w-100 rounded-3">
+            <p class="m-0 fw-bold fs-5 pe-2">{{ $i + 1 }}.</p>
+            <div class="p-0">
+                <div class="image-profile-element-container me-2" style="max-width: 48px; min-width: 48px;">
+                    <img class="profile-pic-container" src="{{ $leaderBoard[$i]['profilePicPath'] ?? '-' }}">
+                </div>
             </div>
+            <p class="m-0 fw-bold fs-6">{{ $leaderBoard[$i]['name'] ?? '-' }}</p>
+            <p class="m-0 fw-bold fs-6 text-end flex-grow-1 ps-4">{{ $leaderBoard[$i]['score'] ?? '-' }}</p>
         </div>
-        <p class="m-0 fw-bold fs-6">{{ $leaderBoard[$i]['name'] ?? '-' }}</p>
-        <p class="m-0 fw-bold fs-6 text-end flex-grow-1 ps-4">{{ $leaderBoard[$i]['score'] ?? '-' }}</p>
     </div>
     @endfor
 </div>
+@endif
 @if (!empty($summary))
 <hr class="content-divider">
 {{-- Ringkasan per ronde: kalimat, siapa yang menebak apa, dan desc / gambar dari pack kalau ada --}}
