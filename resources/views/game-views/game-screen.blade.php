@@ -328,6 +328,7 @@
                         displayPlayersTurn(playersTurn);
                         displayHints(result.hints);
                         displayTimer(result.game_over ? null : result.timer);
+                        guessTheSentenceInput.focus();
 
                         // Giliran yang waktunya habis saat halaman ditutup / belum dibuka juga diberi tahu
                         if (result.timeout) {
@@ -641,6 +642,7 @@
         });
 
         grabGameSessionData();
+        guessTheSentenceInput.focus();
     });
 </script>
 @endpush
