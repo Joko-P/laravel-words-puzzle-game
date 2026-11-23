@@ -106,7 +106,7 @@ The file name is the pack id.
   - `image` goes through `WordsList::imageUrl()`. It must match `images/words-images/…` with an image extension (jpg, jpeg, jfif, png, webp, gif, svg; `.jfif` is just JPEG, and the user's images use it) and exist under `public/`; otherwise it's ignored. The suggested layout is `public/images/words-images/<pack id>/<word id>.<ext>`.
 - The old format (`"words": ["…"]`) still loads, with generated ids and no hints.
 - Invalid packs or entries are skipped and logged as warnings instead of causing a 500.
-- `popular-actors-pack.json` (95 names) was a first draft written by Claude. Its hints still need a fact check by the user.
+- `popular-actors-pack.json` (95 names) was written by Claude, including its `desc` and `image` fields; its hints were checked against Indonesian Wikipedia. **The user plays this pack and does not want to know its words**, so never name its entries in chat (summarize by count instead). Its photos in `public/images/words-images/popular-actors-pack/` come from Wikimedia Commons (free licences, mostly CC BY-SA) and need credit if the game is ever published; 9 entries have no free photo.
 
 ## Conventions and gotchas
 
