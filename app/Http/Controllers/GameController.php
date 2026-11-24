@@ -269,7 +269,9 @@ class GameController extends Controller
             'guessedLetters' => [],
             'currentPlayerTurn' => $playerTurn,
             'turnCount' => 1,
-            'turnStartedAt' => now()->getTimestampMs(), // diisi ulang setiap giliran pindah, dipakai untuk batas waktu
+            // null = jam giliran berhenti. Baru mulai saat ronde ini tampil di layar (lihat startTurnClockIfPaused),
+            // jadi waktu selama popup "Kalimat Berhasil Ditebak" masih terbuka tidak ikut terhitung
+            'turnStartedAt' => null,
             'timeoutLog' => [], // [['turn' => N, 'playerId' => ..., 'penalty' => ...], ...]
             'turnLog' => [], // semua aksi di ronde ini, untuk ringkasan di game over screen (lihat appendTurnLog)
             'isAnswered' => false,
@@ -328,6 +330,12 @@ class GameController extends Controller
         // Waktu giliran yang sudah habis juga diproses di sini, misal setelah halaman ditutup lalu dibuka lagi
         $timeout = $this->applyTurnTimeoutIfExpired();
         $this->make_new_rounds();
+        // Layar sedang menampilkan giliran ini, jadi jam yang berhenti mulai jalan sekarang. Ini terjadi setelah
+        // popup ronde ditutup dengan cara apa pun (OK, klik di luar, Esc) atau halaman di-reload.
+        // Kalau barusan ada timeout, jamnya tetap berhenti sampai pemberitahuan "Waktumu habis!" tertutup.
+        if (!$timeout) {
+            $this->startTurnClockIfPaused();
+        }
         $current_session = session($this->currentSessionKey());
 
         $gameOver = $current_session['endTime'];
@@ -418,8 +426,10 @@ class GameController extends Controller
 
     /**
      * Kalau waktu giliran sudah habis: kurangi skor pemain yang sedang giliran, catat di timeoutLog,
-     * lalu pindahkan giliran (giliran baru mulai dihitung dari sekarang). Paling banyak 1 giliran
-     * per panggilan, dan tidak melakukan apa-apa kalau waktunya belum habis, jadi aman dipanggil berulang.
+     * lalu pindahkan giliran dengan jam yang berhenti dulu (turnStartedAt = null). Jam giliran berikutnya
+     * baru mulai setelah pemberitahuan "Waktumu habis!" tertutup dan layar memuat data lagi.
+     * Paling banyak 1 giliran per panggilan, dan tidak melakukan apa-apa kalau waktunya belum habis
+     * atau jamnya sedang berhenti, jadi aman dipanggil berulang.
      * Mengembalikan info timeout, atau null kalau tidak ada yang berubah.
      */
     private function applyTurnTimeoutIfExpired(): ?array
@@ -460,7 +470,7 @@ class GameController extends Controller
             $this->currentSessionKey() . '.playersList.' . $currentPlayer['id'] . '.score' => $currentPlayer['score'] - $penalty,
             $roundKey . '.currentPlayerTurn' => $nextPlayerTurn,
             $roundKey . '.turnCount' => (int) $round['turnCount'] + 1,
-            $roundKey . '.turnStartedAt' => now()->getTimestampMs(),
+            $roundKey . '.turnStartedAt' => null, // berhenti dulu selama pemberitahuan waktu habis tampil
             $roundKey . '.timeoutLog' => $timeoutLog,
         ]);
         $this->appendTurnLog((int) $round['roundNumber'], 'timeout', $currentPlayer['id'], (int) $round['turnCount'], null, null, -$penalty);
@@ -469,6 +479,24 @@ class GameController extends Controller
             'player_name' => $currentPlayer['name'],
             'penalty' => $penalty,
         ];
+    }
+
+    // Jalankan jam giliran yang sedang berhenti (turnStartedAt = null): ronde baru, atau giliran setelah timeout
+    private function startTurnClockIfPaused(): void
+    {
+        $session = $this->currentSession();
+        if (empty($session['startTime']) || !empty($session['endTime']) || empty($session['roundsData'])) {
+            return;
+        }
+
+        $round = end($session['roundsData']);
+        if ($round['isAnswered'] || isset($round['turnStartedAt'])) {
+            return;
+        }
+
+        session([
+            $this->currentSessionKey() . '.roundsData.' . $round['roundNumber'] . '.turnStartedAt' => now()->getTimestampMs(),
+        ]);
     }
 
     // Dipanggil oleh timer di game screen saat waktunya habis. Server tetap mengecek sendiri apakah benar sudah habis.

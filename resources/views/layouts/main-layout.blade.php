@@ -222,7 +222,8 @@
                             <li>
                                 <b>Jika batas waktu diatur</b> (di "Pengaturan Lainnya" saat lobby), setiap giliran punya waktu yang sama.<br>
                                 Waktu tetap berjalan walaupun sedang membuka hint atau mengetik kalimat.<br>
-                                Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.
+                                Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.<br>
+                                Waktu berhenti di antara ronde (sampai ronde berikutnya tampil) dan selama pemberitahuan waktu habis, jadi pemain berikutnya selalu mendapat waktu penuh.
                             </li>
                         </ul>
                     </ol>
