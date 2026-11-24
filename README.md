@@ -36,6 +36,7 @@ Here are the credits section for what other components I used to make this game 
 3. [Jquery](https://jquery.com/)
 4. [SweetAlert2](https://sweetalert2.github.io/)
 5. [OpenMoji](https://openmoji.org/)
+6. [Wikipedia](https://wikipedia.org/)
 
 ## Words list format
 
@@ -60,6 +61,6 @@ Word packs live in `storage/app/words-list/*.json`. The file name (without `.jso
 - If you use `php artisan config:cache`, run it again after changing `config/game.php` or these `.env` values.
 - `desc` and `image` are optional. They're shown in the **Ringkasan Permainan** section of the game over screen, so players can read up on words they didn't know.
   - `desc` is text with a few simple tags: `<b>`/`<strong>`, `<i>`/`<em>`, `<u>`, `<s>`/`<del>`, `<br>`, combined however you like. Links are written as `<a href='https://...'>teks</a>`; single quotes avoid escaping `\"` in JSON. Only `http`/`https` links work, and they open in a new tab. Any other tag is shown as plain text. A new line (`\n`) becomes a line break.
-  - `image` is a path inside `public/`, under `images/words-images/` (suggested: `images/words-images/<pack id>/<word id>.jpg`). Allowed types: jpg, jpeg, png, webp, gif, svg. Paths outside that folder, or files that don't exist, are ignored.
+  - `image` is a path inside `public/`, under `images/words-images/` (suggested: `images/words-images/<pack id>/<word id>.jpg`). Allowed types: jpg, jpeg, jfif, png, webp, gif, svg. Paths outside that folder, or files that don't exist, are ignored.
 - The old format (`"words": ["KALIMAT", ...]`) still loads, with no hints.
 - Packs with invalid JSON or no valid sentences are skipped and logged in `storage/logs`.

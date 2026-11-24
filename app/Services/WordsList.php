@@ -157,7 +157,8 @@ class WordsList
         }
 
         $image = ltrim(str_replace('\\', '/', trim($image)), '/');
-        if (!preg_match('#^images/words-images/[A-Za-z0-9_\-/]+\.(jpe?g|png|webp|gif|svg)$#i', $image)) {
+        // .jfif sebenarnya file JPEG biasa (sering didapat dari "Save image as" di browser)
+        if (!preg_match('#^images/words-images/[A-Za-z0-9_\-/]+\.(jpe?g|jfif|png|webp|gif|svg)$#i', $image)) {
             return null;
         }
         if (!is_file(public_path($image))) {

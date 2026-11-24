@@ -76,6 +76,12 @@
             align-self: stretch;
             margin-inline: 2rem;
         }
+
+        @media (min-width: 992px) and (max-height: 800px) {
+            html {
+                font-size: 12px;
+            }
+        }
     </style>
     @stack('css')
 </head>
@@ -167,12 +173,17 @@
                     <h1 class="modal-title fs-3" id="creditsModal">Komponen yang Digunakan</h1>
                 </div>
                 <div class="modal-body py-3 d-flex flex-column align-items-center justify-content-center">
+                    <p class="w-100">
+                        Made by <a href="https://github.com/Joko-P" target="_blank">Joko_P</a>.<br>
+                        Heavily inspired by <a href="https://www.youtube.com/@MagicTheNoah" target="_blank">Magic the Noah</a>'s <a href="https://www.youtube.com/watch?v=5jKrwKQWXQ0">video</a>. 
+                    </p>
                     <ul class="row m-0 row-cols-2">
                         <li><a href="https://laravel.com/" target="_blank"><p class="m-0 mb-1 text-start">Laravel 13</p></a></li>
                         <li><a href="https://getbootstrap.com/docs/5.3/" target="_blank"><p class="m-0 mb-1 text-start">Bootstrap 5.3.8</p></a></li>
                         <li><a href="https://jquery.com/" target="_blank"><p class="m-0 mb-1 text-start">jQuery 4.0.0</p></a></li>
                         <li><a href="https://sweetalert2.github.io/" target="_blank"><p class="m-0 mb-1 text-start">SweetAlert2</p></a></li>
                         <li><a href="https://openmoji.org/" target="_blank"><p class="m-0 mb-1 text-start">OpenMoji</p></a></li>
+                        <li><a href="https://wikipedia.org/" target="_blank"><p class="m-0 mb-1 text-start">Wikipedia</p></a></li>
                     </ul>
                 </div>
                 <div class="modal-footer justify-content-center">

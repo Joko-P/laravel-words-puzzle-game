@@ -57,7 +57,7 @@ No database models are used. All game data is in the session:
   - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock. **Any new action must also call `appendTurnLog()`**, or it won't show in the summary.
   - `game_over_screen()` builds the summary with `buildGameSummary()`. It loads `WordsList::all()` once and calls `WordsList::wordInfo()` for each round's `desc`/`image`. If there's no `packId` (older games), it falls back to matching the word text.
 - `app/Services/WordsList.php`: loads and normalises word packs (see below).
-- `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`.
+- `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`. In the lobby, the "Change" button opens a picker modal (`#profilePicModal`, every entry of `Emoji::all()`). The default avatar is still random (`get_random_profile_pic()`, an `emojiDeck` in the session) on page load and after each Tambah Player.
 - `app/Services/MainService.php`: helpers.
   - `returnAllLettersAsArray()` returns the guessable characters, A–Z and 0–9. Each round copies it into `availableLetters`.
   - `hintPenalty()`, `hintUnlocksAfterTurn()` and `turnTimeoutPenalty()` read config with no fallback; the defaults live only in `config/game.php`.
@@ -103,10 +103,10 @@ The file name is the pack id.
 - **Keys must be unique.** `json_decode` silently keeps only the last of a duplicate key.
 - Optional `desc` and `image` fields are shown only in the game over summary.
   - `desc` goes through `WordsList::formatDescription()`. It escapes everything, then restores only `<b> <strong> <i> <em> <u> <s> <del> <br>` and `<a href='http(s)://…'>`, with either quote style and `target="_blank" rel="noopener noreferrer"`. It's the only HTML rendered with `{!! !!}` on that page, so keep it that way.
-  - `image` goes through `WordsList::imageUrl()`. It must match `images/words-images/…` with an image extension and exist under `public/`; otherwise it's ignored. The suggested layout is `public/images/words-images/<pack id>/<word id>.<ext>`.
+  - `image` goes through `WordsList::imageUrl()`. It must match `images/words-images/…` with an image extension (jpg, jpeg, jfif, png, webp, gif, svg; `.jfif` is just JPEG, and the user's images use it) and exist under `public/`; otherwise it's ignored. The suggested layout is `public/images/words-images/<pack id>/<word id>.<ext>`.
 - The old format (`"words": ["…"]`) still loads, with generated ids and no hints.
 - Invalid packs or entries are skipped and logged as warnings instead of causing a 500.
-- `popular-actors-pack.json` (95 names) was a first draft written by Claude. Its hints still need a fact check by the user.
+- `popular-actors-pack.json` (95 names) was written by Claude, including its `desc` and `image` fields; its hints were checked against Indonesian Wikipedia. **The user plays this pack and does not want to know its words**, so never name its entries in chat (summarize by count instead). Its photos in `public/images/words-images/popular-actors-pack/` come from Wikimedia Commons (free licences, mostly CC BY-SA) and need credit if the game is ever published; 9 entries have no free photo.
 
 ## Conventions and gotchas
 
@@ -115,7 +115,7 @@ The file name is the pack id.
 - **`"0"` is falsy in PHP.** Since digits are guessable, never check guess input with `if ($letter)` / `if ($sentence)`; use `!== ''`. Use strict `in_array(..., true)`, `array_search(..., true)` and `===` for letters. (In JS, `"0"` is truthy, so `if (letter)` there is fine.)
 - **Layout:** the original desktop layout (1920×1080 at 100% zoom) must stay as it is.
   - `.app-shell` is exactly one screen tall (`100vh` / `100dvh`), so the page itself never scrolls. The header and footer never shrink and are always visible. Only `.main-content-area` scrolls (`min-height: 0; overflow-y: auto`) when content doesn't fit. Inside it, `.main-content-inner` is centred with auto margins, so tall content scrolls instead of being clipped at the top. To scroll in JS, use `.main-content-area`, not `window`.
-  - The page title is `#header-screen-title` (currently an `<h3>`). Select it by id only; the game screen JS rewrites it with "Round X, Turn Y".
+  - The page title is `#header-screen-title` (currently an `<h4>`). Select it by id only; the game screen JS rewrites it with "Round X, Turn Y".
   - The game screen's letter boxes and keys shrink to fit.
   - The bottom row is 2/4/1/5 columns from `md` up, and stacks below that.
   - Don't use `vw-100` or `100vw` widths: they cause sideways scrolling.
