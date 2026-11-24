@@ -33,7 +33,7 @@
       },
       "sailor_moon": {
         "word": "SAILOR MOON",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/sailor_moon.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Sailor_Moon'>Sailor Moon</a></b> (juga dikenal sebagai <i>Pretty Guardian Sailor Moon</i>) adalah waralaba manga dan anime karya Naoko Takeuchi. Ceritanya tentang sekelompok gadis berkekuatan super yang mewakili planet-planet tata surya, melawan musuh-musuh dari kegelapan.<br><br>Tokoh utamanya, Usagi Tsukino, berubah menjadi Sailor Moon dan sering dibantu oleh Tuxedo Mask. Kalimat khasnya, \"Dengan kekuatan bulan, akan menghukummu!\", sangat dikenal penonton Indonesia.",
         "hints": [
           "Tuxedo Mask",
@@ -43,7 +43,7 @@
       },
       "detective_conan": {
         "word": "DETECTIVE CONAN",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/detective_conan.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Detektif_Conan'>Detektif Conan</a></b> (juga dikenal sebagai <i>Case Closed</i>) adalah manga detektif Jepang karya <a href='https://id.wikipedia.org/wiki/G%C5%8Dsh%C5%8D_Aoyama'>Gosho Aoyama</a> yang terbit sejak Januari 1994. Ceritanya tentang Shinichi Kudo, detektif SMA yang tubuhnya mengecil menjadi anak-anak setelah diracun oleh anggota Organisasi Hitam.<br><br>Dengan nama samaran Conan Edogawa, ia terus memecahkan berbagai kasus sambil mencari cara untuk kembali ke tubuh aslinya. Kalimat khasnya adalah \"Kebenaran selalu hanya ada satu!\"",
         "hints": [
           "Kebenaran selalu hanya ada satu",
@@ -53,7 +53,7 @@
       },
       "ninja_hattori": {
         "word": "NINJA HATTORI",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/ninja_hattori.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Ninja_Cilik_Hattori'>Ninja Hattori</a></b> (judul Indonesia: <b>Ninja Cilik Hattori</b>) adalah manga karya <a href='https://id.wikipedia.org/wiki/Fujiko_Fujio'>Fujiko Fujio A</a> yang kemudian diadaptasi menjadi drama TV, anime dan permainan video.<br><br>Ceritanya tentang Hattori Kanzo, ninja cilik dari Iga yang tinggal bersama keluarga Kenichi Mitsuba, ditemani adiknya Shinzo dan anjing ninja Shishimaru. Musuh bebuyutannya adalah Kemumaki dan kucing ninjanya, Kagechiyo.",
         "hints": [
           "Punya adik Shinzo dan anjing Shishimaru",
@@ -63,7 +63,7 @@
       },
       "captain_tsubasa": {
         "word": "CAPTAIN TSUBASA",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/captain_tsubasa.png",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Kapten_Tsubasa'>Captain Tsubasa</a></b> (judul Indonesia: <b>Kapten Tsubasa</b>) adalah manga dan anime sepak bola karya Yoichi Takahashi, salah satu anime favorit di Indonesia yang pernah tayang di banyak stasiun TV, seperti RCTI dan Spacetoon.<br><br>Ceritanya mengikuti Tsubasa Ozora, anak yang sangat mencintai sepak bola dengan semboyan \"bola adalah teman\", bersama para rival dan sahabatnya seperti Genzo Wakabayashi dan Kojiro Hyuga.",
         "hints": [
           "Genzo Wakabayashi dan Kojiro Hyuga",
@@ -73,7 +73,7 @@
       },
       "saint_seiya": {
         "word": "SAINT SEIYA",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/saint_seiya.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Saint_Seiya'>Saint Seiya</a></b> (juga dikenal sebagai <i>Kesatria-Kesatria Zodiak</i>) adalah manga dan anime karya Masami Kurumada. Animenya diproduksi oleh Toei Animation dan pertama kali tayang di Jepang pada 11 Oktober 1986, lalu di Indonesia lewat RCTI pada tahun 1994.<br><br>Ceritanya tentang para kesatria berzirah rasi bintang, seperti Seiya sang Pegasus, yang bertugas melindungi Dewi Athena.",
         "hints": [
           "Pegasus",
@@ -152,7 +152,7 @@
       },
       "chalkzone": {
         "word": "CHALKZONE",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/chalkzone.png",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/ChalkZone'>ChalkZone</a></b> adalah serial animasi Amerika Serikat produksi Frederator Studios untuk Nickelodeon. Tokoh utamanya adalah Rudy Tabootie, murid SD yang punya kapur ajaib.<br><br>Dengan kapur itu, Rudy bisa masuk ke ChalkZone atau \"Zona Kapur\", dunia lain tempat semua gambar kapur menjadi hidup. Ia berpetualang bersama Snap, tokoh gambarannya sendiri, dan teman sekelasnya, Penny Sanchez.",
         "hints": [
           "Dunia Fantasi yang digambar",
@@ -181,7 +181,7 @@
       },
       "curious_george": {
         "word": "CURIOUS GEORGE",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/curious_george.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Curious_George'>Curious George</a></b> adalah waralaba Amerika Serikat yang berasal dari seri buku anak-anak karya H. A. Rey dan Margret Rey, lalu diadaptasi menjadi film (2006), serial televisi dan permainan video.<br><br>Tokoh utamanya adalah George, monyet kecil yang sangat penasaran dan sering membuat kekacauan karenanya. Ia tinggal bersama pemiliknya, pria bertopi kuning.",
         "hints": [
           "Karakter utamanya merupakan hewan mamalia",
@@ -192,7 +192,7 @@
       },
       "code_lyoko": {
         "word": "CODE LYOKO",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/code_lyoko.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Code_Lyoko'>Code Lyoko</a></b> adalah serial animasi Prancis karya Thomas Romain dan Tania Palumbo, yang memadukan animasi dua dimensi dan CGI. Serial ini tayang dari 3 September 2003 hingga 10 November 2007.<br><br>Ceritanya tentang Jeremie, Ulrich, Yumi dan Odd, siswa sebuah sekolah asrama yang masuk ke dunia maya bernama Lyoko untuk melawan program komputer jahat bernama XANA, dibantu Aelita yang awalnya terjebak di sana.",
         "hints": [
           "Tayang di Spacetoon",
@@ -233,7 +233,7 @@
       },
       "boboiboy": {
         "word": "BOBOIBOY",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/boboiboy.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/BoBoiBoy'>BoBoiBoy</a></b> adalah serial animasi Malaysia produksi Animonsta Studios. Ceritanya tentang BoBoiBoy, anak yang punya kekuatan elemen dan bisa membelah diri, bersama teman-temannya Yaya, Ying, Gopal dan Fang.<br><br>Mereka melawan Adu Du, alien berkepala kotak berwarna hijau yang ingin merebut biji coklat di Bumi. BoBoiBoy tinggal bersama kakeknya, Tok Aba, pemilik kedai coklat. Di Indonesia, serial ini mulai tayang di Global TV pada tahun 2012.",
         "hints": [
           "Tok Aba dan kedai koko",
@@ -243,7 +243,7 @@
       },
       "adit_sopo_jarwo": {
         "word": "ADIT SOPO JARWO",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/adit_sopo_jarwo.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Adit_Sopo_Jarwo'>Adit Sopo Jarwo</a></b> (sebelumnya <b>Adit & Sopo Jarwo</b>) adalah serial animasi anak-anak Indonesia produksi MD Animation, yang pertama kali tayang pada 27 Januari 2014 di MNCTV.<br><br>Ceritanya tentang Adit dan sahabatnya, Dennis, serta duo pengangguran Sopo dan Jarwo yang sering punya ide aneh, dengan Haji Udin sebagai tokoh yang bijak di lingkungan mereka.",
         "hints": [
           "Haji Udin",
@@ -333,7 +333,7 @@
       },
       "the_penguins_of_madagascar": {
         "word": "THE PENGUINS OF MADAGASCAR",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/the_penguins_of_madagascar.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/The_Penguins_of_Madagascar'>The Penguins of Madagascar</a></b> adalah serial animasi Nickelodeon yang tayang sejak 29 November 2008, dengan 3 musim dan 149 episode. Serial ini adalah turunan dari film <i>Madagascar</i> (2005).<br><br>Ceritanya tentang empat penguin bergaya agen rahasia, yaitu Skipper sang pemimpin, Kowalski, Rico dan Private, yang menjalankan berbagai misi di Kebun Binatang Central Park, New York.",
         "hints": [
           "Seri animasi dari Nickelodeon tentang sekelompok hewan",
@@ -391,7 +391,7 @@
       },
       "beyblade": {
         "word": "BEYBLADE",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/beyblade.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Beyblade'>Beyblade</a></b> adalah manga dan anime Jepang karya Takao Aoki tentang anak-anak yang bertarung menggunakan gasing tempur canggih yang punya kekuatan khusus.<br><br>Tokoh utamanya adalah Tyson Granger (Takao Kinomiya), pemilik gasing Dragoon, bersama teman-temannya Kai, Ray dan Max. Pertarungan selalu dimulai dengan teriakan \"Let it rip!\"",
         "hints": [
           "Let it rip",
@@ -410,7 +410,7 @@
       },
       "larva": {
         "word": "LARVA",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/larva.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/Larva_(seri_televisi)'>Larva</a></b> adalah serial animasi komedi produksi Tuba Entertainment dari Seoul, Korea Selatan, yang tayang di KBS 1TV dan, di Indonesia, di RCTI.<br><br>Tokoh utamanya adalah dua larva, Red yang merah dan Yellow yang kuning. Mereka tidak pernah berbicara, hanya mengeluarkan suara-suara lucu, sehingga ceritanya bisa dinikmati tanpa dialog.",
         "hints": [
           "Animasi Korea tanpa dialog",
@@ -428,7 +428,7 @@
       },
       "paw_patrol": {
         "word": "PAW PATROL",
-        "image": "",
+        "image": "images/words-images/cartoon-pack/paw_patrol.jpg",
         "desc": "<b><a href='https://id.wikipedia.org/wiki/PAW_Patrol'>PAW Patrol</a></b> adalah serial animasi prasekolah dari Kanada karya Keith Chapman, yang pertama kali tayang pada 12 Agustus 2013 di Nickelodeon, dan di Indonesia sejak November 2013.<br><br>Ceritanya tentang Ryder, anak laki-laki yang memimpin sekelompok anak anjing penyelamat seperti Chase dan Marshall, yang masing-masing punya keahlian dan kendaraan sendiri untuk membantu warga kota Adventure Bay.",
         "hints": [
           "Ryder",
