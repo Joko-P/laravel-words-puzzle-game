@@ -90,7 +90,7 @@
         <div class="w-100 bg-secondary-subtle main-header-area d-flex align-items-center py-1 px-2 rounded-top-4">
             <div class="row m-0 gx-2 d-flex flex-row justify-content-between align-items-center w-100">
                 <div class="col-3 col-md-2">
-                    <a href="/">
+                    <a href="{{ url('') }}">
                         <img src="{{ asset('images/game-icon.png') }}" alt="Game Icon" class="img-fluid main-header-logo">
                     </a>
                 </div>
@@ -222,7 +222,8 @@
                             <li>
                                 <b>Jika batas waktu diatur</b> (di "Pengaturan Lainnya" saat lobby), setiap giliran punya waktu yang sama.<br>
                                 Waktu tetap berjalan walaupun sedang membuka hint atau mengetik kalimat.<br>
-                                Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.
+                                Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.<br>
+                                Waktu berhenti di antara ronde (sampai ronde berikutnya tampil) dan selama pemberitahuan waktu habis, jadi pemain berikutnya selalu mendapat waktu penuh.
                             </li>
                         </ul>
                     </ol>
@@ -377,7 +378,7 @@
                                             confirmButton: 'btn btn-primary',
                                         }
                                     }).then(() => {
-                                        window.location.href = '/';
+                                        window.location.href = '{{ url('') }}';
                                     });
                                 } else if (result.error) {
                                     Swal.fire({

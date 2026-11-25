@@ -198,6 +198,12 @@
         var timerDeadline = 0;
         var timerFrame = null;
         var timeoutRequestSent = false;
+        // true selama pemberitahuan "Waktumu habis!" atau popup "Kalimat Berhasil Ditebak" tampil.
+        // Selama itu data tidak dimuat ulang, karena memuat data = menjalankan jam giliran berikutnya
+        // (lihat showTimeoutNotice dan showRoundAnsweredPopup)
+        var timeoutNoticeActive = false;
+        var roundAnsweredPopupActive = false;
+        const TIMEOUT_NOTICE_MS = 2500;
 
         function displayTimer(timer) {
             timerState = timer;
@@ -248,7 +254,8 @@
                 },
                 success: function(result) {
                     if (result && result.state === 'timeout') {
-                        showTimeoutNotice(result);
+                        showTimeoutNotice(result); // data dimuat ulang setelah pemberitahuannya tertutup
+                        return;
                     }
                     // Kalau server bilang belum habis (selisih beberapa milidetik), data terbaru akan menyamakan timernya lagi
                     grabGameSessionData();
@@ -260,15 +267,29 @@
             });
         }
 
+        // Waktu giliran habis: tutup semua popup/modal yang terbuka, tampilkan pemberitahuan tanpa tombol selama
+        // 2,5 detik, lalu muat ulang data. Server sudah memindahkan giliran dengan jam yang berhenti,
+        // jadi jam pemain berikutnya baru mulai saat data dimuat ulang di akhir pemberitahuan ini.
         function showTimeoutNotice(timeout) {
+            if (timeoutNoticeActive) { return; }
+            timeoutNoticeActive = true;
+
+            displayTimer(null); // hentikan bar timer lama selama pemberitahuan tampil
+            $('.modal.show').modal('hide'); // modal Bootstrap (Peraturan, Credits, Detail Sesi). Popup SweetAlert lain otomatis tergantikan
+
             Swal.fire({
                 icon: 'warning',
-                title: 'Waktu habis!',
-                text: `${timeout.player_name} dikurangi ${timeout.penalty} poin, giliran pindah ke pemain berikutnya.`,
+                title: `Waktumu habis! -${timeout.penalty} poin!`,
+                text: 'Pemain selanjutnya, bersiap!',
                 theme: 'bootstrap-5',
-                timer: 2500,
+                timer: TIMEOUT_NOTICE_MS,
                 timerProgressBar: true,
                 showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(() => {
+                timeoutNoticeActive = false;
+                grabGameSessionData(); // jam giliran berikutnya mulai di sini
             });
         }
 
@@ -299,7 +320,37 @@
             return rows;
         }
 
+        // Ronde selesai: hentikan timer ronde ini, lalu tampilkan kalimatnya. Ronde berikutnya (yang jamnya masih
+        // berhenti di server) baru dimuat saat popup ini ditutup dengan cara apa pun: OK, Enter, Esc, atau klik di luar.
+        // Reload halaman (Ctrl+R) juga memuat data, jadi hasilnya sama.
+        function showRoundAnsweredPopup(sentence) {
+            roundAnsweredPopupActive = true;
+            displayTimer(null); // tanpa ini, hitungan mundur ronde lama tetap jalan di belakang popup
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Kalimat Berhasil Ditebak',
+                theme: 'bootstrap-5',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                },
+                html: `
+                    <div class="d-flex w-100 justify-content-center m-0 p-0">
+                        <p class="m-0 my-2 fw-bold fs-4">${sentence}</p>
+                    </div>
+                `
+            }).then(() => {
+                // Muat data setelah popup ditutup, supaya popup ronde terakhir juga tidak langsung hilang karena redirect ke game over
+                roundAnsweredPopupActive = false;
+                grabGameSessionData();
+            });
+        }
+
         function grabGameSessionData() {
+            // Selama pemberitahuan waktu habis atau popup ronde selesai tampil, jangan muat data dulu
+            // (itu akan menjalankan jam giliran berikutnya). Popupnya sendiri memuat data saat tertutup.
+            if (timeoutNoticeActive || roundAnsweredPopupActive) { return; }
+
             $.ajax({
                 type: "GET",
                 url: "{{ route('game.game-screen-data', ['urlEncodedNamaSesi' => session('current_game.url')]) }}",
@@ -507,9 +558,9 @@
                     },
                     success: function(result) {
                         if (result && result.state === 'timeout') {
-                            // Waktu giliran sudah habis sebelum hint dibuka, jadi hint tidak dibuka
+                            // Waktu giliran sudah habis sebelum hint dibuka, jadi hint tidak dibuka.
+                            // Data dimuat ulang setelah pemberitahuannya tertutup.
                             showTimeoutNotice(result);
-                            grabGameSessionData();
                             return;
                         }
 
@@ -560,23 +611,13 @@
                         if (result) {
                             const game_state = result.state;
                             if (game_state == 'timeout') {
-                                // Tebakan masuk setelah waktu giliran habis: tidak dihitung, giliran sudah pindah
+                                // Tebakan masuk setelah waktu giliran habis: tidak dihitung, giliran sudah pindah.
+                                // Data dimuat ulang setelah pemberitahuannya tertutup.
                                 showTimeoutNotice(result);
+                                return;
                             }
                             if (game_state == 'next_round') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Kalimat Berhasil Ditebak',
-                                    theme: 'bootstrap-5',
-                                    customClass: {
-                                        confirmButton: 'btn btn-primary',
-                                    },
-                                    html: `
-                                        <div class="d-flex w-100 justify-content-center m-0 p-0">
-                                            <p class="m-0 my-2 fw-bold fs-4">${result.sentence}</p>
-                                        </div>
-                                    `
-                                }).then(() => grabGameSessionData()); // Tunggu popup ditutup dulu, supaya popup ronde terakhir tidak langsung hilang karena redirect ke game over
+                                showRoundAnsweredPopup(result.sentence);
                                 return;
                             }
                         }
@@ -610,23 +651,13 @@
                         if (result) {
                             const game_state = result.state;
                             if (game_state == 'timeout') {
-                                // Tebakan masuk setelah waktu giliran habis: tidak dihitung, giliran sudah pindah
+                                // Tebakan masuk setelah waktu giliran habis: tidak dihitung, giliran sudah pindah.
+                                // Data dimuat ulang setelah pemberitahuannya tertutup.
                                 showTimeoutNotice(result);
+                                return;
                             }
                             if (game_state == 'next_round') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Kalimat Berhasil Ditebak',
-                                    theme: 'bootstrap-5',
-                                    customClass: {
-                                        confirmButton: 'btn btn-primary',
-                                    },
-                                    html: `
-                                        <div class="d-flex w-100 justify-content-center m-0 p-0">
-                                            <p class="m-0 my-2 fw-bold fs-4">${result.sentence}</p>
-                                        </div>
-                                    `
-                                }).then(() => grabGameSessionData()); // Tunggu popup ditutup dulu, supaya popup ronde terakhir tidak langsung hilang karena redirect ke game over
+                                showRoundAnsweredPopup(result.sentence);
                                 return;
                             }
                         }

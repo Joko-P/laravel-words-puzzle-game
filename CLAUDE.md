@@ -38,7 +38,7 @@ No database models are used. All game data is in the session:
   - `hints`, `hintsRevealed`, `hintLog`: `[{turn, playerId, penalty}]`
   - `availableLetters`, `guessedLetters`
   - `currentPlayerTurn` (a player's `order`), `turnCount` (the current turn number within the round, starting at 1)
-  - `turnStartedAt` (epoch milliseconds; reset whenever the turn passes), `timeoutLog`: `[{turn, playerId, penalty}]`
+  - `turnStartedAt` (epoch milliseconds; reset whenever the turn passes; `null` = clock paused), `timeoutLog`: `[{turn, playerId, penalty}]`
   - `isAnswered`, `roundWinner`
 - `current_game`: `{name, url}`. This is **per browser, not per tab**: running two games in two tabs doesn't work.
 
@@ -55,6 +55,7 @@ No database models are used. All game data is in the session:
   - `game_screen_data()` strips `loadedWordsList` and unrevealed `hints` before sending data to the browser.
   - `applyTurnTimeoutIfExpired()` is the only place a timeout happens. It runs at the start of `game_screen_data()`, both guess handlers, `show_hint()` and `turn_timeout()`. It applies at most one timeout per call and does nothing before the time is up, so calling it repeatedly is safe.
   - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock. **Any new action must also call `appendTurnLog()`**, or it won't show in the summary.
+  - **The clock pauses between rounds and after a timeout.** `new_round_data()` and `applyTurnTimeoutIfExpired()` set `turnStartedAt` to `null`, and `startTurnClockIfPaused()` starts it in `game_screen_data()`, i.e. when the screen next loads its data: after the round popup is closed in any way (OK, outside click, Esc) or the page is reloaded. A `game_screen_data()` call that just applied a timeout leaves it paused; the screen shows the 2.5 s "Waktumu habis!" notice and reloads after it. In JS, `grabGameSessionData()` does nothing while `timeoutNoticeActive` or `roundAnsweredPopupActive` is true, so nothing restarts the clock early; `showRoundAnsweredPopup()` also stops the old round's countdown (`displayTimer(null)`), otherwise its timeout request would reload the data behind the popup.
   - `game_over_screen()` builds the summary with `buildGameSummary()`. It loads `WordsList::all()` once and calls `WordsList::wordInfo()` for each round's `desc`/`image`. If there's no `packId` (older games), it falls back to matching the word text.
 - `app/Services/WordsList.php`: loads and normalises word packs (see below).
 - `app/Services/Emoji.php`: OpenMoji avatars from `public/profile-pics-openmoji/`. In the lobby, the "Change" button opens a picker modal (`#profilePicModal`, every entry of `Emoji::all()`). The default avatar is still random (`get_random_profile_pic()`, an `emojiDeck` in the session) on page load and after each Tambah Player.
@@ -82,8 +83,8 @@ No database models are used. All game data is in the session:
 
   Each rule is enforced in `show_hint()` on the server. The button state in JS only reflects it.
 - **Turn time limit** (optional, set under "Pengaturan Lainnya" in the lobby, 0–600 s, 0 = off):
-  - the clock keeps running during the hint and sentence prompts;
-  - when it runs out, the current player loses `turn_timeout_penalty` points and the turn passes, which counts as a turn for the hint lock;
+  - the clock keeps running during the hint and sentence prompts, but is paused between rounds (until the next round is on screen) and during the timeout notice;
+  - when it runs out, the current player loses `turn_timeout_penalty` points and the turn passes, which counts as a turn for the hint lock. The screen closes any open popup or modal and shows "Waktumu habis! -N poin!" for 2.5 s with no button; the next player's clock starts when it closes;
   - a guess or hint that arrives after the time is up is refused;
   - the bar in JS counts down from the server's `remaining_ms` (so the PC's clock doesn't matter), but the server decides when time is up.
 - **Rounds:** at least 2 players, 1–16 rounds, capped at the number of words available.
