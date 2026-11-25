@@ -1,0 +1,165 @@
+{
+    "name": "Alat Tulis Sekolah (Contoh)",
+    "words": {
+        "pensil": {
+            "word": "PENSIL",
+            "image": "images/words-images/example-words-pack/pensil.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Pensil'>Pensil</a></b> adalah alat tulis dan gambar berupa batang <i>grafit</i> yang dibungkus kayu. Tulisannya dibuat dengan menggoreskan grafit ke kertas, sehingga bisa dihapus dengan penghapus.<br><br>Kekerasan grafitnya ditandai dengan kode seperti <b>HB</b>, <b>2B</b> atau <b>2H</b>. Pensil 2B sering dipakai untuk mengisi lembar jawaban ujian.",
+            "hints": [
+                "Alat tulis yang bisa diraut",
+                "Isinya grafit, bukan tinta",
+                "Tulisannya bisa dihapus dengan setip"
+            ]
+        },
+        "pulpen": {
+            "word": "PULPEN",
+            "image": "images/words-images/example-words-pack/pulpen.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Pena'>Pulpen</a></b> atau <b>pena</b> adalah alat tulis yang menyapukan tinta ke kertas. Berbeda dengan pensil, tulisannya umumnya tidak bisa dihapus dengan setip, hanya bisa ditutup dengan cairan atau pita koreksi.<br><br>Pulpen yang paling umum di sekolah adalah <i>bolpoin</i>, yang ujungnya berupa bola kecil yang berputar untuk mengeluarkan tinta.",
+            "hints": [
+                "Tulisannya tidak bisa dihapus dengan setip",
+                "Bisa diklik atau ditutup",
+                "Alat tulis bertinta"
+            ]
+        },
+        "penghapus": {
+            "word": "PENGHAPUS",
+            "image": "images/words-images/example-words-pack/penghapus.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Penghapus'>Penghapus</a></b>, juga disebut <b>setip</b>, adalah karet lembut yang dipakai untuk menghilangkan goresan pensil dari kertas.<br><br>Saat digosokkan, penghapus mengikat butiran grafit lalu lepas sebagai remah-remah kecil, sehingga lama-lama ukurannya makin kecil.",
+            "hints": [
+                "Makin dipakai makin kecil",
+                "Juga disebut setip",
+                "Teman setia pensil"
+            ]
+        },
+        "rautan": {
+            "word": "RAUTAN",
+            "image": "images/words-images/example-words-pack/rautan.jpg",
+            "desc": "<b><a href='https://en.wikipedia.org/wiki/Pencil_sharpener'>Rautan</a></b> atau <b>peraut</b> adalah alat untuk menajamkan ujung <a href='https://id.wikipedia.org/wiki/Pensil'>pensil</a>. Pensil dimasukkan ke lubang rautan lalu diputar, sehingga pisau kecil di dalamnya menyerut kayu dan grafitnya.<br><br>Ada rautan kecil yang diputar dengan tangan, rautan meja dengan engkol, dan rautan listrik.",
+            "hints": [
+                "Mengeluarkan serutan kayu",
+                "Ada yang manual dan ada yang listrik",
+                "Membuat pensil tajam lagi"
+            ]
+        },
+        "penggaris": {
+            "word": "PENGGARIS",
+            "image": "images/words-images/example-words-pack/penggaris.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Penggaris'>Penggaris</a></b> atau <b>mistar</b> adalah alat untuk mengukur panjang sekaligus membantu menggambar garis lurus.<br><br>Penggaris bisa terbuat dari plastik, kayu atau logam. Selain yang lurus, ada juga penggaris berbentuk segitiga yang sering dipakai di pelajaran matematika dan menggambar teknik.",
+            "hints": [
+                "Ada yang lurus dan ada yang segitiga",
+                "Ada angka sentimeter di pinggirnya",
+                "Juga disebut mistar"
+            ]
+        },
+        "busur_derajat": {
+            "word": "BUSUR DERAJAT",
+            "image": "images/words-images/example-words-pack/busur_derajat.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Busur_derajat'>Busur derajat</a></b> (bahasa Inggris: <i>protractor</i>) adalah alat untuk mengukur dan membuat sudut.<br><br>Bentuknya biasanya setengah lingkaran dengan skala dari 0 sampai 180 derajat. Alat seperti ini sudah dipakai sejak ribuan tahun lalu dalam ilmu geometri.",
+            "hints": [
+                "Bentuknya setengah lingkaran",
+                "Angkanya dari 0 sampai 180",
+                "Untuk mengukur sudut"
+            ]
+        },
+        "jangka": {
+            "word": "JANGKA",
+            "image": "images/words-images/example-words-pack/jangka.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Jangka'>Jangka</a></b> adalah alat untuk menggambar lingkaran atau busur. Jangka terdiri dari dua kaki yang dihubungkan engsel: satu kaki berujung runcing sebagai titik pusat, dan kaki lainnya memegang pensil.<br><br>Selain di pelajaran matematika, jangka juga dipakai untuk mengukur jarak pada peta dan dalam navigasi.",
+            "hints": [
+                "Punya dua kaki",
+                "Salah satu kakinya runcing",
+                "Untuk menggambar lingkaran"
+            ]
+        },
+        "buku_tulis": {
+            "word": "BUKU TULIS",
+            "image": "images/words-images/example-words-pack/buku_tulis.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Buku_catatan'>Buku tulis</a></b>, juga disebut buku catatan, adalah kumpulan halaman kertas yang dijilid untuk menulis catatan, mengerjakan tugas atau menggambar.<br><br>Di sekolah, buku tulis biasanya bergaris dan dipakai satu buku untuk setiap mata pelajaran.",
+            "hints": [
+                "Isinya halaman kosong bergaris",
+                "Biasanya satu untuk setiap mata pelajaran",
+                "Tempat mencatat pelajaran"
+            ]
+        },
+        "gunting": {
+            "word": "GUNTING",
+            "image": "images/words-images/example-words-pack/gunting.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Gunting'>Gunting</a></b> adalah alat pemotong dengan dua bilah tajam yang dipakai dengan satu tangan. Bahan terpotong karena ditekan oleh kedua bilah dari arah berlawanan.<br><br>Gunting cocok untuk memotong bahan tipis seperti kertas, kain dan benang. Untuk anak-anak, ada gunting dengan ujung tumpul supaya lebih aman.",
+            "hints": [
+                "Punya dua lubang untuk jari",
+                "Jangan dipakai sambil berlari",
+                "Alat pemotong kertas"
+            ]
+        },
+        "lem": {
+            "word": "LEM",
+            "image": "images/words-images/example-words-pack/lem.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Perekat'>Lem</a></b> atau perekat adalah bahan yang bisa mengikat dua permukaan menjadi satu dengan kuat.<br><br>Di sekolah, lem yang paling sering dipakai adalah lem kertas cair dan <i>lem batang</i> (<i>glue stick</i>), misalnya untuk tugas prakarya dan kliping.",
+            "hints": [
+                "Ada yang cair dan ada yang batang",
+                "Bisa membuat jari lengket",
+                "Untuk menempelkan kertas"
+            ]
+        },
+        "spidol": {
+            "word": "SPIDOL",
+            "image": "images/words-images/example-words-pack/spidol.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Spidol'>Spidol</a></b> adalah pena yang punya wadah tinta sendiri dengan ujung dari serat berpori.<br><br>Ada spidol <i>permanen</i> yang tintanya tidak mudah hilang, dan spidol papan tulis (<i>whiteboard</i>) yang tintanya bisa dihapus. Ada juga spidol warna yang dipakai untuk menggambar.",
+            "hints": [
+                "Ujungnya terbuat dari serat",
+                "Ada yang permanen dan ada yang bisa dihapus",
+                "Dipakai guru di papan tulis putih"
+            ]
+        },
+        "krayon": {
+            "word": "KRAYON",
+            "image": "images/words-images/example-words-pack/krayon.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Krayon'>Krayon</a></b> adalah alat menggambar yang dibuat dari lilin berwarna. Krayon banyak dipakai anak-anak untuk mewarnai, tetapi juga dipakai oleh seniman.<br><br>Karena terbuat dari lilin, warna krayon tebal dan cerah, dan krayon tidak perlu diraut seperti pensil warna.",
+            "hints": [
+                "Terbuat dari lilin berwarna",
+                "Biasanya dijual per kotak",
+                "Favorit anak-anak untuk mewarnai"
+            ]
+        },
+        "pensil_warna": {
+            "word": "PENSIL WARNA",
+            "image": "images/words-images/example-words-pack/pensil_warna.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Pensil_warna'>Pensil warna</a></b> adalah pensil yang isinya berupa pigmen berwarna, bukan grafit, dan dibungkus kayu seperti pensil biasa.<br><br>Isinya berbahan dasar lilin atau minyak. Pensil warna dipakai untuk mewarnai dan menggambar, dan perlu diraut seperti pensil biasa.",
+            "hints": [
+                "Bentuknya seperti pensil biasa",
+                "Biasanya dijual per kotak berisi banyak warna",
+                "Untuk mewarnai gambar"
+            ]
+        },
+        "kalkulator": {
+            "word": "KALKULATOR",
+            "image": "images/words-images/example-words-pack/kalkulator.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Kalkulator'>Kalkulator</a></b> atau mesin hitung adalah alat untuk menghitung, mulai dari penjumlahan, pengurangan, perkalian dan pembagian sederhana, sampai rumus matematika pada <i>kalkulator ilmiah</i>.<br><br>Kini fungsi kalkulator juga ada di komputer dan ponsel.",
+            "hints": [
+                "Ada yang memakai tenaga surya",
+                "Kadang tidak boleh dibawa saat ujian",
+                "Alat untuk menghitung"
+            ]
+        },
+        "tempat_pensil": {
+            "word": "TEMPAT PENSIL",
+            "image": "images/words-images/example-words-pack/tempat_pensil.jpg",
+            "desc": "<b><a href='https://id.wikipedia.org/wiki/Kotak_pensil'>Tempat pensil</a></b> atau <b>kotak pensil</b> adalah wadah untuk menyimpan pensil dan alat tulis lain, seperti pulpen, penghapus, pensil warna dan kalkulator.<br><br>Tempat pensil umumnya terbuat dari plastik keras berbentuk kotak, atau berbentuk kantong dari kain atau plastik lunak dengan ritsleting.",
+            "hints": [
+                "Ada yang memakai ritsleting",
+                "Isinya bermacam-macam alat tulis",
+                "Wadah pensil di dalam tas"
+            ]
+        },
+        "kapur_tulis": {
+            "word": "KAPUR TULIS",
+            "image": "images/words-images/example-words-pack/kapur_tulis.jpg",
+            "desc": "<b>Kapur tulis</b> adalah batang kecil untuk menulis di papan tulis hitam atau hijau. Namanya berasal dari <a href='https://id.wikipedia.org/wiki/Kapur'>kapur</a>, batuan putih dari kalsium karbonat, meski kapur tulis modern banyak dibuat dari gipsum.<br><br>Sebelum papan tulis putih dan spidol populer, kapur tulis adalah alat tulis utama guru di kelas. Selain putih, ada juga kapur tulis berwarna.",
+            "hints": [
+                "Bisa membuat tangan putih berdebu",
+                "Dihapus dengan penghapus papan",
+                "Dipakai di papan tulis hitam"
+            ]
+        }
+    }
+}
