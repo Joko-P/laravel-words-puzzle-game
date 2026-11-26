@@ -93,6 +93,8 @@ No database models are used. All game data is in the session:
 
 The file name is the pack id.
 
+**Only `example-words-pack` is in git.** `storage/app/words-list/.gitignore` and `public/images/words-images/.gitignore` ignore every other pack and image folder (the image one uses `/*` + `!/example-words-pack/`, because a bare `*` would also ignore the files inside the re-included folder). The user's real packs exist only on their PC, so a fresh clone or worktree has just the example pack: "Alat Tulis Sekolah (Contoh)", 16 school-stationery words, every image CC0 from Wikimedia Commons.
+
 ```json
 { "name": "Pack Name", "words": { "<uuid>": { "word": "STARDEW VALLEY", "hints": ["vaguest", "...", "most obvious"] } } }
 ```
