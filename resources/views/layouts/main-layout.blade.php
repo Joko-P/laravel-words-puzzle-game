@@ -79,7 +79,7 @@
 
         @media (min-width: 992px) and (max-height: 800px) {
             html {
-                font-size: 12px;
+                font-size: 16px;
             }
         }
     </style>
