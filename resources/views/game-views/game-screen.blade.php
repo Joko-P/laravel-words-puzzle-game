@@ -51,6 +51,19 @@
         text-align: center;
     }
 
+    /* Nama pemain di atas foto profil (indikator giliran). Boleh melebar sampai ke padding kartunya
+       (4.5rem - jarak 0.25rem antar kartu), satu baris saja. Ukuran font dikecilkan lewat JS
+       (fitPlayerNameLabel) kalau nama panjang; kalau tetap tidak muat, dipotong dengan "...". */
+    .player-turn-name{
+        width: calc(100% + 0.75rem);
+        margin-inline: -0.375rem;
+        font-size: 0.75rem;
+        line-height: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     .leaderboard-area{
         height: 16rem;
         max-height: 16rem;
@@ -455,6 +468,10 @@
                     .css('max-width', '4.5rem')
                     .css('min-height', '6rem')
                     .css('min-width', '4.5rem')
+                    .append($("<p>")
+                        .addClass('player-turn-name fw-bold text-center m-0')
+                        .text(element.name)
+                    )
                     .append($("<div>")
                         .addClass(`image-profile-element-container w-100${element.currentlyPlay ? ' border border-3 border-info bg-info-subtle' : ''}`)
                         .attr('data-bs-toggle','tooltip')
@@ -473,9 +490,27 @@
                 );
             });
 
+            // Harus setelah elemennya ada di halaman, supaya lebarnya bisa diukur
+            playersTurnArea.find('.player-turn-name').each(function() {
+                fitPlayerNameLabel(this);
+            });
+
             $('[data-bs-toggle="tooltip"]').each(function(index) {
                 new bootstrap.Tooltip($(this)[0]);
             });
+        }
+
+        // Kecilkan font nama sampai muat dalam satu baris, maksimal sama dengan skor (0.75rem),
+        // minimal 0.625rem. Kalau di ukuran minimal masih kepanjangan, CSS memotongnya dengan "...".
+        function fitPlayerNameLabel(label) {
+            const maxRem = 0.75;
+            const minRem = 0.625;
+            let sizeRem = maxRem;
+            label.style.fontSize = `${sizeRem}rem`;
+            while (label.scrollWidth > label.clientWidth && sizeRem > minRem) {
+                sizeRem = Math.max(minRem, sizeRem - 0.025);
+                label.style.fontSize = `${sizeRem}rem`;
+            }
         }
 
         function displayBaseWords(roundData) {
