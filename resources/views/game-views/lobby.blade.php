@@ -79,12 +79,19 @@
                             <i class="bi bi-gear-fill pe-1"></i>Pengaturan Lainnya <i class="bi bi-chevron-down small"></i>
                         </button>
                         <div class="collapse" id="pengaturanLainnya">
-                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 m-0 p-0 g-1">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 m-0 p-0 gy-1 gx-3">
                                 <div class="col">
                                     <div class="input-group input-group-sm mt-1">
                                         <span class="input-group-text border-dark-subtle" title="Timer"><i class="bi bi-stopwatch small"></i></span>
                                         <input type="number" step="1" min="0" max="600" value="{{ old('batasWaktu', 0) }}" class="form-control border-dark-subtle" id="batasWaktuInput" name="batasWaktu" inputmode="numeric" title="0 = Tanpa Timer. Recommended Minimum : 30">
                                         <span class="input-group-text border-dark-subtle">Detik</span>
+                                    </div>
+                                </div>
+                                <div class="col d-flex align-items-center">
+                                    {{-- value="1", karena aturan validasi "boolean" tidak menerima nilai bawaan checkbox ("on") --}}
+                                    <div class="form-check mt-1 mb-0 small">
+                                        <input class="form-check-input border-dark-subtle" type="checkbox" name="acakUrutan" value="1" id="acakUrutanInput" @checked(old('acakUrutan'))>
+                                        <label class="form-check-label" for="acakUrutanInput" title="Urutan giliran pemain diacak ulang setiap ronde baru">Acak Urutan Tiap Ronde</label>
                                     </div>
                                 </div>
                             </div>

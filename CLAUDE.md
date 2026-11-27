@@ -31,6 +31,7 @@ No database models are used. All game data is in the session:
   - `loadedWordsList`: shuffled word entries for the game, `{id, packId, word, hints}`. `desc` and `image` are deliberately left out to keep the session small; the game over summary looks them up in the pack files.
   - `roundsAmount`, `currentRound`
   - `turnTimeLimit`: seconds per turn set in the lobby (0 = no limit)
+  - `shuffleEachRound`: the lobby's "Acak Urutan Tiap Ronde" checkbox (missing in older games = off)
   - `roundsData`: `[roundNumber => round]`
 - Each round:
   - `roundNumber`, `packId`, `wordId`, `currentWord` (a plain string). Word ids are only unique *within* a pack, so `packId` is needed to find the entry again.
@@ -51,7 +52,7 @@ No database models are used. All game data is in the session:
 - `app/Http/Controllers/GameController.php`: lobby, players, start, rounds, guesses, hints, game over.
   - Use `currentSessionKey()` / `currentSession()` for the session path.
   - `gameAlreadyStarted()` guards the endpoints: players can't be changed after Start, and the game screen and guesses are refused before it.
-  - `new_round_data()` builds a round; `make_new_rounds()` advances rounds and sets `endTime` once.
+  - `new_round_data()` builds a round; `make_new_rounds()` advances rounds and sets `endTime` once. With `shuffleEachRound` on, it reshuffles every player's `order` (via `shuffle_player_order($avoidFirstId)`) and starts the new round at order 0. It returns `true` when it just did that, which the guess handlers send as `order_shuffled` in their `next_round` response. Only the latest round's `currentPlayerTurn` is ever read, and every log stores `playerId`, so old rounds don't break when `order` changes.
   - `game_screen_data()` strips `loadedWordsList` and unrevealed `hints` before sending data to the browser.
   - `applyTurnTimeoutIfExpired()` is the only place a timeout happens. It runs at the start of `game_screen_data()`, both guess handlers, `show_hint()` and `turn_timeout()`. It applies at most one timeout per call and does nothing before the time is up, so calling it repeatedly is safe.
   - **Any new code that passes the turn must also reset `turnStartedAt`**, or the next player inherits the old clock. **Any new action must also call `appendTurnLog()`**, or it won't show in the summary.
@@ -87,6 +88,8 @@ No database models are used. All game data is in the session:
   - when it runs out, the current player loses `turn_timeout_penalty` points and the turn passes, which counts as a turn for the hint lock. The screen closes any open popup or modal and shows "Waktumu habis! -N poin!" for 2.5 s with no button; the next player's clock starts when it closes;
   - a guess or hint that arrives after the time is up is refused;
   - the bar in JS counts down from the server's `remaining_ms` (so the PC's clock doesn't matter), but the server decides when time is up.
+- **Turn order:** shuffled once at Start. Without "Acak Urutan Tiap Ronde", it stays fixed and each new round starts with the player after whoever ended the last round. With it, the order is reshuffled every new round, and the previous round's first player never goes first again. After the "Kalimat Berhasil Ditebak" popup closes, the screen shows "Urutan pemain diacak!" for 2.5 s with no button (`showOrderShuffledNotice()`, never after the last round); the new round's clock starts when it closes.
+- **Leaderboard ties** are sorted by name (A–Z, case-insensitive), not by `order`, since `order` can change every round.
 - **Rounds:** at least 2 players, 1–16 rounds, capped at the number of words available.
 
 ## Word packs: `storage/app/words-list/*.json`

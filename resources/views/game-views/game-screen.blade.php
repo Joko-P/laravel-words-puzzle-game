@@ -211,12 +211,13 @@
         var timerDeadline = 0;
         var timerFrame = null;
         var timeoutRequestSent = false;
-        // true selama pemberitahuan "Waktumu habis!" atau popup "Kalimat Berhasil Ditebak" tampil.
-        // Selama itu data tidak dimuat ulang, karena memuat data = menjalankan jam giliran berikutnya
-        // (lihat showTimeoutNotice dan showRoundAnsweredPopup)
+        // true selama pemberitahuan "Waktumu habis!" atau popup "Kalimat Berhasil Ditebak" (termasuk pemberitahuan
+        // "Urutan pemain diacak!" sesudahnya) tampil. Selama itu data tidak dimuat ulang, karena memuat data =
+        // menjalankan jam giliran berikutnya (lihat showTimeoutNotice dan showRoundAnsweredPopup)
         var timeoutNoticeActive = false;
         var roundAnsweredPopupActive = false;
         const TIMEOUT_NOTICE_MS = 2500;
+        const ORDER_SHUFFLED_NOTICE_MS = 2500;
 
         function displayTimer(timer) {
             timerState = timer;
@@ -336,7 +337,8 @@
         // Ronde selesai: hentikan timer ronde ini, lalu tampilkan kalimatnya. Ronde berikutnya (yang jamnya masih
         // berhenti di server) baru dimuat saat popup ini ditutup dengan cara apa pun: OK, Enter, Esc, atau klik di luar.
         // Reload halaman (Ctrl+R) juga memuat data, jadi hasilnya sama.
-        function showRoundAnsweredPopup(sentence) {
+        // orderShuffled = server barusan mengacak urutan untuk ronde baru (tidak pernah true di ronde terakhir).
+        function showRoundAnsweredPopup(sentence, orderShuffled) {
             roundAnsweredPopupActive = true;
             displayTimer(null); // tanpa ini, hitungan mundur ronde lama tetap jalan di belakang popup
 
@@ -353,7 +355,31 @@
                     </div>
                 `
             }).then(() => {
+                if (orderShuffled) {
+                    showOrderShuffledNotice();
+                    return;
+                }
                 // Muat data setelah popup ditutup, supaya popup ronde terakhir juga tidak langsung hilang karena redirect ke game over
+                roundAnsweredPopupActive = false;
+                grabGameSessionData();
+            });
+        }
+
+        // Pemberitahuan tanpa tombol selama 2,5 detik setelah popup ronde selesai, kalau urutan diacak tiap ronde.
+        // roundAnsweredPopupActive tetap true sampai pemberitahuan ini tertutup, jadi jam giliran pertama
+        // ronde baru baru mulai saat data dimuat di akhir pemberitahuan ini.
+        function showOrderShuffledNotice() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Urutan pemain diacak!',
+                text: 'Perhatikan urutan giliran yang baru.',
+                theme: 'bootstrap-5',
+                timer: ORDER_SHUFFLED_NOTICE_MS,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            }).then(() => {
                 roundAnsweredPopupActive = false;
                 grabGameSessionData();
             });
@@ -652,7 +678,7 @@
                                 return;
                             }
                             if (game_state == 'next_round') {
-                                showRoundAnsweredPopup(result.sentence);
+                                showRoundAnsweredPopup(result.sentence, result.order_shuffled === true);
                                 return;
                             }
                         }
@@ -692,7 +718,7 @@
                                 return;
                             }
                             if (game_state == 'next_round') {
-                                showRoundAnsweredPopup(result.sentence);
+                                showRoundAnsweredPopup(result.sentence, result.order_shuffled === true);
                                 return;
                             }
                         }

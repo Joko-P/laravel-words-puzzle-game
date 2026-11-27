@@ -225,6 +225,14 @@
                                 Kalau waktunya habis, <b>pemain dikurangi {{ $mainService->turnTimeoutPenalty() }} poin</b> dan giliran pindah ke pemain berikutnya.<br>
                                 Waktu berhenti di antara ronde (sampai ronde berikutnya tampil) dan selama pemberitahuan waktu habis, jadi pemain berikutnya selalu mendapat waktu penuh.
                             </li>
+                            <li>
+                                <b>Jika "Acak Urutan Tiap Ronde" dicentang</b> (di "Pengaturan Lainnya" saat lobby), urutan giliran diacak ulang setiap ronde baru.<br>
+                                Pemain yang jalan pertama di ronde sebelumnya <b>tidak akan jalan pertama lagi</b> di ronde berikutnya.<br>
+                                Tanpa pengaturan ini, urutan tetap sama sepanjang game, dan ronde baru dimulai oleh pemain setelah pemain yang menyelesaikan ronde sebelumnya.
+                            </li>
+                            <li>
+                                <b>Jika skor sama</b>, peringkat diurutkan berdasarkan nama (A-Z).
+                            </li>
                         </ul>
                     </ol>
                 </div>

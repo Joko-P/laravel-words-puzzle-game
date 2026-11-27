@@ -197,6 +197,11 @@ class GameController extends Controller
                 'min:0',
                 'max:600',
             ],
+            // Checkbox "Acak Urutan Tiap Ronde": kalau tidak dicentang, field-nya tidak terkirim sama sekali
+            'acakUrutan' => [
+                'nullable',
+                'boolean',
+            ],
         ], [
             'batasWaktu.integer' => 'Batas waktu harus berupa angka bulat (detik).',
             'batasWaktu.min' => 'Batas waktu minimal 0 detik (0 = tanpa batas waktu).',
@@ -217,6 +222,7 @@ class GameController extends Controller
             $this->currentSessionKey() . '.loadedWordsList' => $shuffled_words,
             $this->currentSessionKey() . '.playersList' => $shuffled_players_list,
             $this->currentSessionKey() . '.turnTimeLimit' => (int) ($validated['batasWaktu'] ?? 0),
+            $this->currentSessionKey() . '.shuffleEachRound' => (bool) ($validated['acakUrutan'] ?? false),
             $this->currentSessionKey() . '.startTime' => now('Asia/Jakarta')->toDateTimeString(),
         ]);
 
@@ -298,12 +304,23 @@ class GameController extends Controller
         session([$key => $turnLog]);
     }
 
-    private function shuffle_player_order(): array
+    /**
+     * Acak urutan pemain (order 0, 1, 2, ...). Kalau $avoidFirstId diisi, pemain itu tidak boleh dapat
+     * urutan pertama lagi (dipakai saat urutan diacak tiap ronde, supaya tidak ada yang jalan duluan terus).
+     */
+    private function shuffle_player_order(?string $avoidFirstId = null): array
     {
         $playersList = session($this->currentSessionKey() . '.playersList');
         
         $playersIds = array_keys($playersList);
         shuffle($playersIds);
+
+        $lastIndex = count($playersIds) - 1;
+        if ($avoidFirstId !== null && $lastIndex > 0 && $playersIds[0] === $avoidFirstId) {
+            // Tukar dengan posisi acak lain, jadi pemain lainnya tetap punya peluang yang sama untuk jalan duluan
+            $swapIndex = random_int(1, $lastIndex);
+            [$playersIds[0], $playersIds[$swapIndex]] = [$playersIds[$swapIndex], $playersIds[0]];
+        }
 
         foreach ($playersIds as $index => $id) {
             $playersList[$id]['order'] = $index;
@@ -597,7 +614,10 @@ class GameController extends Controller
 
     private function getScoreLeaderboard($current_session)
     {
-        $playersData = array_values(collect(collect($current_session['playersList'])->values())->sortBy('order')->sortByDesc('score')->toArray());
+        // Skor tertinggi dulu; kalau skornya sama, urut nama (A-Z). Bukan pakai order, karena order bisa berubah tiap ronde.
+        $playersData = array_values(collect($current_session['playersList'])->values()->sort(function ($a, $b) {
+            return [$b['score'], strtolower($a['name'])] <=> [$a['score'], strtolower($b['name'])];
+        })->toArray());
         
         return $playersData;
     }
@@ -619,7 +639,12 @@ class GameController extends Controller
         return $playersData;
     }
 
-    private function make_new_rounds()
+    /**
+     * Buat ronde berikutnya kalau ronde sekarang sudah terjawab (atau ronde pertama kalau belum ada).
+     * Mengembalikan true kalau barusan urutan pemain diacak untuk ronde baru (pengaturan "Acak Urutan Tiap Ronde"),
+     * supaya layar bisa menampilkan pemberitahuannya.
+     */
+    private function make_new_rounds(): bool
     {
         $gameSessionName = session('current_game.name');
         $sessionData = session('gameSessions.' . $gameSessionName);
@@ -644,9 +669,21 @@ class GameController extends Controller
                 }
             } else if ($currentRound['isAnswered']) {
                 // Current round already answered, make new one next.
-                $currentPlayerTurn = (int)($currentRound['currentPlayerTurn']);
+                $shuffleEachRound = (bool) ($sessionData['shuffleEachRound'] ?? false);
 
-                $nextPlayerTurn = (((count($sessionData['playersList']) - 1) == $currentPlayerTurn) ? 0 : ($currentPlayerTurn + 1));
+                if ($shuffleEachRound) {
+                    // Urutan diacak ulang dan ronde baru selalu mulai dari order 0. Karena semua ronde di mode ini
+                    // mulai dari order 0, pemain dengan order 0 sekarang = pemain pertama ronde sebelumnya.
+                    // Log giliran menyimpan playerId (bukan order), jadi ronde lama tidak terpengaruh.
+                    $previousFirst = collect($sessionData['playersList'])->first(fn ($player) => $player['order'] !== null && (int) $player['order'] === 0);
+                    session([
+                        'gameSessions.' . $gameSessionName . '.playersList' => $this->shuffle_player_order($previousFirst['id'] ?? null),
+                    ]);
+                    $nextPlayerTurn = 0;
+                } else {
+                    $currentPlayerTurn = (int)($currentRound['currentPlayerTurn']);
+                    $nextPlayerTurn = (((count($sessionData['playersList']) - 1) == $currentPlayerTurn) ? 0 : ($currentPlayerTurn + 1));
+                }
                 
                 session([
                     'gameSessions.' . $gameSessionName . '.roundsData.' . ($currentRoundNumber + 1) => $this->new_round_data(
@@ -656,8 +693,12 @@ class GameController extends Controller
                     ),
                     'gameSessions.' . $gameSessionName . '.currentRound' => ($currentRoundNumber + 1)
                 ]);
+
+                return $shuffleEachRound;
             }
         }
+
+        return false;
     }
 
     public function guess_the_sentence(Request $request)
@@ -720,11 +761,12 @@ class GameController extends Controller
                         $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.roundWinner' => $currentPlayer['id'],
                     ]);
 
-                    $this->make_new_rounds();
+                    $orderShuffled = $this->make_new_rounds();
 
                     return response()->json([
                         'state' => 'next_round',
                         'sentence' => '"' . trim(strtoupper($currentRound['currentWord'])) . '"',
+                        'order_shuffled' => $orderShuffled, // false di ronde terakhir, karena tidak ada ronde baru
                     ], 200);
                 } else {
                     session([
@@ -813,11 +855,12 @@ class GameController extends Controller
                             $this->currentSessionKey() . '.roundsData.' . $currentRoundNum . '.roundWinner' => $currentPlayer['id'],
                         ]);
 
-                        $this->make_new_rounds();
+                        $orderShuffled = $this->make_new_rounds();
 
                         return response()->json([
                             'state' => 'next_round',
                             'sentence' => '"' . trim(strtoupper($currentRound['currentWord'])) . '"',
+                            'order_shuffled' => $orderShuffled, // false di ronde terakhir, karena tidak ada ronde baru
                         ], 200);
                     } else {
                         session([
